@@ -1,0 +1,45 @@
+div.box{
+    width: 100%;
+    background-color: #fff;
+    padding: 0 3% 15px 3%;
+}
+div.box p{
+    border: 0;
+    padding-left: 0;
+}
+div.box textarea{
+    width: 100%;
+    background-color: #eee;
+    border: 0;
+    text-indent: 20px;
+    padding: 10px 0;
+}
+p{
+    margin: 0;
+    padding: 15px 3%;
+    border-top: 8px solid #eee;
+    background-color: #fff;
+}
+p img{
+    width: 5%;
+    position: relative;
+    top:-3px;
+}
+p span{
+    float: right;
+}
+p span img{
+    width: 10%;
+    margin-left: 10px;
+    position: relative;
+    top:-1px;
+}
+button{
+    color: #fff;
+    background-color: orange;
+    width: 100%;
+    padding: 15px 0;
+    border: 0;
+    position: fixed;
+    bottom: 0;
+}

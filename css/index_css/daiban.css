@@ -1,0 +1,42 @@
+ul li{
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+ul li:first-child{
+    border-bottom: 5px solid #eee;
+}
+ul li:first-child p{
+    color: #c1c1c1;
+    font-size: 1em;
+    padding: 8px 0;
+}
+ul li:first-child p span{
+    color:#FFD457 ;
+}
+ul li p{
+    margin: 0;
+    margin-left: 3%;
+}
+ul li p.time{
+    font-size: 0.8em;
+    color:#c1c1c1 ;
+}
+ul li a{
+    float: right;
+    position: relative;
+    top:-25px;
+    margin-right: 3%;
+}
+ul li:nth-child(2) a{
+    color: #FFD457;
+}
+ul li:nth-child(3) a{
+    color: red;
+}
+ul li:nth-child(4) a{
+    color: #5a92ff;
+}
+ul li:nth-child(5) a{
+    color: #12b832;
+}

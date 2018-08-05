@@ -1,0 +1,31 @@
+div.logo{
+    text-align: center;
+}
+div.logo img{
+    width: 30%;
+    margin: 10% 0;
+}
+input,button{
+    width: 90%;
+    margin: 0 5%;
+    padding:10px 10%;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #eee;
+}
+img.yhm,img.pwd{
+    position: relative;
+    top:30px;
+    left:7%;
+    width:5%;
+}
+a{
+    display: inline-block;
+    margin-left: 75%;
+    color: #78797c;
+    padding: 15px 0;
+}
+button{
+   background-color: orange;
+    color: #fff;
+}

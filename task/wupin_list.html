@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>物品列表</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/task_css/wupin_list.css">
+<body>
+<ul>
+    <li>
+        <p>灭火器  <span>未检查</span></p>
+        <p>
+            <img src="../imgs/task_img/dingw.png" alt="">
+            一区12幢1楼楼道
+        </p>
+    </li>
+    <li class="yic" onclick="fn()">
+        <p>灭火器  <span>异常</span></p>
+        <p>
+            <img src="../imgs/task_img/dingw.png" alt="">
+            一区13幢1楼楼道
+        </p>
+    </li>
+    <li class="zenc" onclick="fun()">
+        <p>灭火器  <span>正常</span></p>
+        <p>
+            <img src="../imgs/task_img/dingw.png" alt="">
+            一区14幢1楼楼道
+        </p>
+    </li>
+</ul>
+</body>
+<script>
+    function fn() {
+        window.location.href="jcqk_yic.html";
+    }
+    function fun() {
+        window.location.href="jcqk_zenc.html";
+    }
+</script>
+</html>

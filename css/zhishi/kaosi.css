@@ -1,0 +1,60 @@
+p.title{
+    border-bottom: 10px solid #eee;
+    padding: 15px  3%;
+}
+p.title span{
+    float: right;
+}
+p.title span:nth-child(2){
+    color: orange;
+}
+div.kaoti{
+    width: 100%;
+    padding: 0 3%;
+}
+div.kaoti p{
+    margin: 0;
+}
+div.kaoti p.zongji{
+    padding: 0 0 15px 0;
+    border-bottom: 1px solid #b9b9b9;
+    color: orange;
+}
+div.kaoti ul li p{
+    padding: 15px 0;
+}
+div.kaoti ul li p span{
+    color: #8c8e91;
+}
+div.kaoti img{
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 15px;
+}
+div.kaoti div label{
+    margin-left: 15px;
+}
+
+div.btn{
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    bottom: 0;
+}
+div.btn button{
+    width: 50%;
+    color: #fff;
+    border: 0;
+    padding: 15px 0;
+    outline: none;
+    /*-webkit-appearance : none ;*/
+    /*border-radius: 0;*/
+
+}
+div.btn button:first-child{
+    background-color: #F6D475;
+}
+div.btn button:last-child{
+    background-color: orange;
+}

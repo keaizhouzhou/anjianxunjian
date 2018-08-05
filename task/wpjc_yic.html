@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>检查情况-异常</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/task_css/wpjc.css">
+<body>
+<div class="title">
+    <p>
+        识别码：25698745635
+        <span onclick="fun()">
+            历史检查
+            <img src="../imgs/task_img/right.png" alt="">
+        </span>
+    </p>
+</div>
+<div class="mhq clearfix">
+    <div class="box">
+        <img src="../imgs/task_img/mhq.png" alt="">
+    </div>
+    <div class="box_1">
+        <p>
+            灭火器
+            <span>
+                检查规范
+            </span>
+        </p>
+        <p>位置：一区12幢1楼楼道 </p>
+        <p>🈢产日期：2018.01.01</p>
+        <p>过期日期：2018.01.01</p>
+    </div>
+</div>
+<div class="jcqk">
+    <ul>
+        <li>
+            <p>灭火器是否达到送修条件和维修期限？</p>
+            <span>正常</span>
+            <span class="checked">异常</span>
+        </li>
+        <li>
+            <p>灭火器是否达到报废条件和报废期限？</p>
+            <span class="checked">正常</span>
+            <span>异常</span>
+        </li>
+        <li>
+            <p>灭火器的铅封、销闩等保险装置是否损坏或遗失？</p>
+            <span class="checked">正常</span>
+            <span>异常</span>
+        </li>
+    </ul>
+</div>
+<p class="shangbao">
+    <img src="../imgs/task_img/sanj.png" alt="">
+    上报上级
+    <span onclick="func()">
+        吴宣仪
+         <img src="../imgs/task_img/right.png" alt="">
+    </span>
+</p>
+<!--情况描述-->
+<div class="miaosu">
+    <p>
+        情况描述
+    </p>
+    <textarea name="备注" id="" cols="10" rows="5" placeholder="请输入检查情况描述..."></textarea>
+</div>
+<!--添加照片-->
+<div class="pic">
+    <p>
+        现场照片/视频
+    </p>
+    <div class="tianjia">
+        <img src="../imgs/index_img/jiah.png" alt="">
+    </div>
+</div>
+<button onclick="fn()">提交</button>
+</body>
+<script>
+    function fn() {
+        window.location.href="../index/index.html"
+    }
+    function fun() {
+        window.location.href="jcjl.html"
+    }
+    function func() {
+        window.location.href="xz_shangji.html"
+    }
+</script>
+</html>

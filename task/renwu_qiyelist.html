@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>任务详情</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/task_css/renwu_qiyelist.css">
+<body>
+<div class="detail">
+    <p class="first">
+        基础巡查任务
+        <span>截止时间：2018.02.01</span>
+    </p>
+    <p>
+        任务时间：
+        <span>2018.01.20</span>
+    </p>
+    <p>
+        完成进度：
+        <span>0/20</span>
+    </p>
+    <p>
+        任务地点：
+        <span>西湖区骆家庄社区</span>
+    </p>
+</div>
+<div class="rwz">
+    <p class="first list" onclick="fn()">检查物品种类  <span>检查企业列表</span></p>
+    <p class="first" onclick="fun()">
+        东区(2/20)
+        <img src="../imgs/task_img/right.png" alt="">
+    </p>
+    <ul>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd_1.png" alt="">
+                总量
+                <span>20</span>
+            </p>
+        </li>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd_2.png" alt="">
+                正常
+                <span>2</span>
+            </p>
+        </li>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd.png" alt="">
+                异常
+                <span>0</span>
+            </p>
+        </li>
+    </ul>
+
+    <!--灭火器-->
+    <p class="first" onclick="fun()">
+        西一区(1/10)
+        <img src="../imgs/task_img/right.png" alt="">
+    </p>
+    <ul>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd_1.png" alt="">
+                总量
+                <span>10</span>
+            </p>
+        </li>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd_2.png" alt="">
+                正常
+                <span>1</span>
+            </p>
+        </li>
+        <li>
+            <p>
+                <img src="../imgs/task_img/xyd.png" alt="">
+                异常
+                <span>0</span>
+            </p>
+        </li>
+    </ul>
+</div>
+<a href="">
+    扫码
+</a>
+</body>
+<script>
+    function fn() {
+        window.location.href="renwu_wpzl.html"
+    }
+    function fun() {
+        window.location.href="wupin_list.html"
+    }
+</script>
+
+</html>

@@ -1,0 +1,58 @@
+ul{
+    background-color: #fff;
+    border-bottom: 10px solid #eee;
+    padding: 0 3%;
+    margin: 0;
+}
+ul li{
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+ul li p{
+    color: #202326;
+    margin: 0;
+}
+ul li p  span img{
+    float: right;
+    width: 3%;
+}
+ul li label{
+    margin-left: 15px;
+}
+ul:last-child{
+    border: 0;
+}
+/***********改变复选框样式**********/
+label {
+    font-size: 1em;
+    cursor: pointer;
+}
+
+label i {
+    font-size: 0.8em;
+    font-style: normal;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 18px;
+    color: #fff;
+    vertical-align: middle;
+    margin: -2px 2px 2px 0;
+    border: orange 1px solid;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    display: none;
+}
+
+input[type="radio"]+i {
+    border-radius: 50%;
+}
+
+input[type="checkbox"]:checked+i,
+input[type="radio"]:checked+i {
+    background: orange;
+}
+

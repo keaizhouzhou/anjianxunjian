@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>任务</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/task_css/renwu.css">
+<body>
+<div class="title">
+    <span class="def" id="wwc">未完成</span>
+    <span id="ywc">已完成</span>
+    <span id="ycs">已超时</span>
+</div>
+<div class="content">
+    <ul class="detail" id="wwc_con">
+        <li>
+            <a href="renwu_wpzl.html">
+                <p class="first">
+                    基础巡查任务
+                    <span>截止时间：2018.02.01</span>
+                </p>
+                <p>
+                    任务时间：
+                    <span>2018.01.20</span>
+                </p>
+                <p>
+                    完成进度：
+                    <span>0/20</span>
+                </p>
+                <p>
+                    任务地点：
+                    <span>西湖区骆家庄社区</span>
+                </p>
+            </a>
+        </li>
+        <li>
+            <a href="renwu_wpzl.html">
+                <p class="first">
+                    基础巡查任务
+                    <span>截止时间：2018.02.01</span>
+                </p>
+                <p>
+                    任务时间：
+                    <span>2018.01.20</span>
+                </p>
+                <p>
+                    完成进度：
+                    <span>0/20</span>
+                </p>
+                <p>
+                    任务地点：
+                    <span>西湖区骆家庄社区</span>
+                </p>
+            </a>
+        </li>
+    </ul>
+    <ul class="detail yiwc" style="display: none" id="ywc_con">
+        <li onclick="fn()">
+            <p class="first">
+                基础巡查任务
+                <span>截止时间：2018.02.01</span>
+            </p>
+            <p>
+                任务时间：
+                <span>2018.01.20</span>
+            </p>
+            <p>
+                完成进度：
+                <span>0/20</span>
+            </p>
+            <p>
+                任务地点：
+                <span>西湖区骆家庄社区</span>
+            </p>
+        </li>
+        <li onclick="fn()">
+            <p class="first">
+                基础巡查任务
+                <span>截止时间：2018.02.01</span>
+            </p>
+            <p>
+                任务时间：
+                <span>2018.01.20</span>
+            </p>
+            <p>
+                完成进度：
+                <span>0/20</span>
+            </p>
+            <p>
+                任务地点：
+                <span>西湖区骆家庄社区</span>
+            </p>
+        </li>
+    </ul>
+    <ul class="detail yics" style="display: none" id="ycs_con">
+        <li onclick="fun()">
+            <p class="first">
+                基础巡查任务
+                <span>截止时间：2018.02.01</span>
+            </p>
+            <p>
+                任务时间：
+                <span>2018.01.20</span>
+            </p>
+            <p>
+                完成进度：
+                <span>0/20</span>
+            </p>
+            <p>
+                任务地点：
+                <span>西湖区骆家庄社区</span>
+            </p>
+        </li>
+        <li onclick="fun()">
+            <p class="first">
+                基础巡查任务
+                <span>截止时间：2018.02.01</span>
+            </p>
+            <p>
+                任务时间：
+                <span>2018.01.20</span>
+            </p>
+            <p>
+                完成进度：
+                <span>0/20</span>
+            </p>
+            <p>
+                任务地点：
+                <span>西湖区骆家庄社区</span>
+            </p>
+        </li>
+    </ul>
+</div>
+<div>
+    <a class="bi" href="cjrw.html">
+        <img src="../imgs/task_img/bi.png" alt="">
+    </a>
+</div>
+
+<div class="foot">
+    <ul>
+        <li>
+            <a href="../index/index.html">
+                <img src="../imgs/index_img/house.png" alt="">
+                <p class="first">首页</p>
+            </a>
+        </li>
+        <li>
+            <a href="#">
+                <img src="../imgs/index_img/renwu.png" alt="">
+                <p>任务</p>
+            </a>
+        </li>
+        <li>
+            <a href="../yichang/03_daichuli.html">
+                <img src="../imgs/index_img/yic.png" alt="">
+                <p>异常</p>
+            </a>
+        </li>
+        <li>
+            <a href="../zhishi/04_zhishi.html">
+                <img src="../imgs/index_img/zhis.png" alt="">
+                <p>知识</p>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script>
+    function fn(){
+        window.location.href="renwu_wpzl.html"
+    }
+    function fun(){
+        window.location.href="renwu_detail_chaoshi.html"
+    }
+    $(document).ready(function(){
+        $(".title span").click(function(){
+            var index=$(this).index();
+            console.log(index);
+            $(".title span").removeClass("def");
+            $(this).addClass("def");
+            $('.detail').hide();
+            $('.detail:eq('+index+')').show()
+        })
+    })
+</script>
+</html>

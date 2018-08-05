@@ -1,0 +1,69 @@
+p.title{
+    background-color: #fff;
+    color: orange;
+    padding: 15px 3%;
+}
+ul{
+    width: 100%;
+    padding-left: 3%;
+    background-color: #fff;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li p{
+    margin: 0;
+}
+ul li p span{
+    color: #8c8e91;
+}
+ul li img{
+    float: right;
+    width: 3%;
+    margin-top: 3px;
+    margin-right: 3%;
+}
+ul li label{
+    margin-left: 10%;
+}
+
+
+/***********改变复选框样式**********/
+label {
+    font-size: 1em;
+    cursor: pointer;
+}
+
+label i {
+    font-size: 0.8em;
+    font-style: normal;
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    text-align: center;
+    line-height: 18px;
+    color: #fff;
+    vertical-align: middle;
+    margin: -2px 2px 2px 0;
+    border: orange 1px solid;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+    display: none;
+}
+
+input[type="checkbox"]+i {
+    border-radius: 50%;
+}
+
+input[type="checkbox"]:checked+i,
+input[type="radio"]:checked+i {
+    background: orange;
+}
+
+
+
+
+

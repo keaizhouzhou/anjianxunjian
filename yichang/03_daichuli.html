@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>异常</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/yichang/daichuli.css">
+<body>
+<div class="title">
+    <span class="def" id="dcl">待处理</span>
+    <span id="dfc">待复查</span>
+    <span id="ywc">已完成</span>
+</div>
+<div class="content">
+<ul class="detail" id="dcl_con">
+    <li  onclick="fn()">
+        1
+        <p class="first">
+           灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>异常</span>
+        </p>
+        <p>
+            检查描述：
+            <span>用光了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+    <li>
+        <p class="first">
+            灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>异常</span>
+        </p>
+        <p>
+            检查描述：
+            <span>用光了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+</ul>
+<ul class="detail" style="display: none" id="dfc_con">
+    <li onclick="fun()">
+        <p class="first">
+            灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>换好了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+    <li onclick="fun()">
+        <p class="first">
+            灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>换好了</span>
+        </p>
+        <p>
+            检查描述：
+            <span>用光了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+</ul>
+<ul class="detail" style="display: none" id="ywc_con">
+    <li onclick="fun()">
+        <p class="first">
+            灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>换好了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+    <li onclick="fun()">
+        <p class="first">
+            灭火器
+        </p>
+        <p>
+            位置：
+            <span>一区14幢1楼楼道</span>
+        </p>
+        <p>
+            检查时间：
+            <span>2018-01-20  11:45:21</span>
+        </p>
+        <p>
+            检查结果：
+            <span>换好了</span>
+        </p>
+        <p>
+            检查描述：
+            <span>用光了</span>
+        </p>
+        <p>
+            检查人：
+            <span>张三</span>
+        </p>
+    </li>
+</ul>
+</div>
+<div class="foot">
+    <ul>
+        <li>
+            <a href="../index/index.html">
+                <img src="../imgs/index_img/house.png" alt="">
+                <p class="first">首页</p>
+            </a>
+        </li>
+        <li>
+            <a href="../task/renwu.html">
+                <img src="../imgs/index_img/renwu.png" alt="">
+                <p>任务</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="../imgs/yichang/yic.png" alt="">
+                <p>异常</p>
+            </a>
+        </li>
+        <li>
+            <a href="../zhishi/04_zhishi.html">
+                <img src="../imgs/index_img/zhis.png" alt="">
+                <p>知识</p>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script>
+    function fn() {
+        window.location.href="05_yic_detail.html"
+    }
+    function fun() {
+        window.location.href="02_yic_chulidetail.html"
+    }
+
+    //
+    $(document).ready(function(){
+        $(".title span").click(function(){
+            var index=$(this).index();
+            console.log(index);
+            $(".title span").removeClass("def");
+            $(this).addClass("def");
+            $('.detail').hide();
+           $('.detail:eq('+index+')').show()
+        })
+    })
+</script>
+</html>

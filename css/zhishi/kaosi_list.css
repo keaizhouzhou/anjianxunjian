@@ -1,0 +1,128 @@
+p.title{
+    width: 100%;
+    background-color: #fff;
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 10px solid #eee;
+    margin: 0;
+}
+p.title span{
+    padding: 15px 0;
+}
+p.title span:first-child a{
+    color: #8c8e91;
+}
+p.title span:last-child{
+    border-bottom: 2px solid orange;
+}
+p.title span a{
+    color: #202326;
+
+}
+ul{
+    background-color: #fff;
+    padding: 0 3%;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li p{
+    margin: 0;
+}
+ul li p:first-child{
+    color: #202326;
+}
+ul li p span:last-child{
+    float: right;
+}
+ul li p:first-child span{
+
+    border: 1px solid green;
+    color: green;
+    font-size: 0.8em;
+}
+ul li p:last-child{
+    color: #8c8e91;
+}
+ul li p:last-child img{
+    width: 4%;
+}
+ul li:nth-child(2) p:first-child span{
+    border: 1px solid deepskyblue;
+    color: deepskyblue;
+    font-size: 0.8em;
+}
+ul li:nth-child(3) p:first-child span.last{
+    border: 1px solid #a2a2a2;
+    color: #a2a2a2;
+    font-size: 0.8em;
+}
+ul li:nth-child(3) p:first-child span.first{
+    color: orange;
+    border: 0;
+    font-size: 1em;
+}
+ul li:nth-child(4) p:first-child span {
+    border: 1px solid red;
+    color: red;
+    font-size: 0.8em;
+}
+
+
+div.foot ul li:first-child a p{
+    color: #202326;
+}
+div.foot ul li:last-child a p{
+    color: orange;
+}
+
+/*******弹框******/
+#tip_1{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    opacity: 0.9;
+    z-index: 100;
+    top:0;
+}
+#tanc_1{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    background-color: #333;
+    opacity: 0.9;
+    z-index: 100;
+    top:0;
+}
+article{
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    left: 0;
+}
+div.pack{
+    width: 70%;
+    margin-left: 15%;
+    border-radius: 10px;
+    background-color: #fff;
+    padding-top: 20px;
+    margin-top: 30%;
+    text-align: center;
+    opacity: 1;
+}
+div.pack p{
+    /*color: #808080;*/
+    font-size: 0.8em;
+    text-align: center;
+}
+div.pack button{
+    width: 100%;
+    color: #080808;
+    border: 0;
+    padding: 10px 0;
+    /*background-color: orange;*/
+    border-bottom-right-radius:10px;
+    border-bottom-left-radius:10px;
+}

@@ -1,0 +1,141 @@
+div.title{
+    width: 100%;
+    padding:15px 3%;
+    border-bottom: 1px solid #eee;
+    background-color: #fff;
+}
+div.title p{
+    margin: 0;
+}
+div.title p span{
+    float: right;
+    color: #95979a;
+}
+div.title p span img{
+    width: 10%;
+    position: relative;
+    top:-3px;
+}
+/**************************/
+div.mhq{
+    width: 100%;
+    padding: 15px 3%;
+    background-color: #fff;
+    border-bottom: 10px solid #eee;
+}
+div.mhq div{
+    float: left;
+}
+div.mhq div.box{
+    width: 35%;
+}
+div.mhq div.box img{
+    width: 100%;
+}
+div.mhq div.box_1{
+    width: 65%;
+    padding-left: 10px;
+}
+div.mhq div.box_1 p{
+    margin: 0 0 2.5% 0;
+    color: #6c757d;
+    font-size: 0.9em;
+
+}
+div.mhq div.box_1 p:first-child{
+    color: #202326;
+    font-size: 1em;
+}
+div.mhq div.box_1 p:first-child span{
+    float: right;
+    color: #fff;
+    background-color: orange;
+    border-radius: 10px;
+    font-size: 0.7em;
+    padding: 3px 5px;
+
+}
+div.jcjg{
+    width: 100%;
+    padding:15px 3%;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;
+}
+div.jcjg_1{
+    width: 100%;
+    padding:15px 3%;
+    background-color: #fff;
+    border-bottom: 10px solid #eee;
+}
+div.jcjg p,div.jcjg_1 p{
+    margin: 0;
+    font-size: 0.9em;
+}
+div.jcjg p span.yic{
+    color: red;
+}
+div.jcjg_1 p span.zenc{
+    color: green;
+}
+/*div.yuanyin{*/
+    /*width: 100%;*/
+    /*padding: 15px 3%;*/
+    /*background-color: #fff;*/
+    /*border-bottom: 10px solid #eee;*/
+/*}*/
+/*div.yuanyin p{*/
+    /*font-size: 0.9em;*/
+    /*color: #4e555b;*/
+    /*margin: 0;*/
+/*}*/
+/*div.yuanyin p span{*/
+    /*color: red;*/
+    /*border: 1px solid red;*/
+    /*font-size: 0.6em;*/
+    /*margin-right: 10px;*/
+/*}*/
+div.xianc{
+    width: 100%;
+    background-color: #fff;
+    padding: 15px 3%;
+}
+div.xianc ul li{
+    float: left;
+    width: 30%;
+    margin-right: 3%;
+}
+div.xianc ul li img{
+    width: 100%;
+    border-radius: 5px;
+}
+
+div.culi{
+    background-color: #fff;
+    padding: 10px 3%;
+    border-top: 10px solid #eee;
+}
+div.culi ul li p{
+    margin: 0;
+    font-size: 0.8em;
+    color: #8c8e91;
+}
+div.culi ul li p:first-child{
+    color: #333;
+}
+div.culi ul li p:first-child span{
+    float: right;
+    color: #8c8e91;
+}
+div.culi ul li{
+    background-color: #eee;
+    padding: 10px 3%;
+    margin-bottom: 10px;
+
+}
+div.culi ul li img{
+    width: 30%;
+    margin-right: 10px;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+

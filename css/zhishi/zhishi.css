@@ -1,0 +1,65 @@
+p.title{
+    display: flex;
+    justify-content: space-around;
+    border-bottom: 10px solid #eee;
+    background-color: #fff;
+    margin: 0;
+}
+p.title span{
+    padding: 15px 0;
+}
+p.title span a{
+    color: #202326;
+}
+p.title span:first-child{
+    border-bottom: 2px solid orange;
+}
+p.title span:last-child a{
+    color: #8c8e91;
+}
+ul{
+    background-color: #fff;
+    padding: 0 3%;
+    margin: 0;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+}
+ ul li div{
+     float: left;
+     padding: 15px 0
+ }
+ul li div.box{
+    width: 40%;
+}
+ul li div.box img{
+    width: 100%;
+}
+ul li div.box_1{
+    width: 60%;
+    padding-left: 15px;
+}
+ul li div.box_1 p{
+    font-size: 0.8em;
+    color: #8c8e91;
+    margin: 10px 0;
+}
+ul li div.box_1 p:first-child{
+    color: #202326;
+    font-size: 0.9em;
+}
+ul li div.box_1 p span{
+    float: right;
+}
+ul li div.box_1 p span img{
+    width: 50%;
+}
+div.foot ul li:first-child a p{
+    color: #202326;
+}
+div.foot ul li:last-child a p{
+    color: orange;
+}
+
+
+

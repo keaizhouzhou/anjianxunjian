@@ -1,0 +1,46 @@
+div.title,ul.detail{
+    width: 100%;
+    background-color: #fff;
+}
+div.title{
+    display: flex;
+    justify-content: space-around;
+    /*border-bottom: 10px solid #eee;*/
+    padding: 0 3%;
+}
+div.title span{
+    padding: 15px 0;
+    color: #8c8e91;
+}
+div.title span.def{
+    border-bottom: 2px solid orange;
+    color: #202326;
+}
+ul.detail li p{
+    margin: 0;
+    font-size: 0.8em;
+    color: #8c8e91;
+}
+ul.detail li p.first{
+    padding: 10px 0;
+    font-size: 1em;
+    color: #202326;
+}
+ul.detail li p:nth-child(4) span{
+    color: red;
+}
+ul.detail li{
+    border-top: 8px solid #eee;
+    padding: 0 3% 15px 3%;
+}
+
+ul.detail{
+    margin: 0;
+}
+
+div.foot ul li:first-child a p{
+    color: #202326;
+}
+div.foot ul li:nth-child(3) a p{
+    color: orange;
+}

@@ -1,0 +1,37 @@
+ul{
+    width: 100%;
+    background-color: #fff;
+    padding: 0 3%;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li div{
+    float: left;
+}
+ul li div.box{
+    width: 35%;
+}
+ul li div.box img{
+    width: 100%;
+}
+ul li div.box_1{
+    width: 65%;
+    padding-left: 10px;
+    overflow: hidden;
+}
+ul li div.box_1 p,ul li div.box_1 a{
+    font-size: 0.9em;
+    margin: 0;
+    padding: 4.5% 0;
+    color: #767676;
+}
+ul li div.box_1 p:first-child{
+    color: #202326;
+}
+ul li div.box_1 p img{
+    float: right;
+    width: 8%;
+}
+

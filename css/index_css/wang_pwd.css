@@ -1,0 +1,31 @@
+div{
+    width: 100%;
+}
+input.put,button{
+    width: 90%;
+    margin: 0 5%;
+    padding:15px 10%;
+    border-radius: 5px;
+    outline: none;
+    border: 1px solid #eee;
+    font-size: 0.8em;
+}
+img{
+    position: relative;
+    top:38px;
+    left:7%;
+    width:5%;
+}
+a{
+    float: right;
+    position: relative;
+    right: 7%;
+    top:-35px;
+    font-size: 0.8em;
+    color: orange;
+}
+button {
+    background-color: orange;
+    color: #fff;
+    margin-top: 8%;
+}

@@ -1,0 +1,32 @@
+ul{
+    width: 100%;
+    background-color: #fff;
+    padding: 0 3%;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li p{
+    margin: 0;
+}
+ul li p:first-child span{
+    float: right;
+}
+ul li p:first-child span.yic{
+    color: red;
+}
+ul li p:first-child span.zenc{
+    color: green;
+}
+ul li p:last-child{
+    color: #b9bbbe;
+    font-size: 0.8em;
+}
+ul li p:last-child img{
+    width: 3%;
+    margin-right: 5px;
+}
+ul li p:last-child span{
+    margin-left: 15px;
+}

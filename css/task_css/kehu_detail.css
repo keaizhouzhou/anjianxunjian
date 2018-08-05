@@ -1,0 +1,58 @@
+div.title,ul{
+    width: 100%;
+    padding: 15px 3%;
+    background-color: #fff;
+}
+div.title{
+    border-bottom: 10px solid #eee;
+}
+ p{
+    margin: 0;
+    font-size:1em;
+}
+ul{
+    padding: 0 3%;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li:first-child p span{
+    float: right;
+    color: #8c8e91;
+
+}
+ul li:first-child p span img{
+    width: 15%;
+    position: relative;
+    top:-2px;
+    margin-left: 5px;
+}
+ul li.item div{
+    display: flex;
+    justify-content: space-between;
+}
+ul li.item div span img:first-child{
+    width: 40%;
+}
+ul li.item div span img.last{
+    width: 15%;
+
+}
+ul li.item div span:nth-child(2){
+     color: orange;
+ }
+ul li.item div span:nth-child(3){
+    color: green;
+}
+ul li.item div span img{
+    position: relative;
+    top:-3px;
+}
+ul li.item p{
+    color: #8c8e91;
+}
+ul li.item p img{
+    width: 5%;
+}
+

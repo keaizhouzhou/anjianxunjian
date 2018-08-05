@@ -1,0 +1,26 @@
+ul li{
+    width: 100%;
+    background-color: #fff;
+    padding: 15px 3%;
+    border-bottom: 1px solid #eee;
+}
+ul li p{
+    margin: 0;
+}
+ul li p:first-child span{
+    float: right;
+    color:orange ;
+}
+ul li p:last-child{
+    color: #8c8e91;
+}
+ul li p:last-child img{
+    width:5%;
+}
+ul li.yic p  span{
+    color: red;
+}
+ul li.zenc p  span{
+    color: green;
+}
+

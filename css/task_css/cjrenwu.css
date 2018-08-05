@@ -1,0 +1,19 @@
+ul li{
+    width: 100%;
+    border-bottom: 1px solid #eee;
+    padding: 15px 3%;
+    background-color: #fff;
+}
+ul li span{
+    display: inline-block;
+    width: 20%;
+    color: #0a0a0a;
+}
+ul li span:nth-child(2){
+    color: #8c8e91;
+    margin-left: 15px;
+}
+ul li a img{
+    float: right;
+    width: 3%;
+}

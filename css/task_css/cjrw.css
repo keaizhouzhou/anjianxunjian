@@ -1,0 +1,46 @@
+ul{
+    width: 100%;
+    background-color: #fff;
+    padding: 0 3%;
+}
+ul li{
+    border-bottom: 1px solid #eee;
+    padding: 15px 0;
+}
+ul li a,ul li span{
+    color: #b9bbbe;
+}
+ul li img{
+    width: 5%;
+    position: relative;
+    top:-3px;
+}
+ul li input{
+    border: 0;
+    outline: 0;
+}
+/*input[type="date"]:before{*/
+    /*color:#A9A9A9;*/
+    /*content:attr(placeholder);*/
+/*}*/
+/*input[type="date"].full:before {*/
+    /*color:black;*/
+    /*content:""!important;*/
+/*}*/
+
+input[type="date"]:before{
+    content: attr(placeholder);
+    color:red;
+}
+
+
+
+button.btn{
+    width: 100%;
+    padding: 15px 0;
+    color: #fff;
+    position: absolute;
+    bottom: 0;
+    background-color: orange;
+    border: 0;
+}

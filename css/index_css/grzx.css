@@ -1,0 +1,47 @@
+ul{
+    width: 100%;
+    background-color: #fff;
+    margin: 0;
+}
+ul li{
+    width: 94%;
+    margin: 0 3%;
+    border-bottom: 1px solid #eee;
+}
+ul li:last-child{
+    border: 0;
+}
+ul li p{
+    margin: 0;
+    padding: 10px 0;
+
+}
+ul li span{
+    float: right;
+}
+p.add{
+    display: block;
+    width: 100%;
+    background-color: #fff;
+    padding: 10px 3%;
+    border-top: 8px solid #eee;
+}
+p.add span{
+    float: right;
+}
+p.add span img{
+    width: 50%;
+}
+span{
+    color: #8A8A8A;
+}
+button{
+    width: 90%;
+    margin: 70% 5% 0 5%;
+    background-color: orange;
+    border-radius: 5px;
+    border: 0;
+    color: #fff;
+    padding: 10px 0;
+    outline: none;
+}

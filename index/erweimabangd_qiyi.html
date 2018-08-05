@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>物品二维码绑定</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/index_css/bangd.css">
+<body>.
+<ul>
+    <li>
+        <p>
+            识别码
+            <span class="first-child">25698745635</span>
+        </p>
+    </li>
+    <li>
+        <label for="">
+            物品名称
+        </label>
+        <input type="text" placeholder="请输入物品名称">
+    </li>
+    <li>
+        <label for="">
+            物品类型
+        </label>
+        <input type="text" placeholder="请选择">
+        <img src="../imgs/index_img/right.png" alt="">
+    </li>
+    <li>
+        <label for="">
+           生产日期
+        </label>
+        <input type="text" placeholder="请选择">
+        <img src="../imgs/index_img/right.png" alt="">
+    </li>
+    <li>
+        <label for="">
+            过期日期
+        </label>
+        <input type="text" placeholder="请选择">
+        <img src="../imgs/index_img/right.png" alt="">
+    </li>
+    <li onclick="fn()">
+        <label for="">
+            检查规范
+        </label>
+        <input type="text" placeholder="请选择">
+        <img src="../imgs/index_img/right.png" alt="">
+    </li>
+    <li>
+        <p>
+            所属区域
+            <span>西湖区</span>
+        </p>
+    </li>
+    <li>
+        <p>
+            所属企业
+            <span>骆家庄社区</span>
+        </p>
+    </li>
+    <li>
+        <label for="">
+            所在位置
+        </label>
+        <input type="text" placeholder="请输入所在位置">
+    </li>
+</ul>
+<div class="box">
+    <p>
+        现场照片
+        <span>（最多9张）</span>
+    </p>
+    <div class="tianjia">
+        <img src="../imgs/index_img/jiah.png" alt="">
+    </div>
+</div>
+<div class="box_1">
+    <p>
+        备注
+        <span>选填</span>
+    </p>
+    <textarea name="备注" id="" cols="10" rows="5" placeholder="请输入备注内容..."></textarea>
+</div>
+<button onclick="fun()">绑定</button>
+</body>
+<script>
+    function fn() {
+       window.location.href="xuanze_jcgf.html"
+    }
+    function fun() {
+        window.location.href="index.html"
+    }
+</script>
+</html>

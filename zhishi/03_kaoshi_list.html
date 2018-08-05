@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>法律法规详情</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/zhishi/kaosi_list.css">
+<body>
+<p class="title">
+    <span>
+        <a href="04_zhishi.html">学习</a>
+    </span>
+    <span>
+        <a href="#">考试</a>
+    </span>
+</p>
+<ul>
+    <li id="wks">
+        <p>
+            消防知识考核
+            <span>未开始</span>
+        </p>
+        <p>
+            <img src="../imgs/zhishi_img/time.png" alt="">
+            2018.01.21 ～ 2018.01.24
+            <span>
+                0/100
+            </span>
+        </p>
+    </li>
+
+    <li id="ywc">
+        <p>
+            消防知识考核
+            <span>已完成</span>
+        </p>
+        <p>
+            <img src="../imgs/zhishi_img/time.png" alt="">
+            2018.01.21 ～ 2018.01.24
+        </p>
+    </li>
+
+    <li>
+        <p>
+            消防知识考核
+            <span class="first">[95分]</span>
+            <span class="last">已结束</span>
+        </p>
+        <p>
+            <img src="../imgs/zhishi_img/time.png" alt="">
+            2018.01.21 ～ 2018.01.24
+        </p>
+    </li>
+    <li onclick="fun()">
+        <p>
+            消防知识考核
+            <span>进行中</span>
+        </p>
+        <p>
+            <img src="../imgs/zhishi_img/time.png" alt="">
+            2018.01.21 ～ 2018.01.24
+            <span>
+                0/100
+            </span>
+        </p>
+    </li>
+</ul>
+<div id="tip" style="display: none;background: #333"></div>
+<article id="tip_1" style="display: none">
+    <div class="pack pack_y1">
+        <h4>提示</h4>
+        <p>当前考试未开始，请耐心等待</p>
+        <p>考试开始后进行答题</p>
+        <button id="submit">确定</button>
+    </div>
+</article>
+<div id="tanc" style="display: none;background: #333"></div>
+<article id="tanc_1" style="display: none">
+    <div class="pack pack_y1">
+        <h4>提示</h4>
+        <p>你已完成考试，请耐心等待考试</p>
+        <p>结束后查看分值和答案</p>
+        <button id="submit_1">确定</button>
+    </div>
+</article>
+<div class="foot">
+    <ul>
+        <li>
+            <a href="../index/index.html">
+                <img src="../imgs/index_img/house.png" alt="">
+                <p class="first">首页</p>
+            </a>
+        </li>
+        <li>
+            <a href="../task/renwu.html">
+                <img src="../imgs/index_img/renwu.png" alt="">
+                <p>任务</p>
+            </a>
+        </li>
+        <li>
+            <a href="../yichang/03_daichuli.html">
+                <img src="../imgs/index_img/yic.png" alt="">
+                <p>异常</p>
+            </a>
+        </li>
+        <li>
+            <a href="">
+                <img src="../imgs/zhishi_img/zhishi.png" alt="">
+                <p>知识</p>
+            </a>
+        </li>
+    </ul>
+</div>
+</body>
+<script src="../js/jquery-1.11.1.min.js"></script>
+<script>
+    function fun() {
+        window.location.href="02_kaosi.html"
+    }
+</script>
+<script type="text/javascript">
+   //未开始弹窗
+    $(function () {
+        $("#wks").on("click",function () {
+            $("#tip").show();
+            $("#tip_1").show();
+        });
+        $("#submit").on("click",function () {
+            $("#tip").hide();
+            $("#tip_1").hide();
+        })
+    })
+    //已完成弹框
+    $(function () {
+        $("#ywc").on("click",function () {
+            $("#tanc").show();
+            $("#tanc_1").show();
+        });
+        $("#submit_1").on("click",function () {
+            $("#tanc").hide();
+            $("#tanc_1").hide();
+        })
+    })
+</script>
+</html>

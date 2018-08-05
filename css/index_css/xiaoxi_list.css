@@ -1,0 +1,28 @@
+ul{
+    width: 100%;
+    padding:0 3%;
+    background-color: #fff;
+}
+ul li{
+    width: 100%;
+    padding: 15px 0;
+    border-bottom: 1px solid #eee;
+}
+ul li:last-child{
+    border: 0;
+}
+ul li p{
+    margin: 0;
+}
+ul li p:nth-child(2){
+    font-size: 0.8em;
+    color: #8c8e91;
+}
+ul li p span{
+    float: right;
+    position: relative;
+    right: 3%;
+    color: #8c8e91;
+    font-size: 0.7em;
+    top:3px
+}

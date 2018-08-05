@@ -1,0 +1,81 @@
+body{
+    height: 100%;
+    background-color: #eee;
+}
+div.head{
+    width: 100%;
+    background-image: url("../../imgs/index_img/bg.png");
+    background-size: 100% 100%;
+    text-align: center;
+    padding-top: 15%;
+    padding-bottom: 15%;
+}
+div.head div.toux{
+    width: 25%;
+    text-align: center;
+    margin: 0 37.5% 0 37.5%;
+}
+div.head div.toux img{
+    width:100%;
+}
+div.head div.title{
+    margin-top: 2%;
+}
+div.head div h5{
+    color: #fff;
+}
+/************中间主题部分****************/
+div.nav_body{
+    background-color: #eee;
+    width: 100%;
+}
+div.nav_body div.nav-item {
+    width: 90%;
+    background-color: #fff;
+    text-align: center;
+    margin: 0 5%;
+    position: relative;
+    top:-50px;
+
+}
+div.nav_body div.nav-item ul.nav li{
+    float: left;
+    width: 50%;
+    border:1px solid #eee;
+    padding-top: 8.5%;
+}
+div.nav_body div.nav-item ul.nav li a{
+    color: #202326;
+}
+div.nav_body div.nav-item ul.nav li:first-child{
+    width: 100%;
+    padding: 15px 0;
+}
+div.nav_body div.nav-item ul.nav li:first-child h5{
+    color: #FFD457;
+}
+div.nav_body div.nav-item ul.nav li a img{
+    width: 20%;
+}
+div.nav_body div.nav-item ul.nav li a p{
+    font-size:1em;
+    margin: 15px 0;
+}
+div.nav_body div.nav-item ul.nav li a p.p{
+    margin-bottom: 0;
+}
+div.nav_body div.nav-item ul.nav li a{
+    display: block;
+}
+div.nav_body div.nav-item ul.nav li p.num{
+    width: 15px;
+    height: 15px;
+    color: #fff;
+    background-color: red;
+    border-radius: 50%;
+    line-height: 15px;
+    position: relative;
+    left: 51%;
+    top:-80%;
+}
+
