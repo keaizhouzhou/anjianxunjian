@@ -19,9 +19,20 @@
 <a href="./wang_pwd.html">忘记密码?</a>
 <button type="submit" onclick="btn()">立即登陆</button>
 </body>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
 <script>
     function btn() {
         window.location.href="index.html";
     }
+
+    axios.post('/app/user/login',{
+    	username: '',
+    	password: ''
+    }).then(function(response){
+    	console.log(response);
+    }).catch(function(error){
+    	console.log(error);
+    });
 </script>
 </html>
