@@ -17,7 +17,7 @@
         <a href="#">考试</a>
     </span>
 </p>
-<ul>
+<ul id="app">
     <li id="wks">
         <p>
             消防知识考核
@@ -115,7 +115,11 @@
     </ul>
 </div>
 </body>
-<script src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
 <script>
     function fun() {
         window.location.href="02_kaosi.html"
@@ -144,5 +148,35 @@
             $("#tanc_1").hide();
         })
     })
+</script>
+
+<script>
+    let data = {
+        method: 'get',
+        data:{
+            limit: 10,
+            page: 1,
+            userId: 12
+        },
+        url:'/app/exam/list'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            res: {},
+        },
+        created(){
+            let that = this;
+         fetchData (data).then(res => {
+            console.log(res);
+            if (res.data.code == 0) {
+                that.res = res.data.data;
+            }else {
+
+            }
+          }); 
+        }
+    });
 </script>
 </html>

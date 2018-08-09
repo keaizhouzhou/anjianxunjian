@@ -8,7 +8,7 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/yichang/daichuli.css">
-<body>
+<body id="app">
 <div class="title">
     <span class="def" id="dcl">待处理</span>
     <span id="dfc">待复查</span>
@@ -194,7 +194,12 @@
     </ul>
 </div>
 </body>
-<script src="../js/jquery-1.11.1.min.js"></script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
 <script>
     function fn() {
         window.location.href="05_yic_detail.html"
@@ -214,5 +219,31 @@
            $('.detail:eq('+index+')').show()
         })
     })
+</script>
+<script>
+    let data = {
+        data:{
+            inspectStatus: 0
+        },
+        url:'/app/anomaly/list'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            res: {},
+        },
+        created(){
+            let that = this;
+         fetchData (data).then(res => {
+            console.log(res);
+            if (res.data.code == 0) {
+                that.res = res.data.data;
+            }else {
+
+            }
+          }); 
+        }
+    });
 </script>
 </html>

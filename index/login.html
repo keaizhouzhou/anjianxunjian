@@ -8,20 +8,43 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/index_css/login.css">
-<body>
-<div class="logo">
-    <img src="../imgs/login_img/logo.png" alt="">
-</div>
-<img class="yhm" src="../imgs/login_img/yhm.jpg" alt="">
-<input type="text"  placeholder="请输入用户名">
-<img class="pwd" src="../imgs/login_img/pwd.jpg" alt="">
-<input type="password"  placeholder="请输入密码">
-<a href="./wang_pwd.html">忘记密码?</a>
-<button type="submit" onclick="btn()">立即登陆</button>
+<body id="login">
+	<div class="logo">
+	    <img src="../imgs/login_img/logo.png" alt="">
+	</div>
+	<img class="yhm" src="../imgs/login_img/yhm.jpg" alt="">
+	<input type="text" placeholder="请输入用户名">
+	<img class="pwd" src="../imgs/login_img/pwd.jpg" alt="">
+	<input type="password"  placeholder="请输入密码">
+	<a href="./wang_pwd.html">忘记密码?</a>
+	<button type="submit" onclick="btn()">立即登陆</button>
 </body>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
 <script>
     function btn() {
         window.location.href="index.html";
     }
+
+	let data = {
+	    data:{
+			username: 'xiaoliu',
+	    	password: '888888'
+		},
+		url:'/app/user/login'
+	}
+
+  fetchData (data).then(res => {
+  	console.log(data);
+    if (res.data.result == 0) {
+
+    }else {
+
+    }
+  });
+
 </script>
 </html>

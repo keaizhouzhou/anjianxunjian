@@ -9,7 +9,7 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/index_css/xiaoxi_list.css">
 <body>
-<ul>
+<ul id="app">
     <li>
         <p>
             任务通知
@@ -39,5 +39,36 @@
         <p>安监巡检微信APP1.0已上线啦，赶紧下载使用吧～</p>
     </li>
 </ul>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script>
+    let data = {
+        data:{
+            userId: getUserid()
+        },
+        url:'/app/notice/list'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            res: {},
+        },
+        created(){
+            let that = this;
+         fetchData (data).then(res => {
+            console.log(res);
+            if (res.data.code == 0) {
+                that.res = res.data.data;
+            }else {
+
+            }
+          }); 
+        }
+    });
+</script>
 </body>
 </html>

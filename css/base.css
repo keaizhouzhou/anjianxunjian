@@ -21,11 +21,12 @@ a:link,a:visited{
 body{
     background-color: #fff;
 }
+.fixnavbar{ padding-bottom: 80px; }
 /*******底部********/
 div.foot{
     width: 100%;
     background-color: #fff;
-    position: absolute;
+    position: fixed;
     bottom: 0;
 }
 div.foot ul{

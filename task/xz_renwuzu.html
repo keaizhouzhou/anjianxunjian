@@ -8,34 +8,11 @@
     <link rel="stylesheet" href="../css/bootstrap.css">
     <link rel="stylesheet" href="../css/task_css/xz_renwuzu.css">
 <body>
+<div id="app">
 <ul>
-    <li>
+    <li v-for='(list,index) in res' @click='showTaskList(index)'>
         <p>
-            任务组一
-            <span>
-                <img src="../imgs/task_img/right.png" alt="">
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            任务组二
-            <span>
-                <img src="../imgs/task_img/right.png" alt="">
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            任务组三
-            <span>
-                <img src="../imgs/task_img/right.png" alt="">
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            任务组四
+            {{list.name}}
             <span>
                 <img src="../imgs/task_img/right.png" alt="">
             </span>
@@ -43,21 +20,55 @@
     </li>
 </ul>
 <ul>
-    <li>
+    <li v-for='taskList in currentTaskList'>
         <label>
             <input type="radio" name="task">
             <i>✓</i>
-            任务一
+            {{taskList.name}}
         </label>
+    </li>
+</ul>
+</div>
 
-    </li>
-    <li>
-        <label>
-            <input type="radio" name="task">
-            <i>✓</i>
-           任务二
-        </label>
-    </li>
-</ul>
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script>
+    let data = {
+        data:{},
+        url:'/app/task/group/list'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            res: [],
+            currentTaskList:[]
+        },
+        created(){
+             fetchData (data).then(res => {
+                console.log(res);
+                if (res.data.code == 200) {
+                    this.res = res.data.list.list;
+                    this.currentTaskList = this.res[0].taskList;
+                }else {
+
+                }
+              }); 
+        },
+        methods:{
+            showTaskList(index){
+                console.log(index);
+                console.log(this.res[index].taskList);
+                if(this.res[index].taskList[0]){
+                    this.currentTaskList = this.res[index].taskList;
+                }else{
+                    this.currentTaskList = [];
+                }
+            }
+        }
+    });
+</script>
 </body>
 </html>
