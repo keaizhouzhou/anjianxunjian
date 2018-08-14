@@ -39,10 +39,15 @@ div.rwz p.list{
 div.rwz p#last{
     padding: 10px 10% 0 10%;
 }
+div.rwz p.first span:nth-child(1){
+   float: left;
+}
+div.rwz p.first span:nth-child(2){
+   float: right;
+}
 div.rwz p.first span.span_1{
     padding: 0 0 8px 0;
     border-bottom: 2px solid orange;
-    float: left;
     color: #202326;
 }
 div.rwz p.first img{

@@ -9,81 +9,148 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/jcqk.css">
 <body>
-<div class="title">
-    <p>
-        识别码：25698745635
-        <span onclick="fn()">
-            历史检查
-            <img src="../imgs/task_img/right.png" alt="">
-        </span>
-    </p>
-</div>
-<div class="mhq clearfix">
-    <div class="box">
-        <img src="../imgs/task_img/mhq.png" alt="">
-    </div>
-    <div class="box_1">
+<div id="app">
+    <div class="title">
         <p>
-            灭火器
-            <span>
-                检查规范
+            识别码：25698745635
+            <span onclick="fn()">
+                历史检查
+                <img src="../imgs/task_img/right.png" alt="">
             </span>
         </p>
-        <p>位置：一区12幢1楼楼道 </p>
-        <p>🈢产日期：2018.01.01</p>
-        <p>过期日期：2018.01.01</p>
     </div>
-</div>
-<div class="jcjg">
-    <p>
-        检查时间：
-        <span>2018.01.21  12:12:21</span>
-    </p>
-    <p>
-        检查人：
-        <span>小芒果Vicky</span>
-    </p>
-    <p>
-        检查结果：
-        <span class="yic">异常</span>
-    </p>
-    <p>
-        上报上级：
-        <span>吴宣仪</span>
-    </p>
-    <p>
-        检查描述：
-        <span>有问题</span>
-    </p>
-</div>
-<div class="yuanyin">
-    <p>
-        异常原因
-    </p>
-    <p>
-        <span>异常</span>
-        灭火器是否达到送修条件和维修期限
-    </p>
-    <p>
-        <span>异常</span>
-        灭火器是否达到报废条件和报废期限
-    </p>
-</div>
-<div class="xianc clearfix">
-    <p>现场照片</p>
-    <ul>
-        <li>
-            <img src="../imgs/task_img/xc_1.png" alt="">
-        </li>
-        <li>
-            <img src="../imgs/task_img/xc_2.png" alt="">
-        </li>
-    </ul>
+    <div class="mhq clearfix">
+        <div class="box">
+            <img src="../imgs/task_img/mhq.png" alt="">
+        </div>
+        <div class="box_1">
+            <p>
+                灭火器
+                <span>
+                    检查规范
+                </span>
+            </p>
+            <p>位置：一区12幢1楼楼道 </p>
+            <p>🈢产日期：2018.01.01</p>
+            <p>过期日期：2018.01.01</p>
+        </div>
+    </div>
+    <div class="jcjg">
+        <p>
+            检查时间：
+            <span>2018.01.21  12:12:21</span>
+        </p>
+        <p>
+            检查人：
+            <span>小芒果Vicky</span>
+        </p>
+        <p>
+            检查结果：
+            <span class="yic">异常</span>
+        </p>
+        <p>
+            上报上级：
+            <span>吴宣仪</span>
+        </p>
+        <p>
+            检查描述：
+            <span>有问题</span>
+        </p>
+    </div>
+    <div class="yuanyin">
+        <p>
+            异常原因
+        </p>
+        <p>
+            <span>异常</span>
+            灭火器是否达到送修条件和维修期限
+        </p>
+        <p>
+            <span>异常</span>
+            灭火器是否达到报废条件和报废期限
+        </p>
+    </div>
+    <div class="xianc clearfix">
+        <p>现场照片</p>
+        <ul>
+            <li>
+                <img src="../imgs/task_img/xc_1.png" alt="">
+            </li>
+            <li>
+                <img src="../imgs/task_img/xc_2.png" alt="">
+            </li>
+        </ul>
+    </div>
 </div>
 </body>
 <script>
     function fn() {
         window.location.href="jcjl.html"
     }
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+            params: {},
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){
+            var params = window.location.href.match(/\params=.+/)[0].replace('params=','');
+            params = decodeURIComponent(params);
+            params = JSON.parse(decodeURIComponent(params));
+            console.log(params);
+            this.params = params;
+
+            var url = '/app/material/details';
+            let data = {
+                data:{
+                    id: params.id,
+                },
+                url: url
+            }
+             fetchData (data).then(res => {
+                console.log(res);
+                console.log(res.data.page.list);
+                if (res.data.code == 200) {
+                    this.res = res.data.page.list;  
+                    if(res.data.page.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
+                }else {
+
+                }
+              });
+        },
+        methods:{
+            link(text,id){
+                console.log(id);
+                let params = {};
+                params.id = id;
+                params.urlDetailType = this.params.urlDetailType;
+
+                if(text=='异常'){
+                    url = "jcqk_yic.html?params=";
+                }else if(text=='正常'){
+                    url = "jcqk_zenc.html?params=";
+                }
+                window.location.href = url + JSON.stringify(params)
+            }
+        }
+    });
 </script>
 </html>

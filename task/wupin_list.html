@@ -9,29 +9,37 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/wupin_list.css">
 <body>
-<ul>
-    <li>
-        <p>灭火器  <span>未检查</span></p>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一区12幢1楼楼道
-        </p>
-    </li>
-    <li class="yic" onclick="fn()">
-        <p>灭火器  <span>异常</span></p>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一区13幢1楼楼道
-        </p>
-    </li>
-    <li class="zenc" onclick="fun()">
-        <p>灭火器  <span>正常</span></p>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一区14幢1楼楼道
-        </p>
-    </li>
-</ul>
+
+<div id="app">
+    <ul>
+        <li v-for='list in res' @click='link(list.materialStatus,list.id)' :class="{yic: list.materialStatus=='异常',zenc: list.materialStatus=='正常'}">
+            <p>{{list.name}}  <span>{{list.materialStatus}}</span></p>
+            <p>
+                <img src="../imgs/task_img/dingw.png" alt="">
+                {{list.location}}
+            </p>
+        </li>
+
+    <!-- 
+        <li class="yic" :class="list.materialStatus=='异常'?'yic':''" onclick="fn()">
+            <p>灭火器  <span>异常</span></p>
+            <p>
+                <img src="../imgs/task_img/dingw.png" alt="">
+                一区13幢1楼楼道
+            </p>
+        </li>
+        <li class="zenc" :class="list.materialStatus=='正常'?'zenc':''" onclick="fun()">
+            <p>灭火器  <span>正常</span></p>
+            <p>
+                <img src="../imgs/task_img/dingw.png" alt="">
+                一区14幢1楼楼道
+            </p>
+        </li> -->
+    </ul>
+
+    <div v-show="nodata" style="text-align: center; padding: 100px 0 0;">没有数据...</div>
+</div>
+
 </body>
 <script>
     function fn() {
@@ -40,5 +48,73 @@
     function fun() {
         window.location.href="jcqk_zenc.html";
     }
+</script>
+
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+            params: {},
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){
+            var params = window.location.href.match(/\params=.+/)[0].replace('params=','');
+            params = decodeURIComponent(params);
+            params = JSON.parse(decodeURIComponent(params));
+            console.log(params);
+            this.params = params;
+
+            var url = params.urlDetailType=='material'?'/app/task/statistics/material/details':'/app/task/statistics/region/details';
+            let data = {
+                data:{
+                    id: params.id,
+                    taskId: params.taskId,
+                    taskGroupId: params.taskGroupId
+                },
+                url: url
+            }
+             fetchData (data).then(res => {
+                console.log(res);
+                console.log(res.data.page.list);
+                if (res.data.code == 200) {
+                    this.res = res.data.page.list;  
+                    if(res.data.page.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
+                }else {
+
+                }
+              });
+        },
+        methods:{
+            link(text,id){
+                console.log(id);
+                let params = {};
+                params.id = id;
+                params.urlDetailType = this.params.urlDetailType;
+
+                if(text=='异常'){
+                    url = "jcqk_yic.html?params=";
+                }else if(text=='正常'){
+                    url = "jcqk_zenc.html?params=";
+                }
+                window.location.href = url + JSON.stringify(params)
+            }
+        }
+    });
 </script>
 </html>

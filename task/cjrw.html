@@ -11,26 +11,28 @@
     <link rel="stylesheet" href="../js/src/css/LCalendar.css">
     <script src="../js/src/js/LCalendar.js"></script>
 <body>
-<ul>
-    <li>
-        <p>任务组</p>
-        <a href="xz_renwuzu.html">请选择</a>
-    </li>
-    <li>
-        <p>人员</p>
-        <a href="xz_renyuan.html">请选择</a>
-    </li>
-    <li>
-        <p>开始时间</p>
-        <img src="../imgs/task_img/date.png" alt="">
-        <input type="text" id="test" placeholder="请选择年月日" readonly="readonly">
-    </li>
-    <li><p>截至时间</p>
-        <img src="../imgs/task_img/date.png" alt="">
-        <input type="text" id="test_1" placeholder="请选择年月日" readonly="readonly">
-    </li>
-</ul>
-<button class="btn" type="submit" id="xxx" onclick="btn()">提交</button>
+<div id="app">
+    <ul>
+        <li>
+            <p>任务组</p>
+            <input class="input" placeholder="请选择" readonly="readonly" :value="taskName+' '+taskGroupName" @click="link('xz_renwuzu.html')">
+        </li>
+        <li>
+            <p>人员</p>
+            <a href="xz_renyuan.html">请选择</a>
+        </li>
+        <li>
+            <p>开始时间</p>
+            <img src="../imgs/task_img/date.png" alt="">
+            <input type="text" id="test" placeholder="请选择年月日" readonly="readonly">
+        </li>
+        <li><p>截至时间</p>
+            <img src="../imgs/task_img/date.png" alt="">
+            <input type="text" id="test_1" placeholder="请选择年月日" readonly="readonly">
+        </li>
+    </ul>
+    <button class="btn" type="submit" id="xxx" onclick="btn()">提交</button>
+</div>
 
 </body>
 <script src="../js/layer_mobile/layer.js"></script>
@@ -43,9 +45,9 @@
        });
    })
 
-function btn() {
-    window.location.href="renwu.html"
-}
+    function btn() {
+        window.location.href="renwu.html"
+    }
 
     var calendar = new LCalendar();
     calendar.init({
@@ -60,6 +62,39 @@ function btn() {
         'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
         'minDate': '1900-1-1', //最小日期
         'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() //最大日期
+    });
+</script>
+
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script>
+    let data = {
+        data:{},
+        url:'/app/task/group/list'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            taskName: '',
+            taskGroupName: '',
+            createRenwuzuParams: {}
+        },
+        created(){
+            var createRenwuzuParams = JSON.parse( sessionStorage.getItem('createRenwuzuParams') );
+            console.log(createRenwuzuParams);
+            if(createRenwuzuParams){
+                this.createRenwuzuParams = createRenwuzuParams;
+                this.taskName = createRenwuzuParams.taskName;  
+                this.taskGroupName = createRenwuzuParams.taskGroupName;  
+            }
+        },
+        methods:{
+            link(url){
+                window.location.href = url;
+            }
+        }
     });
 </script>
 </html>

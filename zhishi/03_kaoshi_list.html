@@ -18,6 +18,20 @@
     </span>
 </p>
 <ul id="app">
+    <li id="wks" v-for='list in res'>
+        <p>
+            {{list.examName}}
+            <span>未开始</span>
+        </p>
+        <p>
+            <img src="../imgs/zhishi_img/time.png" alt="">
+            {{list.beginTime}} ～ {{list.endTime}}
+            <span>
+                {{list.questionNum}}/{{list.totalScore}}
+            </span>
+        </p>
+    </li>
+
     <li id="wks">
         <p>
             消防知识考核
@@ -152,11 +166,10 @@
 
 <script>
     let data = {
-        method: 'get',
         data:{
             limit: 10,
             page: 1,
-            userId: 12
+            userId: getUserid()
         },
         url:'/app/exam/list'
     }
@@ -164,7 +177,7 @@
     var myvue = new Vue({
         el: '#app',
         data: {
-            res: {},
+            res: [],
         },
         created(){
             let that = this;

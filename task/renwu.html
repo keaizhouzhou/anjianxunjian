@@ -169,12 +169,10 @@
              fetchData (params).then(res => {
                 console.log(res);
                 if (res.data.code == 200) {
+                    this.res = res.data.page.list;  
                     if(res.data.page.list.length<1){
-                        this.res = res.data.page.list;  
                         this.nodata = true;
-
                     }else{
-                        this.res = res.data.page.list;  
                         this.nodata = false;
                     }
                 }else {
@@ -189,5 +187,15 @@
             }
         }
     });
+
+
+// var baseurl = 'https://easy-mock.com/mock/5b6d5543172bf704f8ac46d6/getData';
+//     $.ajax({
+//         type: 'post',
+//         url: baseurl + '/app/task/list',
+//         success: function(a){
+// console.log(a);
+//         }
+//     });
 </script>
 </html>

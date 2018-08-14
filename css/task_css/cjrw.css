@@ -19,6 +19,12 @@ ul li input{
     border: 0;
     outline: 0;
 }
+.input::-webkit-input-placeholder{
+        color: #b9bbbe;
+}
+#input-text::-moz-placeholder{ 
+        color: #b9bbbe;        
+}
 /*input[type="date"]:before{*/
     /*color:#A9A9A9;*/
     /*content:attr(placeholder);*/

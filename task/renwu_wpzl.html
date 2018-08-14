@@ -12,7 +12,7 @@
 <div id="app">    
     <div class="detail">
         <p class="first">
-            基础巡查任务
+            {{params.name}}
             <span>截止时间：{{params.startTime|cutTime}}</span>
         </p>
         <p>
@@ -29,127 +29,40 @@
         </p>
     </div>
     <div class="rwz">
-        <p class="first  clearfix" id="last">
-            <span class="span_1">检查物品种类</span>
-            <span onclick="fn()">检查企业列表</span>
+        <p class="first clearfix" id="last">
+            <span :class="highligh==1?'span_1':''" @click='showList(1)'>检查物品种类</span>
+            <span :class="highligh==2?'span_1':''" @click='showList(2)'>检查企业列表</span>
         </p>
-        <div v-for='statistics in params.statistics'>
-            <p class="first">
-                {{statistics.materialType}}({{statistics.finish}}/{{statistics.total}})
-                <img src="../imgs/task_img/right.png" alt="" onclick="fun()">
+        <div v-for='list in lists'>
+            <p class="first" @click="link(list.id)">
+                {{list.materialType }}({{list.finish }}/{{list.total}})
+                <img src="../imgs/task_img/right.png" alt="">
             </p>
             <ul>
                 <li>
                     <p>
                         <img src="../imgs/task_img/xyd_1.png" alt="">
                         总量
-                        <span>{{statistics.total}}</span>
+                        <span>{{list.total}}</span>
                     </p>
                 </li>
                 <li>
                     <p>
                         <img src="../imgs/task_img/xyd_2.png" alt="">
                         正常
-                        <span>{{statistics.finish}}</span>
+                        <span>{{list.finish}}</span>
                     </p>
                 </li>
                 <li>
                     <p>
                         <img src="../imgs/task_img/xyd.png" alt="">
                         异常
-                        <span>{{statistics.anomaly}}</span>
+                        <span>{{list.anomaly}}</span>
                     </p>
                 </li>
             </ul>
         </div>
 
-        <!--灭火器-->
-<!--         <p class="first">
-            灭火器(1/10)
-            <img src="../imgs/task_img/right.png" alt=""  onclick="fun()">
-        </p>
-        <ul>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_1.png" alt="">
-                    总量
-                    <span>10</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_2.png" alt="">
-                    正常
-                    <span>1</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd.png" alt="">
-                    异常
-                    <span>0</span>
-                </p>
-            </li>
-        </ul> -->
-    </div>
-    <div class="rwz" style="display: none">
-        <p class="first list" id="zl">检查物品种类  <span class="last" id="list">检查企业列表</span></p>
-        <p class="first">
-            东区(2/20)
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-        <ul>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_1.png" alt="">
-                    总量
-                    <span>20</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_2.png" alt="">
-                    正常
-                    <span>2</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd.png" alt="">
-                    异常
-                    <span>0</span>
-                </p>
-            </li>
-        </ul>
-
-        <!--灭火器-->
-        <p class="first">
-            西一区(1/10)
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-        <ul>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_1.png" alt="">
-                    总量
-                    <span>10</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd_2.png" alt="">
-                    正常
-                    <span>1</span>
-                </p>
-            </li>
-            <li>
-                <p>
-                    <img src="../imgs/task_img/xyd.png" alt="">
-                    异常
-                    <span>0</span>
-                </p>
-            </li>
-        </ul>
     </div>
     <a href="">
         扫码
@@ -161,22 +74,15 @@
 <script type="text/javascript" src="../js/vue.min.js"></script>
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
-<script>
-    function fun()
-    {
-        window.location.href="wupin_list.html";
-    }
-    function fn()
-    {
-        window.location.href="renwu_qiyelist.html";
-    }
-</script>
-<script>
 
+<script>
     var myvue = new Vue({
         el: '#app',
         data: {
-            params: {}
+            highligh: 1,
+            params: {},
+            lists: [],
+            urlDetailType: 'material'
         },
         filters: {
             cutTime(value){
@@ -189,8 +95,53 @@
             params = JSON.parse(decodeURIComponent(params));
             console.log(params);
             this.params = params;
+
+            let data = {
+                data:{
+                    taskId: params.taskId,
+                    taskGroupId: params.taskGroupId
+                },
+                url:'/app/task/statistics/material'
+            }
+            this.getList(data);
         },
         methods:{
+            getList(params){
+             fetchData (params).then(res => {
+                console.log(res);
+                if (res.data.code == 200) {
+                    this.lists = res.data.page.list;  
+                }else {
+
+                }
+              });
+            },
+            showList(index){
+                this.highligh = index;
+                let url = index==1?'/app/task/statistics/material':'/app/task/statistics/region'
+                let data = {
+                    data:{
+                        taskId: this.params.taskId,
+                        taskGroupId: this.params.taskGroupId
+                    },
+                    url:url
+                }
+                this.getList(data);
+                if(index==1){
+                    this.urlDetailType = 'material';
+                }else{
+                    this.urlDetailType = 'region';
+                }
+            },
+            link(id){
+                console.log(id);
+                let params = {};
+                params.id = id;
+                params.taskId = this.params.taskId;
+                params.taskGroupId = this.params.taskGroupId;
+                params.urlDetailType = this.urlDetailType;
+                window.location.href="wupin_list.html?params="+ JSON.stringify(params)
+            }
         }
     });
 </script>

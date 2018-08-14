@@ -30,7 +30,7 @@
             </span>
         </p>
         <p>位置：一区12幢1楼楼道 </p>
-        <p>🈢产日期：2018.01.01</p>
+        <p>生产日期：2018.01.01</p>
         <p>过期日期：2018.01.01</p>
     </div>
 </div>
@@ -92,5 +92,40 @@
     function btn2() {
         window.location.href="04_shangbao.html";
     }
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+            params: {
+                data:{
+                },
+                url:'/app/anomaly/details'
+            }
+        },
+        created(){ 
+         fetchData (this.params).then(res => {
+            console.log(res);
+            if (res.data.code == 200) {
+                this.res = res.data.page.list;
+                if(res.data.page.list.length>0){
+                    this.nodata = false;
+                }else{
+                    this.nodata = true;
+                }
+                
+            }else {
+
+            }
+          }); 
+        }
+    });
 </script>
 </html>
