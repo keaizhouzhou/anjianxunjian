@@ -11,9 +11,9 @@
 <body>
 <div id="app">
     <p class="title">
-        {{res.regionName}}
+        {{params.regionName}}
         <img src="../imgs/task_img/right.png" alt="">
-        <span>部门一</span>
+        <span>{{res.regionName}}</span>
     </p>
     <div>
         <p v-for='children in res.children'>
@@ -30,7 +30,7 @@
                {{members.name}}
             </label>
         </li>
-        
+
 <!--         <li>
             <label>
                 <input type="radio" name="user">
@@ -60,6 +60,7 @@ body{ padding-bottom: 50px; }
         el: '#app',
         data: {
             nodata: false,
+            params: {},
             res: [],
         },
         filters: {
@@ -69,16 +70,16 @@ body{ padding-bottom: 50px; }
         },
         created(){
 
-            var regionId = window.location.href.match(/regionId=.+/)[0].replace('regionId=','');
-            regionId = decodeURIComponent(regionId);
-            regionId = JSON.parse(decodeURIComponent(regionId));
-            console.log(regionId);
-            this.regionId = regionId;
+            var params = window.location.href.match(/\params=.+/)[0].replace('params=','');
+            params = decodeURIComponent(params);
+            params = JSON.parse(decodeURIComponent(params));
+            console.log(params);
+            this.params = params;
 
             var url = '/app/task/choiceUser';
             let data = {
                 data:{
-                    regionId: regionId
+                    regionId: params.regionId
                 },
                 url: url
             }
@@ -99,11 +100,6 @@ body{ padding-bottom: 50px; }
         },
         methods:{
             link(id){
-                console.log(id);
-                let params = {};
-                params.id = id;
-                let url = "xz_renyuan2.html?params=";
-                window.location.href = url + JSON.stringify(params)
             }
         }
     });
