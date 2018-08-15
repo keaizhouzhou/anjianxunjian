@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+    <title>检查规范内容</title>
+</head>
+<link rel="stylesheet" href="../css/base.css">
+<link rel="stylesheet" href="../css/bootstrap.css">
+<link rel="stylesheet" href="../css/index_css/jcgf.css">
+<body>
+<ul id="app">
+    <li>
+        <p>
+            <img src="../imgs/index_img/guif.png" alt="">
+            {{res.name}}
+        </p>
+        <p>
+            备注：{{res.remark}}
+        </p>
+    </li>
+    <li>
+        <p>检查项 </p>
+        <p v-for='(itemList,index) in res.itemList'>{{index+1}}. {{itemList.name}}； </p>
+    </li>
+</ul>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+            params: {},
+        },
+        filters: {
+            cutTime(value){
+                if(value){
+                    return value.match(/^.+\s/)[0];  
+                }
+            }
+        },
+        created(){
+            var materialTypeId = window.location.href.match(/materialTypeId=.+/)[0].replace('materialTypeId=','');
+            console.log(materialTypeId);
+
+            var url = '/app/check/specific/query';
+            let data = {
+                data:{
+                    materialTypeId: materialTypeId,
+                },
+                url: url
+            }
+             fetchData (data).then(res => {
+                console.log(res);
+                console.log(res.data.list);
+                if (res.data.code == 200) {
+                    this.res = res.data.list;  
+                    if(res.data.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
+                }else {
+
+                }
+              });
+        }
+    });
+</script>
+</body>
+</html>

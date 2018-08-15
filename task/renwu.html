@@ -39,26 +39,7 @@
                 </a>
             </li>
         </ul>
-        <ul class="detail yiwc" id="ywc_con">
-            <li onclick="fn()">
-                <p class="first">
-                    基础巡查任务renwu_wpzl.html
-                    <span>截止时间：2018.02.01</span>
-                </p>
-                <p>
-                    任务时间：
-                    <span>2018.01.20</span>
-                </p>
-                <p>
-                    完成进度：
-                    <span>0/20</span>
-                </p>
-                <p>
-                    任务地点：
-                    <span>西湖区骆家庄社区</span>
-                </p>
-            </li>
-        </ul>
+
         <ul class="detail yics" id="ycs_con">
             <li onclick="fun()">
                 <p class="first">
@@ -158,7 +139,9 @@
         },
         filters: {
             cutTime(value){
-                return value.match(/^.+\s/)[0];
+                if(value){
+                    return value.match(/^.+\s/)[0];
+                }
             }
         },
         created(){

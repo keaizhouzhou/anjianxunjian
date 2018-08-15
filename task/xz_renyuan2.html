@@ -9,41 +9,104 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/xz_renyuan2.css">
 <body>
-<p class="title">
-    杭州会友科技有限公司
-    <img src="../imgs/task_img/right.png" alt="">
-    <span>部门一</span>
-</p>
-<div>
-    <p>
-        二级部门
-        <span>(2)</span>
+<div id="app">
+    <p class="title">
+        {{res.regionName}}
         <img src="../imgs/task_img/right.png" alt="">
+        <span>部门一</span>
     </p>
-</div>
-<ul>
-    <li>
-        <label>
-            <input type="radio" name="user">
-            <i>✓</i>
-            吴宣仪
-        </label>
+    <div>
+        <p v-for='children in res.children'>
+            {{children.name}}
+            <span>({{children.id}})</span>
+            <img src="../imgs/task_img/right.png" alt="">
+        </p>
+    </div>
+    <ul>
+        <li v-for='members in res.members'>
+            <label>
+                <input type="radio" name="user">
+                <i>✓</i>
+               {{members.name}}
+            </label>
+        </li>
+        
+<!--         <li>
+            <label>
+                <input type="radio" name="user">
+                <i>✓</i>
+                吴宣仪
+            </label>
 
-    </li>
-    <li>
-        <label>
-            <input type="radio" name="user">
-            <i>✓</i>
-            吴宣仪
-        </label>
-    </li>
-    <li>
-        <label>
-            <input type="radio" name="user">
-            <i>✓</i>
-            吴宣仪
-        </label>
-    </li>
-</ul>
+        </li> -->
+    </ul>
+
+    <div class="btn" id="xxx" onclick="btn()">确定</div>
+
+</div>
+
+<style type="text/css">
+body{ padding-bottom: 50px; }
+.btn{ width: 100%; height: 50px; line-height: 50px; padding: 0; color: #fff; position: fixed; bottom: 0; background-color: orange; border: 0; border-radius: 0; }
+</style>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){
+
+            var regionId = window.location.href.match(/regionId=.+/)[0].replace('regionId=','');
+            regionId = decodeURIComponent(regionId);
+            regionId = JSON.parse(decodeURIComponent(regionId));
+            console.log(regionId);
+            this.regionId = regionId;
+
+            var url = '/app/task/choiceUser';
+            let data = {
+                data:{
+                    regionId: regionId
+                },
+                url: url
+            }
+             fetchData (data).then(res => {
+                console.log(res);
+                console.log(res.data.list);
+                if (res.data.code == 200) {
+                    this.res = res.data.list;  
+                    if(res.data.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
+                }else {
+
+                }
+              });
+        },
+        methods:{
+            link(id){
+                console.log(id);
+                let params = {};
+                params.id = id;
+                let url = "xz_renyuan2.html?params=";
+                window.location.href = url + JSON.stringify(params)
+            }
+        }
+    });
+</script>
 </body>
 </html>

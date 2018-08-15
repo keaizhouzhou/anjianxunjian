@@ -12,7 +12,7 @@
 
 <div id="app">
     <ul>
-        <li v-for='list in res' @click='link(list.materialStatus,list.id)' :class="{yic: list.materialStatus=='异常',zenc: list.materialStatus=='正常'}">
+        <li v-for='list in res' @click='link(list.materialStatus,list.id,list.status)' :class="{yic: list.materialStatus=='异常',zenc: list.materialStatus=='正常'}">
             <p>{{list.name}}  <span>{{list.materialStatus}}</span></p>
             <p>
                 <img src="../imgs/task_img/dingw.png" alt="">
@@ -101,17 +101,23 @@
               });
         },
         methods:{
-            link(text,id){
+            link(text,id,status){
                 console.log(id);
                 let params = {};
                 params.id = id;
+                params.status = status;
                 params.urlDetailType = this.params.urlDetailType;
+                params.materialTypeId = this.params.id;
 
-                if(text=='异常'){
-                    url = "jcqk_yic.html?params=";
-                }else if(text=='正常'){
-                    url = "jcqk_zenc.html?params=";
-                }
+
+                let url = "jcqk_yic.html?params=";
+
+                // if(text=='异常'){
+                //     url = "jcqk_yic.html?params=";
+                // }else if(text=='正常'){
+                //     url = "jcqk_zenc.html?params=";
+                // }
+
                 window.location.href = url + JSON.stringify(params)
             }
         }

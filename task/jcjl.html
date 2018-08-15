@@ -9,8 +9,8 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/jcjl.css">
 <body>
-<ul>
-    <li onclick="fn()">
+<ul id="app">
+    <li @click='link'>
         <p>
             灭火器
             <span class="yic">异常</span>
@@ -24,7 +24,7 @@
            </span>
         </p>
     </li>
-    <li onclick="fun()">
+    <li @click='link'>
         <p>
             灭火器
             <span class="zenc">正常</span>
@@ -47,5 +47,54 @@
     function fun() {
         window.location.href="jcqk_zenc.html";
     }
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            res: [],
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){
+            var params = window.location.href.match(/\params=.+/)[0].replace('params=','');
+            params = decodeURIComponent(params);
+            params = JSON.parse(decodeURIComponent(params));
+            console.log(params);
+            this.params = params;
+
+            let data = {
+                data:{
+                    id: params.id
+                },
+                url:'/app/material/history'
+            }
+            this.getList(data);
+        },
+        methods:{
+            getList(params){
+             fetchData (params).then(res => {
+                console.log(res);
+                if (res.data.code == 200) {
+                    this.lists = res.data.page.list;  
+                }else {
+
+                }
+              });
+            },
+            link(){
+                window.location.href="jcqk_yic.html?params="+ JSON.stringify(this.params)
+            }
+        }
+    });
 </script>
 </html>

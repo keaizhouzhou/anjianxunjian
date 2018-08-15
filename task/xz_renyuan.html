@@ -9,58 +9,101 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/xz_renyuan.css">
 <body>
-<p class="title">杭州会友科技有限公司</p>
-<ul class="clearfix">
-    <li onclick="fn()">
-        <p>
-            部门一
-            <span>(5)</span>
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-    </li>
-    <li>
-        <p>
-            部门二
-            <span>(5)</span>
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-    </li>
-    <li>
-        <p>
-            部门三
-            <span>(5)</span>
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-    </li>
-    <li>
-        <p>
-            部门四
-            <span>(5)</span>
-            <img src="../imgs/task_img/right.png" alt="">
-        </p>
-    </li>
-</ul>
-<ul>
-    <li>
-        <label>
-            <input type="checkbox" checked>
-            <i>✓</i>
-           张三
-        </label>
-    </li>
-    <li>
-        <label>
-            <input type="checkbox">
-            <i>✓</i>
-            李四
-        </label>
+<div id="app">
+    <p class="title">{{res.regionName}}</p>
+    <ul class="clearfix">
+        <li v-for='children in res.children' @click='link(children.id)'>
+            <p>
+                {{children.name}}
+                <span>({{children.id}})</span>
+                <img src="../imgs/task_img/right.png" alt="">
+            </p>
+        </li>
+<!--         <li>
+            <p>
+                部门二
+                <span>(5)</span>
+                <img src="../imgs/task_img/right.png" alt="">
+            </p>
+        </li>-->
+    </ul>
+    <ul>
+        <li v-for='members in res.members'>
+            <label>
+                <input type="checkbox" >
+                <i>✓</i>
+               {{members.name}}
+            </label>
+        </li>
+<!--         <li>
+            <label>
+                <input type="checkbox">
+                <i>✓</i>
+                李四
+            </label>
 
-    </li>
-</ul>
+        </li> -->
+    </ul>
+</div>
+
+<div class="btn" id="xxx" onclick="btn()">确定</div>
+
+<style type="text/css">
+body{ padding-bottom: 50px; }
+.btn{ width: 100%; height: 50px; line-height: 50px; padding: 0; color: #fff; position: fixed; bottom: 0; background-color: orange; border: 0; border-radius: 0; }
+</style>
+
 </body>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
 <script>
-    function fn() {
-        window.location.href="xz_renyuan2.html";
-    }
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            res: [],
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){
+
+            var url = '/app/task/choiceUser';
+            let data = {
+                data:{
+                    regionId: 12719
+                },
+                url: url
+            }
+             fetchData (data).then(res => {
+                console.log(res);
+                console.log(res.data.list);
+                if (res.data.code == 200) {
+                    this.res = res.data.list;  
+                    if(res.data.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
+                }else {
+
+                }
+              });
+        },
+        methods:{
+            link(id){
+                console.log(id);
+                let url = "xz_renyuan2.html?regionId="+id;
+                window.location.href = url;
+            }
+        }
+    });
 </script>
+
 </html>
