@@ -69,10 +69,8 @@ ul li.active{ background-color: #f9f9f9; }
                 if (res.data.code == 200) {
                     this.res = res.data.list.list;
                     this.currentTaskList = this.res[0].taskList;
-
                     this.taskId = this.res[0].id;
                     this.taskName = this.res[0].name;
-
                 }else {
 
                 }
@@ -97,13 +95,8 @@ ul li.active{ background-color: #f9f9f9; }
                 if(this.radio.length<1){
                     alert('请选择具体任务');
                 }else{
-                    var createRenwuzuParams = {};
-                    createRenwuzuParams.taskId = this.taskId;
-                    createRenwuzuParams.taskName = this.taskName;
-                    createRenwuzuParams.taskGroupId = this.radio.split('-')[0];
-                    createRenwuzuParams.taskGroupName = this.radio.split('-')[1];
-                    console.log(JSON.stringify(createRenwuzuParams));
-                    sessionStorage.setItem('createRenwuzuParams',JSON.stringify(createRenwuzuParams));
+                    var createTaskItem = this.taskId + '-' + this.taskName + '-' + this.radio.split('-')[0] + '-' + this.radio.split('-')[1];
+                    sessionStorage.setItem('createTaskItem',createTaskItem);
                     window.history.back(-1);
                 }
             }

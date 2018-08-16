@@ -15,28 +15,30 @@
     <ul>
         <li>
             <p>任务组</p>
-            <input class="input" placeholder="请选择" readonly="readonly" :value="taskName+' '+taskGroupName" @click="link('xz_renwuzu.html')">
+            <input class="input" placeholder="请选择" readonly="readonly"  :value="createTaskItem[1]+ '—' + createTaskItem[3]" @click="linkRenwuzu('xz_renwuzu.html')">
         </li>
         <li>
             <p>人员</p>
-            <a href="xz_renyuan.html">请选择</a>
+            <!-- <a href="xz_renyuan.html">请选择</a> -->
+            <input class="input" placeholder="请选择" readonly="readonly" :value="createRenyuanNameItem"  @click="linkRenyuan('xz_renyuan.html')">
         </li>
         <li>
             <p>开始时间</p>
             <img src="../imgs/task_img/date.png" alt="">
-            <input type="text" id="test" placeholder="请选择年月日" readonly="readonly">
+            <input type="text" id="test" placeholder="请选择年月日" readonly="readonly" v-model="startTime">
         </li>
         <li><p>截至时间</p>
             <img src="../imgs/task_img/date.png" alt="">
-            <input type="text" id="test_1" placeholder="请选择年月日" readonly="readonly">
+            <input type="text" id="test_1" placeholder="请选择年月日" readonly="readonly" v-model="endTime">
         </li>
     </ul>
-    <button class="btn" type="submit" id="xxx" onclick="btn()">提交</button>
+
+    <button class="btn" type="submit" id="xxx" @click='submit'>提交</button>
 </div>
 
 </body>
-<script src="../js/layer_mobile/layer.js"></script>
 <script src="../js/jquery-1.11.1.min.js"></script>
+<script src="../js/layer_mobile/layer.js"></script>
 <script>
    $('#xxx').click(function () {
        layer.open({
@@ -69,7 +71,7 @@
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
 <script>
-    let data = {
+    var data = {
         data:{},
         url:'/app/task/group/list'
     }
@@ -77,22 +79,111 @@
     var myvue = new Vue({
         el: '#app',
         data: {
-            taskName: '',
-            taskGroupName: '',
-            createRenwuzuParams: {}
+            createTaskItem: [],
+            createRenyuanIdItem: '',
+            createRenyuanNameItem: '',
+            startTime: '',
+            endTime: ''
         },
         created(){
-            var createRenwuzuParams = JSON.parse( sessionStorage.getItem('createRenwuzuParams') );
-            console.log(createRenwuzuParams);
-            if(createRenwuzuParams){
-                this.createRenwuzuParams = createRenwuzuParams;
-                this.taskName = createRenwuzuParams.taskName;  
-                this.taskGroupName = createRenwuzuParams.taskGroupName;  
+            var createTaskItem = sessionStorage.getItem('createTaskItem');
+            console.log(createTaskItem);
+            if(createTaskItem){
+                this.createTaskItem = createTaskItem.split('-');
+                console.log(this.createTaskItem);
             }
+
+            var createRenyuanIdItem = sessionStorage.getItem('createRenyuanIdItem');
+            var createRenyuanNameItem = sessionStorage.getItem('createRenyuanNameItem');
+            if(createRenyuanIdItem){
+                this.createRenyuanIdItem = createRenyuanIdItem;
+                this.createRenyuanNameItem = createRenyuanNameItem;
+                console.log(this.createRenyuanIdItem);
+                console.log(this.createRenyuanNameItem);
+            }
+
+        },
+        mounted(){
+            function btn() {
+                window.location.href="renwu.html"
+            }
+
+            var calendar = new LCalendar();
+            calendar.init({
+                'trigger': '#test', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': '1900-1-1', //最小日期
+                'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() //最大日期
+            });
+            var calendar = new LCalendar();
+            calendar.init({
+                'trigger': '#test_1', //标签id
+                'type': 'date', //date 调出日期选择 datetime 调出日期时间选择 time 调出时间选择 ym 调出年月选择,
+                'minDate': '1900-1-1', //最小日期
+                'maxDate': new Date().getFullYear() + '-' + (new Date().getMonth() + 1) + '-' + new Date().getDate() //最大日期
+            });
         },
         methods:{
-            link(url){
+            linkRenwuzu(url){
                 window.location.href = url;
+            },
+            linkRenyuan(url){
+                window.location.href = url;
+            },
+            submit(){
+                console.log(this.startTime);
+                console.log(this.endTime);
+
+                if(this.createTaskItem.length<1){
+                    alert('请选择任务组');
+                    return;
+                }
+                if(this.createRenyuanIdItem.length<1){
+                    alert('请选择人员');
+                    return;
+                }
+                if(this.startTime.length<1){
+                    alert('请选择开始时间');
+                    return;
+                }
+                if(this.endTime.length<1){
+                    alert('请选择截止时间');
+                    return;
+                }
+
+                var data = {
+                    data:{
+                        id: this.createTaskItem[0],
+                        name: this.createTaskItem[1],
+                        taskGroupId: this.createTaskItem[2],
+                        userIds: this.createRenyuanIdItem,
+                        startTime: this.startTime,
+                        endTime: this.endTime,
+                        type: '',
+                        schedule: '',
+                        scheduleCycle: '',
+                    },
+                    url:'/app/task/create'
+                }
+
+                 fetchData (data).then(res => {
+                    console.log(res);
+                    if (res.data.code == 200) {
+                        sessionStorage.removeItem('createTaskItem');
+                        sessionStorage.removeItem('createRenyuanNameItem');
+                        sessionStorage.removeItem('createRenyuanNameItem');
+                         layer.open({
+                           content: '创建任务成功'
+                           ,time: 3
+                       });
+                    }else {
+                        layer.open({
+                           content: '创建任务失败'
+                           ,time: 2
+                       });
+                    }
+                  }); 
+
             }
         }
     });
