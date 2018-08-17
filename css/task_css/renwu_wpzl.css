@@ -13,6 +13,14 @@ div.detail  p.first span{
     float: right;
     color: orange;
 }
+
+div.detail .chaos {
+    width: 20%;
+    float: right;
+    position: relative;
+    top: -80px;
+}
+
 div.detail{
     border-bottom: 8px solid #eee;
     margin: 0;
