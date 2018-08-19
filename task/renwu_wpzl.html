@@ -64,6 +64,9 @@
             </ul>
         </div>
 
+
+        <div v-show="nodata" style="text-align: center; padding: 100px 0 0;">没有数据...</div>
+
     </div>
 
     <a v-if='!tagChaoshi' href="">扫码</a>
@@ -83,6 +86,7 @@
     var myvue = new Vue({
         el: '#app',
         data: {
+            nodata: false,
             tagChaoshi: false,
             highligh: 1,
             params: {},
@@ -91,7 +95,9 @@
         },
         filters: {
             cutTime(value){
-                return value.match(/^.+\s/)[0];
+                if(value){ 
+                    return value.match(/^.+\s/)[0];
+                }
             }
         },
         created(){
@@ -120,6 +126,11 @@
                 console.log(res);
                 if (res.data.code == 200) {
                     this.lists = res.data.page.list;  
+                    if(res.data.page.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
                 }else {
 
                 }
