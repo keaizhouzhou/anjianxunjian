@@ -20,3 +20,7 @@
   function getUserid(){
     return sessionStorage.getItem('userId');
   }
+
+  var getRegionId = ()=>{
+    return sessionStorage.getItem('regionId');
+  }

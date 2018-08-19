@@ -9,46 +9,84 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/xz_shangji.css">
 <body>
-<ul>
-    <li>
-        <p>选择上级 <span>(可多选)</span></p>
-    </li>
-    <li>
-        <label>
-            <input type="checkbox">
-            <i>✓</i>
-            吴宣仪
-        </label>
+<div id="app">
+    <ul>
+        <li>
+            <p>选择上级 <span>(可多选)</span></p>
+        </li>
+        <li v-for="member in members">
+            <label>
+                <input type="checkbox" name="member" :value="member.id" v-model='checkmember'>
+                <i>✓</i>
+                {{member.name}}
+            </label>
+        </li>
+<!--         <li>
+            <label>
+                <input type="checkbox">
+                <i>✓</i>
+                宋威龙
+            </label>
 
-    </li>
-    <li>
-        <label>
-            <input type="checkbox">
-            <i>✓</i>
-            宋威龙
-        </label>
-
-    </li>
-    <li>
-        <label>
-            <input type="checkbox" checked>
-            <i>✓</i>
-           陈一发
-        </label>
-
-    </li>
-</ul>
-<div class="but">
-    <p>
-        已选人数：
-        <span>1</span>
-    </p>
-    <button onclick="fn()">确定</button>
+        </li> -->
+    </ul>
+    <div class="but">
+        <p>
+            已选人数：
+            <span>{{checkmember.length}}</span>
+        </p>
+        <button onclick="fn()">确定</button>
+    </div>
 </div>
+
 </body>
 <script>
     function fn() {
         window.location.href="wpjc_yic.html"
     }
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            members: [],
+            checkmember: []
+        },
+        created(){
+
+            let params = {
+                data:{
+                    regionId: getRegionId(),
+                },
+                url:'/app/task/choiceUser'
+            }
+            
+             fetchData (params).then(res => {
+                console.log(res);
+                if (res.data.code == 200) {
+                    this.members = res.data.list.members;  
+                }else {
+
+                }
+              });
+        },
+        methods:{
+            link(id){
+                console.log(id);
+                let params = {};
+                params.id = id;
+                params.taskId = this.params.taskId;
+                params.taskGroupId = this.params.taskGroupId;
+                params.urlDetailType = this.urlDetailType;
+                window.location.href="wupin_list.html?params="+ JSON.stringify(params)
+            }
+        }
+    });
 </script>
 </html>
