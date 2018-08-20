@@ -16,18 +16,17 @@
         </li>
         <li v-for="member in members">
             <label>
-                <input type="checkbox" name="member" :value="member.id" v-model='checkmember'>
+                <input type="checkbox" name="member" :value="member.id+'-'+member.name" v-model='checkmember'>
                 <i>✓</i>
                 {{member.name}}
             </label>
         </li>
 <!--         <li>
             <label>
-                <input type="checkbox">
+                <input type="checkbox" name="member" :value="22+'-'+'宋威龙'" v-model='checkmember'>
                 <i>✓</i>
                 宋威龙
             </label>
-
         </li> -->
     </ul>
     <div class="but">
@@ -35,7 +34,7 @@
             已选人数：
             <span>{{checkmember.length}}</span>
         </p>
-        <button onclick="fn()">确定</button>
+        <button @click="sure">确定</button>
     </div>
 </div>
 
@@ -59,32 +58,31 @@
             checkmember: []
         },
         created(){
-
             let params = {
                 data:{
-                    regionId: getRegionId(),
                 },
-                url:'/app/task/choiceUser'
+                url:'/app/user/superior'
             }
             
              fetchData (params).then(res => {
                 console.log(res);
                 if (res.data.code == 200) {
-                    this.members = res.data.list.members;  
+                    this.members = res.data.data;  
                 }else {
 
                 }
               });
         },
         methods:{
-            link(id){
-                console.log(id);
-                let params = {};
-                params.id = id;
-                params.taskId = this.params.taskId;
-                params.taskGroupId = this.params.taskGroupId;
-                params.urlDetailType = this.urlDetailType;
-                window.location.href="wupin_list.html?params="+ JSON.stringify(params)
+            sure(){
+                if(this.checkmember.length<1){
+                    alert('请选择上级');
+                }else{
+                    var checkmember = this.checkmember.join(',');
+                    console.log(this.checkmember);
+                    sessionStorage.setItem('chiefIds',checkmember);
+                    window.history.back();  //返回上一页    
+                }
             }
         }
     });
