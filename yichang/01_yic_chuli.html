@@ -10,15 +10,101 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/yichang/yic_chuli.css">
 <body>
-<div>
+<div id="app">
     <p>情况描述</p>
-    <textarea rows="3" cols="25" placeholder="请输入检查情况描述..."></textarea>
+    <textarea rows="3" cols="25" placeholder="请输入检查情况描述..." v-model="descr"></textarea>
     <p>现场照片/视频）</p>
     <div class="box">
         <img src="../imgs/yichang/jia.png" alt="">
+        <input type="file" name="" id="inputfile" accept="image/*" @change='selectPhoto'>
     </div>
+
+    <div style="background-color: #eee;margin-top: 20px;" v-if='isviewPhoto'>
+        <img :src="photoUrl" style="max-width: 100%;">
+    </div>
+
+    <button type="submit" @click="submit">提交</button>
+
 </div>
-<button type="submit">提交</button>
+
+<style type="text/css">
+    .box{ position: relative; }
+    #inputfile{ position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; }
+</style>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            nodata: false,
+            status: '',
+            params: {},
+            descr: '',
+            photoUrl: '',
+            isviewPhoto: false,
+        },
+        filters: {
+            cutTime(value){
+                return value.match(/^.+\s/)[0];
+            }
+        },
+        created(){ 
+            var params = decodeURIComponent(window.location.href).match(/params=.+/)[0].replace('params=','');
+            console.log( params) ;
+            this.params = JSON.parse(params); 
+            console.log( this.params ) ;
+            var materialId = this.params.materialId;
+            var orderId = this.params.id;
+            console.log(materialId);
+            console.log(orderId);
+        },
+        methods: {
+            selectPhoto(e){
+                var that = this;
+                console.log(e);
+                var reads = new FileReader();
+                var f = e.target.files[0];
+                reads.readAsDataURL(f);
+                reads.onload = function (file) {
+                    console.log(file);
+                    //console.log(file.currentTarget.result);
+                    that.photoUrl = file.currentTarget.result;
+                    that.isviewPhoto = true;
+                };
+            },
+            submit(){
+                console.log(this.params.materialId);
+                console.log(this.params.id);
+                console.log(this.descr);
+                console.log(this.photoUrl);
+
+                var params = {
+                        data:{
+                            materialId: this.params.materialId,
+                            id: this.params.id,
+                            descr: this.descr,
+                            photos: this.photoUrl,
+                        },
+                        url:'/app/anomaly/process'
+                    };
+                 fetchData (params).then(res => {
+                    console.log(res);
+                    if (res.data.code == 200) {
+                
+                        
+                    }else {
+
+                    }
+                  }); 
+
+            }
+        }
+    });
+</script>
 
 </body>
 </html>

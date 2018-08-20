@@ -18,7 +18,7 @@
     </div>
     <div class="content">
         <ul class="detail" id="dcl_con">
-            <li onclick="fn()" v-for='list in res'>
+            <li v-for='(list,index) in res' @click='linkDetail(index)'>
                 <p class="first">{{list.materialName}}</p>
                 <p>
                     位置：
@@ -32,7 +32,7 @@
                     检查结果：
                     <span>{{list.checkResult}}</span>
                 </p>
-                <p>
+                <p v-if='params.data.status==0'>
                     检查描述：
                     <span>{{list.description}}</span>
                 </p>
@@ -42,7 +42,7 @@
                 </p>
             </li>
 
-            <li onclick="fun()">
+<!--             <li onclick="fun()">
                 <p class="first">
                     灭火器
                 </p>
@@ -62,7 +62,7 @@
                     检查人：
                     <span>张三</span>
                 </p>
-            </li>
+            </li> -->
         </ul>
         <!-- <ul class="detail" style="display: none" id="dfc_con">
             <li onclick="fun()">
@@ -179,20 +179,12 @@
             res: [],
             params: {
                 data:{
-                    inspectStatus: 0
+                    status: 0
                 },
                 url:'/app/anomaly/list'
-            }
+            },
         },
         created(){
-         // fetchData (data).then(res => {
-         //    console.log(res);
-         //    if (res.data.code == 200) {
-         //        this.res = res.data.page.list;
-         //    }else {
-
-         //    }
-         //  }); 
             this.getList(this.params);
         },
         methods: {
@@ -214,9 +206,14 @@
             },
             showList(status){
                 console.log(status);
-                this.$set(this.params.data, 'inspectStatus',status);
+                this.params.data.status = status;
                 console.log(this.params);
                 this.getList(this.params);
+            },
+            linkDetail(index){
+                var status = this.params.data.status;
+                var params = this.res[index];
+                window.location.href="05_yic_detail.html?status="+status+'&params='+JSON.stringify(params);
             }
         }
     });

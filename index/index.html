@@ -115,6 +115,7 @@
             if (res.data.code == 0) {
                 that.res = res.data.data;
                 sessionStorage.setItem('userId',res.data.data.userId);
+                sessionStorage.setItem('regionId',res.data.data.regionId);
             }else {
 
             }

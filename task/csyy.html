@@ -11,16 +11,11 @@
 <body>
 <div id="app">
 	<div class="box">
-	    <textarea name="备注" id="" cols="10" rows="8" placeholder="请填写超时的原因..." v-model='textarea'></textarea>
+	    <textarea name="备注" id="" cols="10" rows="8" placeholder="请填写超时的原因..." v-model='reason'></textarea>
 	</div>
 	<button @click='submit'>提交</button>
 </div>
 </body>
-<script>
-    function btn() {
-        window.location.href="renwu_csyuanyin_saoma.html";
-    }
-</script>
 
 <script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="../js/vue.min.js"></script>
@@ -31,35 +26,32 @@
     var myvue = new Vue({
         el: '#app',
         data: {
-        	textarea: '',
-            status: ''
+            taskId: '',
+            reason: ''
         },
         created(){
-
+            var taskId = window.location.href.match(/taskId=.+/)[0].replace('taskId=','');
+            console.log(taskId);
+            this.taskId = taskId;
         },
         methods:{
             submit(){
-            	alert();
-            	console.log(this.textarea);
-	            var url = '/app/material/details';
+            	if(this.reason.length<1){
+            		alert('请填写超时的原因');
+            		return false;
+            	}
 	            let data = {
 	                data:{
-	                    id: params.id,
+	                    taskId: this.taskId,
+	                    reason: this.reason,
 	                },
-	                url: url
+	                url: '/app/task/timeout'
 	            }
 	             fetchData (data).then(res => {
 	                console.log(res);
-	                console.log(res.data.list);
 	                if (res.data.code == 200) {
-	                    this.res = res.data.list;  
-	                    this.xianchangPhoto = res.data.list.urls.split(',');
-	                    this.anomalyReasons = res.data.list.anomalyReasons.split(',');
-	                    if(res.data.list.length<1){
-	                        this.nodata = true;
-	                    }else{
-	                        this.nodata = false;
-	                    }
+	                	alert('提交成功');
+	                	window.history.back(-1);
 	                }else {
 
 	                }

@@ -15,7 +15,7 @@
     <ul>
         <li>
             <p>任务组</p>
-            <input class="input" placeholder="请选择" readonly="readonly"  :value="createTaskItem[1]+ '—' + createTaskItem[3]" @click="linkRenwuzu('xz_renwuzu.html')">
+            <input class="input" placeholder="请选择" readonly="readonly"  :value="createTaskItem[1]?createTaskItem[1]:''+ '—' + createTaskItem[3]?createTaskItem[3]:''" @click="linkRenwuzu('xz_renwuzu.html')">
         </li>
         <li>
             <p>人员</p>
@@ -165,20 +165,23 @@
                     },
                     url:'/app/task/create'
                 }
-
+                layer.open({type: 2});
                  fetchData (data).then(res => {
                     console.log(res);
                     if (res.data.code == 200) {
                         sessionStorage.removeItem('createTaskItem');
                         sessionStorage.removeItem('createRenyuanNameItem');
                         sessionStorage.removeItem('createRenyuanNameItem');
-                         layer.open({
-                           content: '创建任务成功'
-                           ,time: 3
-                       });
+                        layer.open({
+                          content: '创建任务成功'
+                          ,time: 2
+                        });
+                        setTimeout(function(){
+                            window.location.href = "renwu.html";
+                        },1500);
                     }else {
                         layer.open({
-                           content: '创建任务失败'
+                           content: '创建任务失败，请重新尝试'
                            ,time: 2
                        });
                     }

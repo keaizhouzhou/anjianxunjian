@@ -27,6 +27,7 @@
             任务地点：
             <span>{{params.location}}</span>
         </p>
+        <img v-if='tagChaoshi' class="chaos" src="../imgs/task_img/chaoshi.png" alt="">
     </div>
     <div class="rwz">
         <p class="first clearfix" id="last">
@@ -63,11 +64,17 @@
             </ul>
         </div>
 
+
+        <div v-show="nodata" style="text-align: center; padding: 100px 0 0;">没有数据...</div>
+
     </div>
-    <a href="">
-        扫码
-    </a>
+
+    <a v-if='!tagChaoshi' href="">扫码</a>
+    <a v-else :href="'csyy.html?taskId='+params.taskId">填写超原因</a>
+
 </div>
+
+
 </body>
 
 <script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
@@ -79,6 +86,8 @@
     var myvue = new Vue({
         el: '#app',
         data: {
+            nodata: false,
+            tagChaoshi: false,
             highligh: 1,
             params: {},
             lists: [],
@@ -86,7 +95,9 @@
         },
         filters: {
             cutTime(value){
-                return value.match(/^.+\s/)[0];
+                if(value){ 
+                    return value.match(/^.+\s/)[0];
+                }
             }
         },
         created(){
@@ -95,6 +106,10 @@
             params = JSON.parse(decodeURIComponent(params));
             console.log(params);
             this.params = params;
+
+            if(params.status==3){
+                this.tagChaoshi = true;
+            }
 
             let data = {
                 data:{
@@ -111,6 +126,11 @@
                 console.log(res);
                 if (res.data.code == 200) {
                     this.lists = res.data.page.list;  
+                    if(res.data.page.list.length<1){
+                        this.nodata = true;
+                    }else{
+                        this.nodata = false;
+                    }
                 }else {
 
                 }
