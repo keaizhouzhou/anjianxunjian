@@ -114,7 +114,7 @@
             console.log(res);
             if (res.data.code == 0) {
                 that.res = res.data.data;
-                sessionStorage.setItem('userId',res.data.data.userId);
+                sessionStorage.setItem('userId',res.data.data.createUserId);
                 sessionStorage.setItem('regionId',res.data.data.regionId);
             }else {
 
