@@ -26,9 +26,7 @@
         <div class="box_1">
             <p>
                 {{params.materialName}}
-                <span>
-                    检查规范
-                </span>
+                <span @click='linkGuifan'>检查规范</span>
             </p>
             <p>位置：{{params.location}}</p>
             <p>生产日期：{{params.producedDate|cutTime}}</p>
@@ -101,7 +99,7 @@
 
     <div class="btn" style="display: block;font-size:0">
         <button style="font-size: 15px" @click='linkChuli'>立即处理</button>
-        <button style="font-size: 15px" onclick="btn2()" @click='linkShangbao'>上报上级</button>
+        <button style="font-size: 15px" @click='linkShangbao'>上报上级</button>
     </div>
 </div>
 </body>
@@ -142,12 +140,17 @@
             this.xianchangPhoto = params.urls.split(',');
         },
         methods: {
+            linkGuifan(){
+                console.log(this.params.materialTypeId);
+                window.location.href="../task/jcgf.html?materialTypeId="+this.params.materialTypeId;
+            },
             linkChuli(){
                 window.location.href="01_yic_chuli.html?params="+JSON.stringify(this.params);
             },
             linkShangbao(){
-
-            }
+                sessionStorage.removeItem('chiefIds');
+                window.location.href="04_shangbao.html?materialTypeId="+this.params.materialTypeId;
+            },
         }
     });
 </script>

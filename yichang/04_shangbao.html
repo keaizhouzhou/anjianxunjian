@@ -9,19 +9,21 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/yichang/shangbao.css">
 <body>
-<div class="box">
-    <p>情况描述</p>
-    <textarea name="" id="" cols="3" rows="5" placeholder="请输入检查情况描述..."></textarea>
+<div id="app">
+    <div class="box">
+        <p>情况描述</p>
+        <textarea name="" id="" cols="3" rows="5" placeholder="请输入检查情况描述..." v-model='descr'></textarea>
+    </div>
+    <p>
+        <img src="../imgs/yichang/shangb.png" alt="">
+        上报上级 
+        <span onclick="fn()">
+            {{membersName?membersName:''}}
+            <img src="../imgs/task_img/right.png" alt="" style="width: 15px;">
+        </span>
+    </p>
+    <button type="submit" @click="submit">上报</button>
 </div>
-<p>
-    <img src="../imgs/yichang/shangb.png" alt="">
-    上报上级
-    <span onclick="fn()">
-        吴宣仪
-        <img src="../imgs/task_img/right.png" alt="">
-    </span>
-</p>
-<button type="submit" onclick="btn()">上报</button>
 </body>
 <script>
     function btn() {
@@ -30,5 +32,67 @@
     function fn() {
         window.location.href="../task/xz_shangji.html"
     }
+</script>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+
+<script>
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            materialTypeId: '',
+            descr: '',
+            membersId: '',
+            membersName: '',
+        },
+        created(){
+            var materialTypeId = window.location.href.match(/materialTypeId=\d+/)[0].replace('materialTypeId=','');
+            console.log(materialTypeId);
+            this.materialTypeId = materialTypeId; 
+
+            var checkmember = sessionStorage.getItem('chiefIds');
+            if(checkmember){
+                var membersName = '',membersId = '';
+                checkmember.split(',').map(function(value,key){
+                    membersId +=value.split('-')[0]+',';
+                    membersName +=value.split('-')[1]+',';
+                });
+                this.membersId = membersId.replace(/,$/,'');
+                this.membersName = membersName.replace(/,$/,'');
+            }
+            console.log(checkmember);
+        },
+        methods:{
+            submit(){
+                if(this.membersId.length<1){
+                    alert('请选择上报上级');
+                    return false;
+                }
+                if(this.descr.length<1){
+                    alert('请输入情况描述');
+                    return false;
+                }
+                let params = {
+                    data:{
+                        orderId: this.materialTypeId,
+                        chiefIds: this.membersId,
+                        descr: this.descr
+                    },
+                    url:'/app/anomaly/report'
+                }
+                 fetchData (params).then(res => {
+                    console.log(res);
+                    if (res.data.code == 200) {
+                        
+                    }else {
+
+                    }
+                  }); 
+            }
+        }
+    });
 </script>
 </html>
