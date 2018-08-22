@@ -38,6 +38,7 @@
 <script type="text/javascript" src="../js/vue.min.js"></script>
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
+<script type="text/javascript" src="../js/layer_mobile/layer.js"></script>
 
 <script>
     var myvue = new Vue({
@@ -86,9 +87,18 @@
                  fetchData (params).then(res => {
                     console.log(res);
                     if (res.data.code == 200) {
-                        
+                        layer.open({
+                          content: '上报成功'
+                          ,time: 2
+                        });
+                        setTimeout(function(){
+                            window.location.href = "03_daichuli.html";
+                        },1500);
                     }else {
-
+                        layer.open({
+                           content: '上报失败，请重新尝试'
+                           ,time: 2
+                       });
                     }
                   }); 
             }
