@@ -10,21 +10,22 @@
 <link rel="stylesheet" href="../css/task_css/jcjl.css">
 <body>
 <ul id="app">
-    <li @click='link'>
+    <li v-for="list in res">
         <p>
-            灭火器
-            <span class="yic">异常</span>
+            list.materialName
+            <span class="yic">{{list.checkResult}}</span>
         </p>
         <p>
             <img src="../imgs/task_img/renx.png" alt="">
-            宋威龙
+            {{list.checkTime}}
             <span>
                 <img src="../imgs/task_img/time.png" alt="">
-                2018.01.21 12:00:00
+                {{list.checkUserName}}
            </span>
         </p>
     </li>
-    <li @click='link'>
+        
+<!--     <li>
         <p>
             灭火器
             <span class="zenc">正常</span>
@@ -37,7 +38,7 @@
                 2018.01.21 12:00:00
            </span>
         </p>
-    </li>
+    </li> -->
 </ul>
 </body>
 <script>
@@ -53,11 +54,11 @@
 <script type="text/javascript" src="../js/vue.min.js"></script>
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
-
 <script>
     var myvue = new Vue({
         el: '#app',
         data: {
+            nodata: false,
             res: [],
         },
         filters: {
@@ -65,35 +66,28 @@
                 return value.match(/^.+\s/)[0];
             }
         },
-        created(){
-            var params = window.location.href.match(/\params=.+/)[0].replace('params=','');
-            params = decodeURIComponent(params);
-            params = JSON.parse(decodeURIComponent(params));
-            console.log(params);
-            this.params = params;
-
-            let data = {
+        created(){ 
+            var materialId = window.location.href.match(/materialId=\d+/)[0].replace('materialId=','');
+            console.log(materialId);
+            var params = {
                 data:{
-                    id: params.id
+                    id: materialId
                 },
                 url:'/app/material/history'
-            }
-            this.getList(data);
-        },
-        methods:{
-            getList(params){
+            };
              fetchData (params).then(res => {
                 console.log(res);
                 if (res.data.code == 200) {
-                    this.lists = res.data.page.list;  
-                }else {
-
+                    this.res = res.data.page.list;
+                    if(res.data.page.list.length>0){
+                        this.nodata = false;
+                    }else{
+                        this.nodata = true;
+                    }
                 }
-              });
-            },
-            link(){
-                window.location.href="jcqk_yic.html?params="+ JSON.stringify(this.params)
-            }
+            })
+        },
+        methods: {
         }
     });
 </script>

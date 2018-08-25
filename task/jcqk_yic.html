@@ -144,8 +144,8 @@
         },
         methods:{
             linkHistory(){
-                var url = "jcjl.html?params=";
-                window.location.href = url + JSON.stringify(this.params)
+                var url = "jcjl.html?materialId="+ this.params.materialTypeId;
+                window.location.href = url;
             }
         }
     });
