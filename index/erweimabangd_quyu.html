@@ -30,7 +30,7 @@
 					<label for="">
             物品类型
         </label>
-					<input v-model="materialTypeValue" readonly="readonly"  @click="getMaterialTypeList" type="text" placeholder="请选择">
+					<input readonly="readonly" v-model="materialTypeValue" @click="getMaterialTypeList" type="text" placeholder="请选择">
 					<img src="../imgs/index_img/right.png" alt="">
 				</li>
 				<li @click="selectStartData">
@@ -51,20 +51,20 @@
 					<label for="">
             检查规范
         </label>
-					<input readonly="readonly" v-model="checkSpecificId" type="text" placeholder="请选择">
+					<input readonly="readonly" v-model="checkSpecificValue" type="text" placeholder="请选择">
 					<img src="../imgs/index_img/right.png" alt="">
 				</li>
-				<li>
+				<li @click="getRegionList">
 					<p>
 						所属区域
-						<input v-model="regionId" type="text" placeholder="请选择">
+						<input readonly="readonly" v-model="regionValue" type="text" placeholder="请选择">
 						<img src="../imgs/index_img/right.png" alt="">
 					</p>
 				</li>
-				<li>
+				<li @click="getEnterpriseByRegionId">
 					<p>
 						所属企业
-						<input v-model="enterpriseId" type="text" placeholder="请选择（选填）">
+						<input v-model="enterpriseValue" readonly="readonly" type="text" placeholder="请选择（选填）">
 						<img src="../imgs/index_img/right.png" alt="">
 					</p>
 				</li>
@@ -72,7 +72,7 @@
 					<label for="">
             所在位置
         </label>
-					<input v-model="location1" type="text" placeholder="请输入所在位置">
+					<input v-model="location" type="text" placeholder="请输入所在位置">
 				</li>
 			</ul>
 			<div class="box">
@@ -116,14 +116,38 @@
 				producedDate: "",
 				expireDate: "",
 				checkSpecificId: "",
+				checkSpecificValue: "",
 				regionId: "",
+				regionValue: "",
 				enterpriseId: "",
-				location1 :"",
+				enterpriseValue: "",
+				location :"",
 				materialUrl: "",
 				remark: "",
+				isCacheData: false
 			},
 			mounted:function() {
-				
+				if(localStorage.getItem("bindDeviceInfo")) {
+					var that = this,
+					    bindDeviceInfo = JSON.parse(localStorage.getItem("bindDeviceInfo"));
+					console.log(localStorage.getItem("bindDeviceInfo"));
+					that.materialName = bindDeviceInfo.materialName;
+					that.materialTypeId = bindDeviceInfo.materialTypeId;
+					that.materialTypeValue = bindDeviceInfo.materialTypeValue;
+					that.producedDate = bindDeviceInfo.producedDate;
+					that.expireDate = bindDeviceInfo.expireDate;
+					that.checkSpecificId = bindDeviceInfo.checkSpecificId;
+					that.checkSpecificValue = bindDeviceInfo.checkSpecificValue;
+					that.regionId = bindDeviceInfo.regionId;
+					that.regionValue = bindDeviceInfo.regionValue;
+					that.enterpriseId = bindDeviceInfo.enterpriseId;
+					that.enterpriseValue = bindDeviceInfo.enterpriseValue;
+					that.location = bindDeviceInfo.location;
+					that.materialUrl = bindDeviceInfo.materialUrl;
+					that.remark = bindDeviceInfo.remark;
+				} else {
+					console.log(999)
+				}
 			},
 			methods: {
 				bindDevice: function() {
@@ -138,7 +162,7 @@
 							checkSpecificId: that.checkSpecificId,
 							regionId: that.regionId,
 							enterpriseId: that.enterpriseId,
-							location1 :that.location1,
+							location :that.location,
 							materialUrl: that.materialUrl,
 							remark: that.remark
 						},
@@ -173,6 +197,8 @@
 						   onConfirm: function (result) {
 						   	   that.materialTypeValue = result[0].label;
 						   	   that.materialTypeId = result[0].value;
+						   	   that.checkSpecificId = "";
+						       that.checkSpecificValue = "";
 						   },
 						   id: 'materialTypeValue'
 						});
@@ -211,11 +237,102 @@
 				getCheckSpecificList:function() {
 					var that = this
 					if(!that.materialTypeId) {
-						weui.toast('请先选择物品类型', 3000);    
+						weui.toast('请先选择物品类型', 1500);    
 						return false;
 					}
+					var bindDeviceInfo = {
+						qrCode: getQueryString("params"),
+						materialName: that.materialName,
+						materialTypeId: that.materialTypeId,
+						materialTypeValue: that.materialTypeValue,
+						producedDate: that.producedDate,
+						expireDate: that.expireDate,
+						checkSpecificId: that.checkSpecificId,
+						checkSpecificValue: that.checkSpecificValue,
+						regionId: that.regionId,
+						regionValue: that.regionValue,
+						enterpriseId: that.enterpriseId,
+						enterpriseValue: that.enterpriseValue,
+						location:that.location,
+						materialUrl: that.materialUrl,
+						remark: that.remark
+					}
+					
+					localStorage.setItem("bindDeviceInfo", JSON.stringify(bindDeviceInfo));
+					
 					window.location.href = "xuanze_jcgf.html?materialTypeId=" + that.materialTypeId;
-				}
+				},
+				getRegionList:function() {
+					let that = this
+					let data = {
+						data: {
+							
+						},
+						url: '/app/wx/region/list',
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						var cityList = res.data.list;
+						console.log(cityList);
+					    weui.picker(
+					    cityList[0].children, {
+						   className: 'custom-classname',
+						   container: 'body',
+						   defaultValue: [1, 3],
+						   onChange: function (result) {
+						       console.log(result)
+						   },
+						   onConfirm: function (result) {
+						       console.log(result)
+						       console.log(result.length)
+						       that.regionId = result[result.length-1].value;
+						       that.regionValue = result[0].label + '-' + result[1].label + '-' + result[2].label + '-' + result[3].label;
+						       that.enterpriseId = "";
+					           that.enterpriseValue = "";
+						   },
+						   id: 'doubleLinePicker'
+						});
+					});
+				},
+				getEnterpriseByRegionId: function() {
+					let that = this
+					
+					if(!that.regionId) {
+						weui.toast('请先选择所属区域', 1500);    
+						return false;
+					}
+					
+					let data = {
+						data: {
+							
+						},
+						url: '/app/enterprise/list?regionId=' + that.regionId,
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						console.log(res);
+						if(res.data.list.length <= 0) {
+							weui.toast('当前地区没有相关企业', 1500);    
+						    return false;
+						}
+						var weData = res.data.list.map(o=>{return{value:o.id, label:o.name}});
+						weui.picker(
+						res.data.list.map(o=>{return{value:o.id, label:o.name}}),{
+						   className: 'custom-classname',
+						   container: 'body',
+						   onChange: function (result) {
+						   	
+						   },
+						   onConfirm: function (result) {
+						   	that.enterpriseId = result[0].value;
+						   	that.enterpriseValue= result[0].label;
+						   },
+						   id: 'enterpriseId'
+						});
+					});
+				},
 			}
 		});
 	</script>

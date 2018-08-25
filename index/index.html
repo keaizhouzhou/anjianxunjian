@@ -127,7 +127,7 @@
         },
         methods: {
         	scanBinding: function() {
-        		var url = "http://i.0t.com.cn/nb/s/888292100552"; // 设备
+        		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
 //      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
         		let that = this;
@@ -141,16 +141,21 @@
 			    
         		let data = {
 			        data:{
-			        	qrCode: qrCode
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	
 			        },
 			        url:'/app//material/exists'
 			    }
 			    
 		        fetchData (data).then(res => {
 		            console.log(res);
-		            if(!res.data.exists) {
+		            if(res.data.exists) {
 		               weui.toast('您已经绑定过了', 3000);               
 		            } else {
+		            	localStorage.removeItem("bindDeviceInfo");
 		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
 		            }
 		        }); 
