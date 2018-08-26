@@ -180,6 +180,7 @@
 		            		access_token: res.data.access_token,
 		            		token_type: res.data.token_type,
 		            		expires_in: res.data.expires_in,
+		            		startTimestamp: new Date().getTime(),
 		            	}
 		            	sessionStorage.setItem("tokenData", JSON.stringify(tokenData));
 		            }

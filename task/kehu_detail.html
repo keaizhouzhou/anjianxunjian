@@ -104,7 +104,14 @@
 			   getCust0merDeviceList: function(page) {
 					let that = this;
 					var tokenData = JSON.parse(sessionStorage.getItem('tokenData'));
-
+                   
+                    var currentTimestamp = new Date().getTime();
+					if (currentTimestamp - tokenData.startTimestamp > tokenData.expires_in) {
+						weui.toast('登录超时,请重新登录', 1500);
+//						location.href = "../index/index.html";
+						return false;
+					}
+					
 					let data = {
 						headers: {
 							"Authorization": tokenData.token_type + " " + tokenData.access_token
