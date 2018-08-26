@@ -8,37 +8,127 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/zhishi/kaosi.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
 <body>
-<p class="title">
-    消防知识考核
-    <span>共</span>
-    <span>100</span>
-    <span>题</span>
-</p>
-<div class="kaoti">
-     <p class="zongji">当前进度（<span>1</span>/100） </p>
-    <ul>
-        <li>
-            <p>1.下列描述正确的是？<span>(1分)</span></p>
-            <img src="../imgs/zhishi_img/datu.png" alt="">
-            <div>
-                <input type="radio" name="kaoti" id="ti_1">
-                <label for="ti_1">描述一</label>
-            </div>
-           <div>
-               <input type="radio" name="kaoti" id="ti_2">
-               <label for="ti_2">描述二</label>
-           </div>
-            <div>
-                <input type="radio" name="kaoti" id="ti_3">
-                <label for="ti_3">描述三</label>
-            </div>
-        </li>
-    </ul>
-</div>
-<div class="btn" style="display: block;font-size: 0">
-    <button style="font-size: 15px">上一题</button>
-    <button style="font-size: 15px">下一题</button>
+<div id="app">
+    <p class="title">
+        消防知识考核
+        <span>共</span>
+        <span>{{questionList.length}}</span>
+        <span>题</span>
+    </p>
+    <div class="kaoti">
+        <p class="zongji">当前进度（<span>{{nowIndex}}</span>/{{questionList.length}} )</p>
+        <ul>
+            <li v-for="(item,i) in questionList" v-if="nowIndex === i+1">
+                <p>{{nowIndex}}.{{item.question}}？<span>({{item.score}}分)</span></p>
+                <img src="../imgs/zhishi_img/datu.png" alt="">
+                <div v-for="(option,i) in item.questionItems">
+                    <input type="checkbox" name="kaoti" id="ti_1" @change="selected(option)" v-model="option.ischecked">
+                    <label for="ti_1">{{option.item}}</label>
+                </div>
+               <!-- <div>
+                    <input type="radio" name="kaoti" id="ti_2">
+                    <label for="ti_2">描述二</label>
+                </div>
+                <div>
+                    <input type="radio" name="kaoti" id="ti_3">
+                    <label for="ti_3">描述三</label>
+                </div>-->
+            </li>
+        </ul>
+    </div>
+    <div class="btn" style="display: block;font-size: 0">
+        <button style="font-size: 15px">上一题</button>
+        <button style="font-size: 15px" @click="next">下一题</button>
+    </div>
 </div>
 </body>
+<script>
+  var myvue = new Vue({
+    el: '#app',
+    data: {
+      isStart:false,
+      isEnding:false,
+      isCompelet:false,
+      isMask:false,
+      questionList: [],
+      nowIndex:1,
+      totalSorce:0
+    },
+    filters:{
+
+    },
+    methods: {
+      selected(option){
+        console.log(option)
+      },
+      submit(){
+
+        let id = sessionStorage.getItem('id') || '';
+        let data = {
+          data: {
+            examId:id,
+            memberId:getUserid(),
+            answerNum:this.questionList.length,
+            score:this.totalSorce
+          },
+          url: '/app/exam/subExamResult'
+        }
+        fetchData(data).then(res => {
+          console.log(res);
+          if (res.data.code === 200) {
+            //this.questionList = res.data.questionList;
+            window.location.href = "03_kaoshi_list.html"
+          } else {
+
+          }
+        });
+      },
+      next(){
+        if (this.nowIndex ===  this.questionList.length) {
+          this.questionList.map((item)=>{
+            if (item.wrong){
+              this.totalSorce = this.totalSorce + item.score;
+            }
+          })
+          this.submit();
+        }
+        else {
+          this.questionList[this.nowIndex - 1].questionItems.map((item)=>{
+            if (item.ischecked) {
+              if (item.isRight === 0) {
+                item.wrong = false;
+              }
+              else {
+                item.wrong = true;
+              }
+            }
+          })
+          this.nowIndex++;
+        }
+      }
+    },
+    created() {
+      let id = sessionStorage.getItem('id') || '';
+      let data = {
+        data: {
+
+        },
+        url: '/app/exam/getQuestionList/'+id
+      }
+      fetchData(data).then(res => {
+        console.log(res);
+        if (res.data.code === 200) {
+          this.questionList = res.data.questionList;
+        } else {
+
+        }
+      });
+    }
+  });
+</script>
 </html>
