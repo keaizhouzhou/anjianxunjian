@@ -53,6 +53,7 @@ div.box div.tianjia{
     height: 100px;
     text-align: center;
     line-height: 100px;
+    position:  relative;
     background-color: #F5F5F5;
 }
 div.box div.tianjia img{

@@ -127,8 +127,8 @@
         },
         methods: {
         	scanBinding: function() {
-        		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
-//      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
+//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+        		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
         		let that = this;
         		
@@ -138,14 +138,14 @@
 			    if(isNaN(qrCode)) {
 			    	isDevice = false;
 			    }
+			    if(!isDevice) {
+			    	location.href = '../task/kehu_detail.html?qrCode=' + qrCode;
+			    	return false;
+			    }
 			    
         		let data = {
 			        data:{
 			        	qrCode: qrCode,
-			        	qrCode: qrCode,
-			        	qrCode: qrCode,
-			        	qrCode: qrCode,
-			        	
 			        },
 			        url:'/app//material/exists'
 			    }

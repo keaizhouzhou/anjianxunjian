@@ -8,7 +8,9 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/task_css/kehu_detail.css">
+<link rel="stylesheet" href="../css/weui.min.css">
 <body>
+	<div id="app">
 <div class="title">
     <p>客户名称：杭州会友科技有限公司  </p>
     <p>客户地址：拱墅区西城时代商务中心1幢15楼</p>
@@ -58,7 +60,79 @@
         </p>
     </li>
 </ul>
+</div>
 </body>
+
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script type="text/javascript" src="../js/axios.min.js"></script>
+<script type="text/javascript" src="../js/fetchData.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../js/weui.min.js"></script>
+<script>
+    let data = {
+        data:{},
+        url:'/app/user/info'
+    }
+
+    var myvue = new Vue({
+        el: '#app',
+        data: {
+            realname: '',
+            res: {},
+        },
+        created(){
+            let that = this;
+         fetchData (data).then(res => {
+            console.log(res);
+            if (res.data.code == 0) {
+                that.res = res.data.data;
+                sessionStorage.setItem('userId',res.data.data.createUserId);
+                sessionStorage.setItem('regionId',res.data.data.regionId);
+            } else {
+
+            }
+          }); 
+        },
+        methods: {
+        	scanBinding: function() {
+//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+        		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
+        		
+        		let that = this;
+        		
+        		var isDevice = true,
+			        qrCode = getUrlLastParams(url);
+			        
+			    if(isNaN(qrCode)) {
+			    	isDevice = false;
+			    }
+			    if(!isDevice) {
+			    	location.href = '../task/kehu_detail.html?qrCode=' + qrCode;
+			    	return false;
+			    }
+			    
+        		let data = {
+			        data:{
+			        	qrCode: qrCode,
+			        },
+			        url:'/app//material/exists'
+			    }
+			    
+		        fetchData (data).then(res => {
+		            console.log(res);
+		            if(res.data.exists) {
+		               weui.toast('您已经绑定过了', 3000);               
+		            } else {
+		            	localStorage.removeItem("bindDeviceInfo");
+		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
+		            }
+		        }); 
+        	}
+        }
+    });
+
+</script>
 <script>
     function fn() {
         window.location.href="kehu_detail_2.html"
