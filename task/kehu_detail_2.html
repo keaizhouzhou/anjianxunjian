@@ -1,83 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>设备列表</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/task_css/kehu_detail.css">
-<body>
-<ul class="list">
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼配电室
-        </p>
-    </li>
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼大厅
-        </p>
-    </li>
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼配电室
-        </p>
-    </li>
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼大厅
-        </p>
-    </li>
-</ul>
-</body>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>设备列表</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/task_css/kehu_detail.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+	<link rel="stylesheet" href="../css/mescroll.min.css">
+
+	<body>
+		<div id="app">
+			<div id="mescroll" class="mescroll mescroll-hardware" style="height: 100%;">
+				<ul class="list">
+					<li class="item" v-for="item in dataList" @click="goDetailsPage(item.id)">
+						<div>
+							<span v-text="item.typeName"></span>
+							<span>
+				               <img src="../imgs/task_img/dianc.png" alt="">{{item.electricity}}%
+				            </span>
+							<span>
+								<label v-if="item.status==1">在线 <img class="last" src="../imgs/task_img/dian.png" alt=""></label>
+								<label v-if="item.status==2">离线 <img class="last" src="../imgs/task_img/xyd.png" alt=""></label>
+								<label v-if="item.status==3">告警 <img class="last" src="../imgs/task_img/xyd_1.png" alt=""></label>
+				            </span>
+						</div>
+						<p>
+							<img src="../imgs/task_img/dingw.png" alt="">{{item.addrDetail}}
+						</p>
+					</li>
+					<!--<li class="item">
+						<div>
+							<span>电力传感器</span>
+							<span>
+				               <img src="../imgs/task_img/dianc.png" alt="">80%
+				            </span>
+							<span>
+								在线<img class="last" src="../imgs/task_img/dian.png" alt="">
+				            </span>
+						</div>
+						<p>
+							<img src="../imgs/task_img/dingw.png" alt=""> 一楼配电室
+						</p>
+					</li>-->
+				</ul>
+			</div>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.min.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/weui.min.js"></script>
+	<script type="text/javascript" src="../js/mescroll.m.js"></script>
+	<script>
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+               mescroll: null,
+               dataList: []
+			},
+			created() {
+				let that = this;
+				that.initMescroll();
+			},
+			methods: {
+				initMescroll: function() {
+					let that = this
+					
+					that.mescroll = new MeScroll("mescroll", {
+						up: {
+							callback: that.getCust0merDeviceList,
+							isBounce: false,
+							empty: {
+								
+							},
+							htmlNodata: '<p class="upwarp-nodata">亲，没有更多数据了~</p>',
+						}
+					})
+				},
+				getCust0merDeviceList: function(page) {
+					let that = this;
+					var tokenData = JSON.parse(sessionStorage.getItem('tokenData'));
+
+					let data = {
+						headers: {
+							"Authorization": tokenData.token_type + " " + tokenData.access_token
+						},
+						data: {
+							"customerId": getQueryString("customerId"),
+							"current": page.num,
+							"size": 20,
+						},
+						url: businessUrl() + '/customer/deviceList'
+					}
+
+					fetchDataBase(data).then(res => {
+						console.log(res);
+	                    if(page.num == 1) that.dataList = [];
+	                    
+						that.dataList = that.dataList.concat(res.data.data.records);
+						Object.assign({}, that.dataList);
+						that.mescroll.endByPage(res.data.data.records.length, res.data.data.pages);
+					});
+				},
+				goDetailsPage: function(id) {
+					var that = this
+					location.href = "";
+				}
+			}
+		});
+	</script>
+
 </html>

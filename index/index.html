@@ -123,6 +123,7 @@
             } else {
 
             }
+            that.getAuthorizeData();
           }); 
         },
         methods: {
@@ -153,13 +154,37 @@
 		        fetchData (data).then(res => {
 		            console.log(res);
 		            if(res.data.exists) {
-		               weui.toast('您已经绑定过了', 3000);               
+		               weui.toast('您已经绑定过了', 1500);               
 		            } else {
 		            	localStorage.removeItem("bindDeviceInfo");
 		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
 		            }
 		        }); 
-        	}
+        	},
+        	getAuthorizeData: function() { // 获取授权信息
+        		let that = this;
+			    
+        		let data = {
+			        data: clientSettings,
+			        url: authorizeUrl() + '/oauth/token'
+			    }
+			    
+		        fetchDataBase (data).then(res => {
+		            console.log(res);
+		            if(res.data.code==401) {
+		                weui.toast('授权失败', 1500);               
+		            } else if (res.data.code==500) {
+		            	weui.toast(res.data.message, 1500);   
+		            } else {
+		            	var tokenData = {
+		            		access_token: res.data.access_token,
+		            		token_type: res.data.token_type,
+		            		expires_in: res.data.expires_in,
+		            	}
+		            	sessionStorage.setItem("tokenData", JSON.stringify(tokenData));
+		            }
+		        }); 
+        	},
         }
     });
 

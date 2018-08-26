@@ -1,141 +1,139 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>客户详情</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/task_css/kehu_detail.css">
-<link rel="stylesheet" href="../css/weui.min.css">
-<body>
-	<div id="app">
-<div class="title">
-    <p>客户名称：杭州会友科技有限公司  </p>
-    <p>客户地址：拱墅区西城时代商务中心1幢15楼</p>
-</div>
-<ul class="list">
-    <li onclick="fn()">
-        <p>
-            当前任务检查设备列表
-            <span>
-                全部
-                <img src="../imgs/task_img/right.png" alt="">
-            </span>
-        </p>
-    </li>
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼配电室
-        </p>
-    </li>
-    <li class="item">
-        <div>
-            <span>电力传感器</span>
-            <span>
-               <img src="../imgs/task_img/dianc.png" alt="">
-               80%
-            </span>
-            <span>
-               在线
-               <img class="last" src="../imgs/task_img/dian.png" alt="">
-           </span>
-        </div>
-        <p>
-            <img src="../imgs/task_img/dingw.png" alt="">
-            一楼大厅
-        </p>
-    </li>
-</ul>
-</div>
-</body>
 
-<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
-<script type="text/javascript" src="../js/vue.min.js"></script>
-<script type="text/javascript" src="../js/axios.min.js"></script>
-<script type="text/javascript" src="../js/fetchData.js"></script>
-<script type="text/javascript" src="../js/common.js"></script>
-<script type="text/javascript" src="../js/weui.min.js"></script>
-<script>
-    let data = {
-        data:{},
-        url:'/app/user/info'
-    }
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>客户详情</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/task_css/kehu_detail.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+    <link rel="stylesheet" href="../css/mescroll.min.css">
+	<body>
+		<div id="app">
+			<div class="title">
+				<p>客户名称：{{customerInfo.customerName}} </p>
+				<p>客户地址：{{customerInfo.addrName + customerInfo.addrDetail }}</p>
+			</div>
+			<ul class="list">
+				<li>
+					<p>
+						当前任务检查设备列表
+						<span @click="goDeviceList">全部<img src="../imgs/task_img/right.png" alt=""></span>
+					</p>
+				</li>
+				<div id="mescroll" class="mescroll mescroll-hardware" style="height: 100%;">
+					<div>
+						<li class="item" v-for="item in dataList" @click="goDetailsPage(item.id)">
+							<div>
+								<span v-text="item.typeName"></span>
+								<span>
+					               <img src="../imgs/task_img/dianc.png" alt="">{{item.electricity}}%
+					            </span>
+								<span>
+									<label v-if="item.status==1">在线 <img class="last" src="../imgs/task_img/dian.png" alt=""></label>
+									<label v-if="item.status==2">离线 <img class="last" src="../imgs/task_img/xyd.png" alt=""></label>
+									<label v-if="item.status==3">告警 <img class="last" src="../imgs/task_img/xyd_1.png" alt=""></label>
+					            </span>
+							</div>
+							<p>
+								<img src="../imgs/task_img/dingw.png" alt="">{{item.addrDetail}}
+							</p>
+						</li>
+					</div>
+				</div>
+			</ul>
+		</div>
+	</body>
 
-    var myvue = new Vue({
-        el: '#app',
-        data: {
-            realname: '',
-            res: {},
-        },
-        created(){
-            let that = this;
-         fetchData (data).then(res => {
-            console.log(res);
-            if (res.data.code == 0) {
-                that.res = res.data.data;
-                sessionStorage.setItem('userId',res.data.data.createUserId);
-                sessionStorage.setItem('regionId',res.data.data.regionId);
-            } else {
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.min.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/weui.min.js"></script>
+	<script type="text/javascript" src="../js/mescroll.m.js"></script>
+	<script>
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				customerInfo: {},
+				dataList:{}
+			},
+			created() {
+				let that = this;
+				var tokenData = JSON.parse(sessionStorage.getItem('tokenData'));
+				
+				let data = {
+					headers: {
+						"Authorization": tokenData.token_type + " " + tokenData.access_token
+					},
+					data: {
+						"serialNo": getQueryString("qrCode")
+					},
+					url: businessUrl() + '/customer/customerInfo'
+				}
+				
+				fetchDataBase(data).then(res => {
+					console.log(res);
+					if(res.data.code == 200) {
+						that.customerInfo = res.data.data;
+					} else {
+                        weui.toast('加载失败了', 1500); 
+					}
+				});
+				that.initMescroll();
+			},
+			methods: {
+				initMescroll: function() {
+					let that = this
+					
+					that.mescroll = new MeScroll("mescroll", {
+						up: {
+							callback: that.getCust0merDeviceList,
+							isBounce: false,
+							empty: {
+								
+							},
+							htmlNodata: '<p class="upwarp-nodata">亲，没有更多数据了~</p>',
+						}
+					})
+				},
+			   getCust0merDeviceList: function(page) {
+					let that = this;
+					var tokenData = JSON.parse(sessionStorage.getItem('tokenData'));
 
-            }
-          }); 
-        },
-        methods: {
-        	scanBinding: function() {
-//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
-        		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
-        		
-        		let that = this;
-        		
-        		var isDevice = true,
-			        qrCode = getUrlLastParams(url);
-			        
-			    if(isNaN(qrCode)) {
-			    	isDevice = false;
+					let data = {
+						headers: {
+							"Authorization": tokenData.token_type + " " + tokenData.access_token
+						},
+						data: {
+							"customerId": that.customerInfo.id,
+							"current": page.num,
+							"size": 20,
+						},
+						url: businessUrl() + '/customer/deviceList'
+					}
+
+					fetchDataBase(data).then(res => {
+						console.log(res);
+	                    if(page.num == 1) that.dataList = [];
+	                    
+						that.dataList = that.dataList.concat(res.data.data.records);
+						Object.assign({}, that.dataList);
+						that.mescroll.endByPage(res.data.data.records.length, res.data.data.pages);
+					});
+				},
+				goDetailsPage: function(id) {
+					var that = this
+					location.href = "";
+				},
+			    goDeviceList:function() {
+			  	  window.location.href = "kehu_detail_2.html?customerId=" = this.customerInfo.id;
 			    }
-			    if(!isDevice) {
-			    	location.href = '../task/kehu_detail.html?qrCode=' + qrCode;
-			    	return false;
-			    }
-			    
-        		let data = {
-			        data:{
-			        	qrCode: qrCode,
-			        },
-			        url:'/app//material/exists'
-			    }
-			    
-		        fetchData (data).then(res => {
-		            console.log(res);
-		            if(res.data.exists) {
-		               weui.toast('您已经绑定过了', 3000);               
-		            } else {
-		            	localStorage.removeItem("bindDeviceInfo");
-		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
-		            }
-		        }); 
-        	}
-        }
-    });
-
-</script>
-<script>
-    function fn() {
-        window.location.href="kehu_detail_2.html"
-    }
-</script>
+			}
+		});
+	</script>
 </html>
