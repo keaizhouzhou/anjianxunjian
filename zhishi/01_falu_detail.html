@@ -8,13 +8,21 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/zhishi/falu_detail.css">
+<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
 <body>
 <div>
     <img src="../imgs/zhishi_img/datu.png" alt="">
-    <p>
-        这里是详情这里是详情这里是详情这里是详情这里 是详情这里是详情这里是详情这里是详情这里是详 情这里是详情这里是详情
+    <p id="content">
+
     </p>
     <a href="02_kaosi.html">进入考试</a>
 </div>
 </body>
+<script>
+    $(function () {
+      var content = sessionStorage.getItem('content');
+      // var id = sessionStorage.getItem('id');
+      $("#content").html(content)
+    })
+</script>
 </html>

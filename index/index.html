@@ -123,12 +123,13 @@
             } else {
 
             }
+            that.getAuthorizeData();
           }); 
         },
         methods: {
         	scanBinding: function() {
-        		var url = "http://i.0t.com.cn/nb/s/888292100552"; // 设备
-//      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
+//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+        		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
         		let that = this;
         		
@@ -138,23 +139,53 @@
 			    if(isNaN(qrCode)) {
 			    	isDevice = false;
 			    }
+			    if(!isDevice) {
+			    	location.href = '../task/kehu_detail.html?qrCode=' + qrCode;
+			    	return false;
+			    }
 			    
         		let data = {
 			        data:{
-			        	qrCode: qrCode
+			        	qrCode: qrCode,
 			        },
 			        url:'/app//material/exists'
 			    }
 			    
 		        fetchData (data).then(res => {
 		            console.log(res);
-		            if(!res.data.exists) {
-		               weui.toast('您已经绑定过了', 3000);               
+		            if(res.data.exists) {
+		               weui.toast('您已经绑定过了', 1500);               
 		            } else {
+		            	localStorage.removeItem("bindDeviceInfo");
 		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
 		            }
 		        }); 
-        	}
+        	},
+        	getAuthorizeData: function() { // 获取授权信息
+        		let that = this;
+			    
+        		let data = {
+			        data: clientSettings,
+			        url: authorizeUrl() + '/oauth/token'
+			    }
+			    
+		        fetchDataBase (data).then(res => {
+		            console.log(res);
+		            if(res.data.code==401) {
+		                weui.toast('授权失败', 1500);               
+		            } else if (res.data.code==500) {
+		            	weui.toast(res.data.message, 1500);   
+		            } else {
+		            	var tokenData = {
+		            		access_token: res.data.access_token,
+		            		token_type: res.data.token_type,
+		            		expires_in: res.data.expires_in,
+		            		startTimestamp: new Date().getTime(),
+		            	}
+		            	sessionStorage.setItem("tokenData", JSON.stringify(tokenData));
+		            }
+		        }); 
+        	},
         }
     });
 

@@ -30,7 +30,7 @@
 					<label for="">
             物品类型
         </label>
-					<input v-model="materialTypeValue" readonly="readonly"  @click="getMaterialTypeList" type="text" placeholder="请选择">
+					<input readonly="readonly" v-model="materialTypeValue" @click="getMaterialTypeList" type="text" placeholder="请选择">
 					<img src="../imgs/index_img/right.png" alt="">
 				</li>
 				<li @click="selectStartData">
@@ -51,20 +51,20 @@
 					<label for="">
             检查规范
         </label>
-					<input readonly="readonly" v-model="checkSpecificId" type="text" placeholder="请选择">
+					<input readonly="readonly" v-model="checkSpecificValue" type="text" placeholder="请选择">
 					<img src="../imgs/index_img/right.png" alt="">
 				</li>
-				<li>
+				<li @click="getRegionList">
 					<p>
 						所属区域
-						<input v-model="regionId" type="text" placeholder="请选择">
+						<input readonly="readonly" v-model="regionValue" type="text" placeholder="请选择">
 						<img src="../imgs/index_img/right.png" alt="">
 					</p>
 				</li>
-				<li>
+				<li @click="getEnterpriseByRegionId">
 					<p>
 						所属企业
-						<input v-model="enterpriseId" type="text" placeholder="请选择（选填）">
+						<input v-model="enterpriseValue" readonly="readonly" type="text" placeholder="请选择（选填）">
 						<img src="../imgs/index_img/right.png" alt="">
 					</p>
 				</li>
@@ -72,7 +72,7 @@
 					<label for="">
             所在位置
         </label>
-					<input v-model="location1" type="text" placeholder="请输入所在位置">
+					<input v-model="location" type="text" placeholder="请输入所在位置">
 				</li>
 			</ul>
 			<div class="box">
@@ -80,8 +80,27 @@
 					现场照片
 					<span>（最多9张）</span>
 				</p>
-				<div class="tianjia">
-					<img src="../imgs/index_img/jiah.png" alt="">
+				<div class="tianjia" id="uploader"> 
+					<div style="position: relative"></div>
+					 <img  src="../imgs/index_img/jiah.png" alt="">
+					 <div class="weui-cells weui-cells_form" id="uploader" style="position: absolute;left: 0;top: 0;opacity: 0;">
+					     <div class="weui-cell">
+					         <div class="weui-cell__bd">
+					             <div class="weui-uploader">
+					                 <!--<div class="weui-uploader__hd">
+					                     <p class="weui-uploader__title">图片上传</p>
+					                     <div class="weui-uploader__info"><span id="uploadCount">0</span>/5</div>
+					                 </div>-->
+					                 <div class="weui-uploader__bd">
+					                     <ul class="weui-uploader__files" id="uploaderFiles"></ul>
+					                     <div class="weui-uploader__input-box">
+					                         <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+					                     </div>
+					                 </div>
+					             </div>
+					         </div>
+					     </div>
+					 </div>
 				</div>
 			</div>
 			<div class="box_1">
@@ -116,14 +135,38 @@
 				producedDate: "",
 				expireDate: "",
 				checkSpecificId: "",
+				checkSpecificValue: "",
 				regionId: "",
+				regionValue: "",
 				enterpriseId: "",
-				location1 :"",
+				enterpriseValue: "",
+				location :"",
 				materialUrl: "",
 				remark: "",
+				isCacheData: false
 			},
 			mounted:function() {
-				
+				if(localStorage.getItem("bindDeviceInfo")) {
+					var that = this,
+					    bindDeviceInfo = JSON.parse(localStorage.getItem("bindDeviceInfo"));
+					console.log(localStorage.getItem("bindDeviceInfo"));
+					that.materialName = bindDeviceInfo.materialName;
+					that.materialTypeId = bindDeviceInfo.materialTypeId;
+					that.materialTypeValue = bindDeviceInfo.materialTypeValue;
+					that.producedDate = bindDeviceInfo.producedDate;
+					that.expireDate = bindDeviceInfo.expireDate;
+					that.checkSpecificId = bindDeviceInfo.checkSpecificId;
+					that.checkSpecificValue = bindDeviceInfo.checkSpecificValue;
+					that.regionId = bindDeviceInfo.regionId;
+					that.regionValue = bindDeviceInfo.regionValue;
+					that.enterpriseId = bindDeviceInfo.enterpriseId;
+					that.enterpriseValue = bindDeviceInfo.enterpriseValue;
+					that.location = bindDeviceInfo.location;
+					that.materialUrl = bindDeviceInfo.materialUrl;
+					that.remark = bindDeviceInfo.remark;
+				} else {
+					console.log(999)
+				}
 			},
 			methods: {
 				bindDevice: function() {
@@ -138,7 +181,7 @@
 							checkSpecificId: that.checkSpecificId,
 							regionId: that.regionId,
 							enterpriseId: that.enterpriseId,
-							location1 :that.location1,
+							location :that.location,
 							materialUrl: that.materialUrl,
 							remark: that.remark
 						},
@@ -173,6 +216,8 @@
 						   onConfirm: function (result) {
 						   	   that.materialTypeValue = result[0].label;
 						   	   that.materialTypeId = result[0].value;
+						   	   that.checkSpecificId = "";
+						       that.checkSpecificValue = "";
 						   },
 						   id: 'materialTypeValue'
 						});
@@ -211,13 +256,193 @@
 				getCheckSpecificList:function() {
 					var that = this
 					if(!that.materialTypeId) {
-						weui.toast('请先选择物品类型', 3000);    
+						weui.toast('请先选择物品类型', 1500);    
 						return false;
 					}
+					var bindDeviceInfo = {
+						qrCode: getQueryString("params"),
+						materialName: that.materialName,
+						materialTypeId: that.materialTypeId,
+						materialTypeValue: that.materialTypeValue,
+						producedDate: that.producedDate,
+						expireDate: that.expireDate,
+						checkSpecificId: that.checkSpecificId,
+						checkSpecificValue: that.checkSpecificValue,
+						regionId: that.regionId,
+						regionValue: that.regionValue,
+						enterpriseId: that.enterpriseId,
+						enterpriseValue: that.enterpriseValue,
+						location:that.location,
+						materialUrl: that.materialUrl,
+						remark: that.remark
+					}
+					
+					localStorage.setItem("bindDeviceInfo", JSON.stringify(bindDeviceInfo));
+					
 					window.location.href = "xuanze_jcgf.html?materialTypeId=" + that.materialTypeId;
+				},
+				getRegionList:function() {
+					let that = this
+					let data = {
+						data: {
+							
+						},
+						url: '/app/wx/region/list',
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						var cityList = res.data.list;
+						console.log(cityList);
+					    weui.picker(
+					    cityList[0].children, {
+						   className: 'custom-classname',
+						   container: 'body',
+						   defaultValue: [1, 3],
+						   onChange: function (result) {
+						       console.log(result)
+						   },
+						   onConfirm: function (result) {
+						       console.log(result)
+						       console.log(result.length)
+						       that.regionId = result[result.length-1].value;
+						       that.regionValue = result[0].label + '-' + result[1].label + '-' + result[2].label + '-' + result[3].label;
+						       that.enterpriseId = "";
+					           that.enterpriseValue = "";
+						   },
+						   id: 'doubleLinePicker'
+						});
+					});
+				},
+				getEnterpriseByRegionId: function() {
+					let that = this
+					
+					if(!that.regionId) {
+						weui.toast('请先选择所属区域', 1500);    
+						return false;
+					}
+					
+					let data = {
+						data: {
+							
+						},
+						url: '/app/enterprise/list?regionId=' + that.regionId,
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						console.log(res);
+						if(res.data.list.length <= 0) {
+							weui.toast('当前地区没有相关企业', 1500);    
+						    return false;
+						}
+						var weData = res.data.list.map(o=>{return{value:o.id, label:o.name}});
+						weui.picker(
+						res.data.list.map(o=>{return{value:o.id, label:o.name}}),{
+						   className: 'custom-classname',
+						   container: 'body',
+						   onChange: function (result) {
+						   	
+						   },
+						   onConfirm: function (result) {
+						   	that.enterpriseId = result[0].value;
+						   	that.enterpriseValue= result[0].label;
+						   },
+						   id: 'enterpriseId'
+						});
+					});
+				},
+				uploadImg:function() {
+					$.ajax({
+				        url: "http://47.92.7.119:8080/sys/oss/upload",
+				        type: 'POST',
+				        cache: false,
+				        data: new FormData($('#infoLogoForm')[0]),
+				        processData: false,
+				        contentType: false,
+				        dataType:"json",
+				        beforeSend: function(){
+				            uploading = true;
+				        },
+				        success : function(data) {
+				            if (data.code == 1) {
+				                $("#logo").attr("src", data.msg);
+				            } else {
+				                showError(data.msg);
+				            }
+				            uploading = false;
+				        }
+				    });
+					
 				}
 			}
 		});
+		var uploadCount = 0;
+		weui.uploader('#uploader', {
+					   url: 'http://47.92.7.119:8080/sys/oss/upload',
+					   auto: true,
+					   type: 'file',
+					   fileVal: 'file',
+					   compress: {
+					       width: 1600,
+					       height: 1600,
+					       quality: .8
+					   },
+					   onBeforeQueued: function(files) {
+					       // `this` 是轮询到的文件, `files` 是所有文件
+					
+					       if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
+					           weui.alert('请上传图片');
+					           return false; // 阻止文件添加
+					       }
+					       if(this.size > 10 * 1024 * 1024){
+					           weui.alert('请上传不超过10M的图片');
+					           return false;
+					       }
+					       if (files.length > 5) { // 防止一下子选择过多文件
+					           weui.alert('最多只能上传5张图片，请重新选择');
+					           return false;
+					       }
+					       if (uploadCount + 1 > 5) {
+					           weui.alert('最多只能上传5张图片');
+					           return false;
+					       }
+					
+					       ++uploadCount;
+					
+					       // return true; // 阻止默认行为，不插入预览图的框架
+					   },
+					   onQueued: function(){
+					       console.log(this);
+					
+					       // console.log(this.status); // 文件的状态：'ready', 'progress', 'success', 'fail'
+					       // console.log(this.base64); // 如果是base64上传，file.base64可以获得文件的base64
+					
+					       // this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
+					       // this.stop(); // 中断上传
+					
+					       // return true; // 阻止默认行为，不显示预览图的图像
+					   },
+					   onBeforeSend: function(data, headers){
+					       console.log(this, data, headers);
+					       // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
+					       // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
+					
+					       // return false; // 阻止文件上传
+					   },
+					   onProgress: function(procent){
+					       console.log(this, procent);
+					       // return true; // 阻止默认行为，不使用默认的进度显示
+					   },
+					   onSuccess: function (ret) {
+					       console.log(this, ret);
+					       // return true; // 阻止默认行为，不使用默认的成功态
+					   },
+					   onError: function(err){
+					       console.log(this, err);
+					       // return true; // 阻止默认行为，不使用默认的失败态
+					   }
+					});
 	</script>
 
 </html>

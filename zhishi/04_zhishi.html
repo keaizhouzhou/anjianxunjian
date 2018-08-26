@@ -19,7 +19,7 @@
         </span>
     </p>
     <ul class="clearfix">
-        <li class="clearfix" onclick="fn()" v-for='list in res'>
+        <li class="clearfix" @click="jump(list)" v-for='list in res'>
             <div class="box">
                 <img :src="list.url" alt="">
             </div>
@@ -87,6 +87,13 @@
                 url:'/app/regulation/list'
             }
         },
+      methods:{
+        jump ({content,id} = list) {
+          sessionStorage.setItem('content',content);
+          sessionStorage.setItem('id',id);
+          window.location.href="01_falu_detail.html"
+        }
+      },
         created(){ 
          fetchData (this.params).then(res => {
             console.log(res);

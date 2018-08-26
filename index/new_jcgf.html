@@ -1,39 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>新增检查规范</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/index_css/new_jcgf.css">
-<body>
-<div class="title">
-    <label for="">规范名称</label>
-    <input type="text" placeholder="请输入规范名称">
-</div>
-<div class="box_1">
-    <p>
-        规范备注
-    </p>
-    <textarea name="备注" id="" cols="10" rows="4" placeholder="请输入备注内容..."></textarea>
-</div>
-<div class="box">
-    <p>规范备注</p>
-    <p>1. 这里是检查项中的第一项内容；</p>
-    <textarea name="备注" id="" cols="10" rows="4" placeholder="请输入检查项内容......"></textarea>
-    <ul>
-        <li>添加检查项</li>
-        <li>保存检查项</li>
-        <li>取消检查项</li>
-    </ul>
-</div>
-<button onclick="fn() ">保存并选择该规范</button>
-</body>
-<script>
-    function fn() {
-        window.location.href="erweimabangd_qiyi.html"
-    }
-</script>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>新增检查规范</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/index_css/new_jcgf.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+
+	<body>
+		<div id="app">
+			<div class="title">
+				<label for="">规范名称</label>
+				<input v-model="specificName" type="text" placeholder="请输入规范名称">
+			</div>
+			<div class="box_1">
+				<p>
+					规范备注
+				</p>
+				<textarea name="备注" v-model="remark" id="" cols="10" rows="4" placeholder="请输入备注内容..."></textarea>
+			</div>
+			<div class="box" style="padding-bottom: 50px;">
+				<p>规范备注</p>
+				<p v-for="(item,index) in specificItemsJson" v-text="(index+1)+'、'+item.name"></p>
+				<textarea name="备注" v-model="specificCon" id="" cols="10" rows="4" placeholder="请输入检查项内容......"></textarea>
+				<ul>
+					<li @click="addSpecific">添加检查项</li>
+					<li @click="saveSpecific(false)">保存检查项</li>
+					<li @click="consume">取消检查项</li>
+				</ul>
+			</div>
+			<button @click="saveSpecific(true)" style="position: fixed;">保存并选择该规范</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/weui.min.js"></script>
+	<script>
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				specificName: "",
+				remark: '',
+				specificItemsJson: [],
+				specificCon: ''
+			},
+			mounted: function() {
+				var that = this
+			},
+			methods: {
+				saveSpecific: function(isBack) {
+					let that = this
+					if(!that.specificName) {
+						weui.toast('请输入规范名称', 1500);
+						return false;
+					}
+					if(!that.specificItemsJson) {
+						weui.toast('请输入检查项内容', 1500);
+						return false;
+					}
+					let data = {
+						data: {
+							specificName: that.specificName,
+							remark: that.remark,
+							specificItemsJson: JSON.stringify(that.specificItemsJson),
+							name: 3,
+						},
+						url: '/app/check/specific/create'
+					}
+
+					fetchData(data).then(res => {
+						if(res.data.code==200) {
+							weui.toast('添加成功', 1500);
+							if (isBack) {
+								var bindDeviceInfo = JSON.parse(localStorage.getItem("bindDeviceInfo"));
+								bindDeviceInfo.checkSpecificId = res.data.data.id;
+								bindDeviceInfo.checkSpecificValue = res.data.data.specificName;
+								localStorage.setItem("bindDeviceInfo", JSON.stringify(bindDeviceInfo));
+								location.href = 'erweimabangd_quyu.html?params='+ bindDeviceInfo.qrCode;
+							}
+						}
+						console.log(res);
+					});
+				},
+				addSpecific: function() {
+					var that = this,
+					    itemObj = {}; 
+					if(!that.specificCon) {
+						weui.toast('请输入规范备注', 1500);
+						return false;
+					}
+					itemObj.name = that.specificCon;
+					itemObj.id = that.specificItemsJson.length;
+					that.specificItemsJson.push(itemObj);
+					that.specificCon = "";
+					console.log(that.specificItemsJson)
+				},
+				consume: function() {
+					var that = this
+				    window.history.back(-1); 
+//					that.specificItemsJson = [];
+//					that.specificCon = '';
+				}
+			}
+		});
+	</script>
+
 </html>
