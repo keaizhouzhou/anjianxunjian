@@ -1,100 +1,340 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>物品二维码绑定</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/index_css/bangd.css">
-<body>
-<ul>
-    <li>
-        <p>
-            识别码
-            <span class="first-child">25698745635</span>
-        </p>
-    </li>
-    <li>
-        <label for="">
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>物品二维码绑定</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/index_css/bangd.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+
+	<body>
+		<div id="app">
+			<ul>
+				<li>
+					<p>
+						识别码
+						<span class="first-child">{{qrCode}}</span>
+					</p>
+				</li>
+				<li>
+					<label for="">
             物品名称
         </label>
-        <input type="text" placeholder="请输入物品名称">
-    </li>
-    <li>
-        <label for="">
+					<input v-model="materialName" type="text" placeholder="请输入物品名称">
+				</li>
+				<li>
+					<label for="">
             物品类型
         </label>
-        <input type="text" placeholder="请选择">
-        <img src="../imgs/index_img/right.png" alt="">
-    </li>
-    <li>
-        <label for="">
+					<input readonly="readonly" v-model="materialTypeValue" @click="getMaterialTypeList" type="text" placeholder="请选择">
+					<img src="../imgs/index_img/right.png" alt="">
+				</li>
+				<li @click="selectStartData">
+					<label for="">
             生产日期
         </label>
-        <input type="text" placeholder="请选择">
-        <img src="../imgs/index_img/right.png" alt="">
-    </li>
-    <li>
-        <label for="">
+					<input readonly="readonly" v-model="producedDate" type="text" placeholder="请选择">
+					<img src="../imgs/index_img/right.png" alt="">
+				</li>
+				<li @click="selectEndData">
+					<label for="">
             过期日期
         </label>
-        <input type="text" placeholder="请选择">
-        <img src="../imgs/index_img/right.png" alt="">
-    </li>
-    <li onclick="fn()">
-        <label for="">
+					<input readonly="readonly" v-model="expireDate" type="text" placeholder="请选择">
+					<img src="../imgs/index_img/right.png" alt="">
+				</li>
+				<li @click="getCheckSpecificList">
+					<label for="">
             检查规范
         </label>
-        <input type="text" placeholder="请选择">
-        <img src="../imgs/index_img/right.png" alt="">
-    </li>
-    <li>
-        <p>
-            所属区域
-            <input type="text" placeholder="请选择">
-            <img src="../imgs/index_img/right.png" alt="">
-        </p>
-    </li>
-    <li>
-        <p>
-            所属企业
-            <input type="text" placeholder="请选择（选填）">
-            <img src="../imgs/index_img/right.png" alt="">
-        </p>
-    </li>
-    <li>
-        <label for="">
+					<input readonly="readonly" v-model="checkSpecificValue" type="text" placeholder="请选择">
+					<img src="../imgs/index_img/right.png" alt="">
+				</li>
+				<li @click="getRegionList">
+					<p>
+						所属区域
+						<input readonly="readonly" v-model="regionValue" type="text" placeholder="请选择">
+						<img src="../imgs/index_img/right.png" alt="">
+					</p>
+				</li>
+				<li @click="getEnterpriseByRegionId">
+					<p>
+						所属企业
+						<input v-model="enterpriseValue" readonly="readonly" type="text" placeholder="请选择（选填）">
+						<img src="../imgs/index_img/right.png" alt="">
+					</p>
+				</li>
+				<li>
+					<label for="">
             所在位置
         </label>
-        <input type="text" placeholder="请输入所在位置">
-    </li>
-</ul>
-<div class="box">
-    <p>
-        现场照片
-        <span>（最多9张）</span>
-    </p>
-    <div class="tianjia">
-        <img src="../imgs/index_img/jiah.png" alt="">
-    </div>
-</div>
-<div class="box_1">
-    <p>
-        备注
-        <span>(选填)</span>
-    </p>
-    <textarea name="备注" id="" cols="10" rows="5" placeholder="请输入备注内容..."></textarea>
-</div>
-<button onclick="fun()">绑定</button>
-</body>
-<script>
-    function fn() {
-        window.location.href="xuanze_jcgf.html"
-    }
-    function fun() {
-        window.location.href="index.html"
-    }
-</script>
+					<input v-model="location" type="text" placeholder="请输入所在位置">
+				</li>
+			</ul>
+			<div class="box">
+				<p>
+					现场照片
+					<span>（最多9张）</span>
+				</p>
+				<div class="tianjia">
+					<img src="../imgs/index_img/jiah.png" alt="">
+				</div>
+			</div>
+			<div class="box_1">
+				<p>
+					备注
+					<span>(选填)</span>
+				</p>
+				<textarea v-model="remark" name="备注" id="" cols="10" rows="5" placeholder="请输入备注内容..."></textarea>
+			</div>
+			<button @click="bindDevice()">绑定</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/weui.min.js"></script>
+	<script>
+
+		function fun() {
+			//      window.location.href="index.html"
+		}
+
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				qrCode: getQueryString("params"),
+				materialName: "",
+				materialTypeId: "",
+				materialTypeValue:'',
+				producedDate: "",
+				expireDate: "",
+				checkSpecificId: "",
+				checkSpecificValue: "",
+				regionId: "",
+				regionValue: "",
+				enterpriseId: "",
+				enterpriseValue: "",
+				location :"",
+				materialUrl: "",
+				remark: "",
+				isCacheData: false
+			},
+			mounted:function() {
+				if(localStorage.getItem("bindDeviceInfo")) {
+					var that = this,
+					    bindDeviceInfo = JSON.parse(localStorage.getItem("bindDeviceInfo"));
+					console.log(localStorage.getItem("bindDeviceInfo"));
+					that.materialName = bindDeviceInfo.materialName;
+					that.materialTypeId = bindDeviceInfo.materialTypeId;
+					that.materialTypeValue = bindDeviceInfo.materialTypeValue;
+					that.producedDate = bindDeviceInfo.producedDate;
+					that.expireDate = bindDeviceInfo.expireDate;
+					that.checkSpecificId = bindDeviceInfo.checkSpecificId;
+					that.checkSpecificValue = bindDeviceInfo.checkSpecificValue;
+					that.regionId = bindDeviceInfo.regionId;
+					that.regionValue = bindDeviceInfo.regionValue;
+					that.enterpriseId = bindDeviceInfo.enterpriseId;
+					that.enterpriseValue = bindDeviceInfo.enterpriseValue;
+					that.location = bindDeviceInfo.location;
+					that.materialUrl = bindDeviceInfo.materialUrl;
+					that.remark = bindDeviceInfo.remark;
+				} else {
+					console.log(999)
+				}
+			},
+			methods: {
+				bindDevice: function() {
+					let that = this
+					let data = {
+						data: {
+							qrCode: getQueryString("params"),
+							materialName: that.materialName,
+							materialTypeId: that.materialTypeId,
+							producedDate: that.producedDate,
+							expireDate: that.expireDate,
+							checkSpecificId: that.checkSpecificId,
+							regionId: that.regionId,
+							enterpriseId: that.enterpriseId,
+							location :that.location,
+							materialUrl: that.materialUrl,
+							remark: that.remark
+						},
+						url: '/app/material/bind'
+					}
+
+					fetchData(data).then(res => {
+						console.log(res);
+					});
+				},
+				getMaterialTypeList: function() {
+					let that = this
+					let data = {
+						data: {
+							
+						},
+						url: '/app/material/type/list',
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						console.log(res);
+						var that = this
+						var weData = res.data.list.map(o=>{return{value:o.id, label:o.name}});
+						weui.picker(
+						res.data.list.map(o=>{return{value:o.id, label:o.name}}),{
+						   className: 'custom-classname',
+						   container: 'body',
+						   onChange: function (result) {
+						   	
+						   },
+						   onConfirm: function (result) {
+						   	   that.materialTypeValue = result[0].label;
+						   	   that.materialTypeId = result[0].value;
+						   	   that.checkSpecificId = "";
+						       that.checkSpecificValue = "";
+						   },
+						   id: 'materialTypeValue'
+						});
+					});
+				},
+				selectStartData:function() {
+					var that = this
+					weui.datePicker({
+					     start: new Date(), // 从今天开始
+					     end: 2030,
+					     onChange: function(result){
+					     	
+					     },
+					     onConfirm: function(result){
+					         console.log(result);
+					         that.producedDate = result[0]+'-'+result[1]+'-'+result[2];
+					     },
+					     id: 'datePicker'
+					});
+				},
+				selectEndData:function() {
+					var that = this
+					weui.datePicker({
+					     start: new Date(), // 从今天开始
+					     end: 2030,
+					     onChange: function(result){
+					     	
+					     },
+					     onConfirm: function(result){
+					         console.log(result);
+					         that.expireDate = result[0]+'-'+result[1]+'-'+result[2];
+					     },
+					     id: 'datePicker'
+					});
+				},
+				getCheckSpecificList:function() {
+					var that = this
+					if(!that.materialTypeId) {
+						weui.toast('请先选择物品类型', 1500);    
+						return false;
+					}
+					var bindDeviceInfo = {
+						qrCode: getQueryString("params"),
+						materialName: that.materialName,
+						materialTypeId: that.materialTypeId,
+						materialTypeValue: that.materialTypeValue,
+						producedDate: that.producedDate,
+						expireDate: that.expireDate,
+						checkSpecificId: that.checkSpecificId,
+						checkSpecificValue: that.checkSpecificValue,
+						regionId: that.regionId,
+						regionValue: that.regionValue,
+						enterpriseId: that.enterpriseId,
+						enterpriseValue: that.enterpriseValue,
+						location:that.location,
+						materialUrl: that.materialUrl,
+						remark: that.remark
+					}
+					
+					localStorage.setItem("bindDeviceInfo", JSON.stringify(bindDeviceInfo));
+					
+					window.location.href = "xuanze_jcgf.html?materialTypeId=" + that.materialTypeId;
+				},
+				getRegionList:function() {
+					let that = this
+					let data = {
+						data: {
+							
+						},
+						url: '/app/wx/region/list',
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						var cityList = res.data.list;
+						console.log(cityList);
+					    weui.picker(
+					    cityList[0].children, {
+						   className: 'custom-classname',
+						   container: 'body',
+						   defaultValue: [1, 3],
+						   onChange: function (result) {
+						       console.log(result)
+						   },
+						   onConfirm: function (result) {
+						       console.log(result)
+						       console.log(result.length)
+						       that.regionId = result[result.length-1].value;
+						       that.regionValue = result[0].label + '-' + result[1].label + '-' + result[2].label + '-' + result[3].label;
+						       that.enterpriseId = "";
+					           that.enterpriseValue = "";
+						   },
+						   id: 'doubleLinePicker'
+						});
+					});
+				},
+				getEnterpriseByRegionId: function() {
+					let that = this
+					
+					if(!that.regionId) {
+						weui.toast('请先选择所属区域', 1500);    
+						return false;
+					}
+					
+					let data = {
+						data: {
+							
+						},
+						url: '/app/enterprise/list?regionId=' + that.regionId,
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						console.log(res);
+						if(res.data.list.length <= 0) {
+							weui.toast('当前地区没有相关企业', 1500);    
+						    return false;
+						}
+						var weData = res.data.list.map(o=>{return{value:o.id, label:o.name}});
+						weui.picker(
+						res.data.list.map(o=>{return{value:o.id, label:o.name}}),{
+						   className: 'custom-classname',
+						   container: 'body',
+						   onChange: function (result) {
+						   	
+						   },
+						   onConfirm: function (result) {
+						   	that.enterpriseId = result[0].value;
+						   	that.enterpriseValue= result[0].label;
+						   },
+						   id: 'enterpriseId'
+						});
+					});
+				},
+			}
+		});
+	</script>
+
 </html>

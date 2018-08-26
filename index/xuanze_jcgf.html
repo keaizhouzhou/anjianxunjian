@@ -1,49 +1,98 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>选择检查规范</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/index_css/xuanze_jcgf.css">
-<body>
-<div>
-    <span class="first clearfix">
-        <img src="../imgs/index_img/fdj.png" alt="">
-    </span>
-    <input type="text" placeholder="请输入关键字">
-    <span class="last clearfix">搜索</span>
-</div>
-<ul>
-    <li onclick="fn()">
-        <p>
-            <img src="../imgs/index_img/guif.png" alt="">
-            灭火器检查规范
-        </p>
-        <p>
-            备注：灭火器检查规范，10项要求清单。
-        </p>
-    </li>
-    <li onclick="fn()">
-        <p>
-            <img src="../imgs/index_img/guif.png" alt="">
-            灭火器检查规范
-        </p>
-        <p>
-            备注：灭火器检查规范，10项要求清单。
-        </p>
-    </li>
-</ul>
-<button onclick="fun()">新增检查规范</button>
-</body>
-<script>
-    function fn() {
-        window.location.href="jcgf.html"
-    }
-    function fun() {
-        window.location.href="new_jcgf.html"
-    }
-</script>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>选择检查规范</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/index_css/xuanze_jcgf.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+
+	<body>
+		<div id="app">
+			<div>
+				<span class="first clearfix">
+			        <img src="../imgs/index_img/fdj.png" alt="">
+			    </span>
+				<input v-model="keywords" type="text" placeholder="请输入关键字">
+				<span @click="search" class="last clearfix">搜索</span>
+			</div>
+			<ul>
+				<li v-for="item in materialDetails" @click="goDetailsPage(item)">
+					<p>
+						<img src="../imgs/index_img/guif.png" alt=""> {{item.name}}
+					</p>
+					<p>
+						备注：{{item.remark}}
+					</p>
+				</li>
+			</ul>
+			<button @click="createCheckSpecific">新增检查规范</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/weui.min.js"></script>
+	<script>
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				materialDetails: [],
+				keywords: ''
+			},
+			mounted: function() {
+				var that = this
+				that.getData();
+			},
+			methods: {
+				getData: function() {
+					let that = this,
+					    name = that.keywords?that.keywords:'';
+					
+					let data = {
+						data: {
+							materialTypeId: getQueryString("materialTypeId"),
+							name: that.keywords?that.keywords:''
+						},
+						url: '/app/check/specific/list?materialTypeId=' + getQueryString("materialTypeId") +"&name=" + name,
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						that.materialDetails = res.data.page.list;
+						
+						if(that.materialDetails.length<=0) {
+							weui.toast('没有相关信息', 1500);  
+						}
+						console.log(res);
+
+					});
+				},
+				search: function() {
+					var that = this
+//					if(!that.keywords) {
+//						weui.toast('请输入关键字', 1500);  
+//						return false;
+//					}
+					that.getData();
+				},
+				goDetailsPage: function(data) {
+					var that = this
+					console.log(data)
+					window.location.href = "jcgf.html?materialDetals=" + encodeURIComponent(encodeURI(JSON.stringify(data)));
+				},
+				createCheckSpecific: function() {
+					var that = this
+					window.location.href = "new_jcgf.html";
+				},
+			}
+		});
+	</script>
+
 </html>

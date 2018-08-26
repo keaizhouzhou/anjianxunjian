@@ -1,39 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>检查规范内容</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/index_css/jcgf.css">
-<body>
-<ul>
-    <li>
-        <p>
-            <img src="../imgs/index_img/guif.png" alt="">
-            灭火器检查规范
-        </p>
-        <p>
-            备注：灭火器检查规范，10项要求清单。
-        </p>
-    </li>
-    <li>
-        <p>检查项 </p>
-        <p>1. 这里是检查项目中的第一项； </p>
-        <p>2. 这里是检查项目中的第二项； </p>
-        <p>3. 这里是检查项目中的第三项； </p>
-    </li>
-</ul>
-<button onclick="fn()">
-   确认选择
-</button>
-</body>
-<script>
-    function fn() {
-        window.location.href="erweimabangd_qiyi.html"
 
-    }
-</script>
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>检查规范内容</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/index_css/jcgf.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+
+	<body>
+		<div id="app">
+			<ul>
+				<li>
+					<p>
+						<img src="../imgs/index_img/guif.png" alt=""> {{materialDetails.name}}
+					</p>
+					<p>
+						备注：{{materialDetails.remark}}
+					</p>
+				</li>
+				<li>
+					<p>检查项 </p>
+					<p v-for="(item,index) in materialDetails.itemList">{{index+1}}、{{item.name}} </p>
+				</li>
+			</ul>
+			<button @click="confirm">确认选择</button>
+		</div>
+	</body>
+
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script src="../js/weui.min.js"></script>
+	<script>
+		function fun() {
+			window.location.href = "new_jcgf.html"
+		}
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				materialDetails: JSON.parse(decodeURIComponent(decodeURI(getQueryString("materialDetals"))))
+			},
+			mounted: function() {
+				console.log(this.materialDetails)
+			},
+			methods: {
+				confirm: function(data) {
+					var that = this
+					
+					var bindDeviceInfo = JSON.parse(localStorage.getItem("bindDeviceInfo"));
+					bindDeviceInfo.checkSpecificId = that.materialDetails.id;
+					bindDeviceInfo.checkSpecificValue = that.materialDetails.name;
+					localStorage.setItem("bindDeviceInfo", JSON.stringify(bindDeviceInfo));
+					
+					location.href = 'erweimabangd_quyu.html?params='+ bindDeviceInfo.qrCode;
+				}
+			}
+		});
+	</script>
+
 </html>

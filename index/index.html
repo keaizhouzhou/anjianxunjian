@@ -8,10 +8,11 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/index_css/index.css">
+<link rel="stylesheet" href="../css/weui.min.css">
 
 <body>
-
-<div class="head" id="app">
+<div id="app">
+<div class="head">
     <div class="toux" onclick="fn()">
         <img src="../imgs/index_img/toux.png" alt="">
     </div>
@@ -25,8 +26,8 @@
             <li>
                 <h5 class="last">安全监管 &nbsp;&nbsp;智慧巡检</h5>
             </li>
-            <li>
-                <a href="erweimabangd_quyu.html">
+            <li @click="scanBinding()">
+                <a href="#">
                     <img src="../imgs/index_img/pic_1.png" alt="">
                     <p>扫码绑定</p>
                 </a>
@@ -84,6 +85,7 @@
     </ul>
 </div>
 </div>
+</div>
 </body>
 
 <script>
@@ -96,6 +98,8 @@
 <script type="text/javascript" src="../js/vue.min.js"></script>
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
+<script type="text/javascript" src="../js/common.js"></script>
+<script type="text/javascript" src="../js/weui.min.js"></script>
 <script>
     let data = {
         data:{},
@@ -116,10 +120,46 @@
                 that.res = res.data.data;
                 sessionStorage.setItem('userId',res.data.data.createUserId);
                 sessionStorage.setItem('regionId',res.data.data.regionId);
-            }else {
+            } else {
 
             }
           }); 
+        },
+        methods: {
+        	scanBinding: function() {
+        		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+//      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
+        		
+        		let that = this;
+        		
+        		var isDevice = true,
+			        qrCode = getUrlLastParams(url);
+			        
+			    if(isNaN(qrCode)) {
+			    	isDevice = false;
+			    }
+			    
+        		let data = {
+			        data:{
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	qrCode: qrCode,
+			        	
+			        },
+			        url:'/app//material/exists'
+			    }
+			    
+		        fetchData (data).then(res => {
+		            console.log(res);
+		            if(res.data.exists) {
+		               weui.toast('您已经绑定过了', 3000);               
+		            } else {
+		            	localStorage.removeItem("bindDeviceInfo");
+		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
+		            }
+		        }); 
+        	}
         }
     });
 
