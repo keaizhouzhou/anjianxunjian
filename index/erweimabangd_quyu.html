@@ -81,26 +81,12 @@
 					<span>（最多9张）</span>
 				</p>
 				<div class="tianjia" id="uploader"> 
-					<div style="position: relative"></div>
-					 <img  src="../imgs/index_img/jiah.png" alt="">
-					 <div class="weui-cells weui-cells_form" id="uploader" style="position: absolute;left: 0;top: 0;opacity: 0;">
-					     <div class="weui-cell">
-					         <div class="weui-cell__bd">
-					             <div class="weui-uploader">
-					                 <!--<div class="weui-uploader__hd">
-					                     <p class="weui-uploader__title">图片上传</p>
-					                     <div class="weui-uploader__info"><span id="uploadCount">0</span>/5</div>
-					                 </div>-->
-					                 <div class="weui-uploader__bd">
-					                     <ul class="weui-uploader__files" id="uploaderFiles"></ul>
-					                     <div class="weui-uploader__input-box">
-					                         <input id="uploaderInput" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
-					                     </div>
-					                 </div>
-					             </div>
-					         </div>
-					     </div>
-					 </div>
+					<div style="position: relative">
+						<!--@click="uploadImg"-->
+						<!--<img v-bind:src="" v-for="item in imgList" />-->
+						<img  src="../imgs/index_img/jiah.png" alt="">
+					    <input @change="tirggerFile($event)" id="fileid2" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+					</div>
 				</div>
 			</div>
 			<div class="box_1">
@@ -114,6 +100,7 @@
 		</div>
 	</body>
 	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/ajaxfileupload.js"></script>
 	<script type="text/javascript" src="../js/vue.js"></script>
 	<script type="text/javascript" src="../js/axios.min.js"></script>
 	<script type="text/javascript" src="../js/fetchData.js"></script>
@@ -143,7 +130,8 @@
 				location :"",
 				materialUrl: "",
 				remark: "",
-				isCacheData: false
+				isCacheData: false,
+				imgList: [],
 			},
 			mounted:function() {
 				if(localStorage.getItem("bindDeviceInfo")) {
@@ -352,97 +340,64 @@
 						});
 					});
 				},
-				uploadImg:function() {
-					$.ajax({
-				        url: "http://47.92.7.119:8080/sys/oss/upload",
-				        type: 'POST',
-				        cache: false,
-				        data: new FormData($('#infoLogoForm')[0]),
-				        processData: false,
-				        contentType: false,
-				        dataType:"json",
-				        beforeSend: function(){
-				            uploading = true;
-				        },
-				        success : function(data) {
-				            if (data.code == 1) {
-				                $("#logo").attr("src", data.msg);
-				            } else {
-				                showError(data.msg);
-				            }
-				            uploading = false;
-				        }
-				    });
+				tirggerFile:function(event) {
+					var file = event.target.files;
+					console.log(event)
+					var that = this
+					$.ajaxFileUpload({
+			            url: "http://47.92.7.119:8080/sys/oss/upload",
+			            fileElementId: "fileid2", //文件上传域的ID，这里是input的ID，而不是img的
+			            dataType: 'json', //返回值类型 一般设置为json
+			            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+			            success: function (data) {
+			                alert(data.code+" "+ data.msg);
+			            }
+			        });
+			        
+//					$.ajax({
+//				        url: "http://47.92.7.119:8080/sys/oss/upload",
+//				        type: 'POST',
+//				        cache: false,
+//				        data: file,
+//				        processData: false,
+//				        contentType: false,
+//				        dataType:"json",
+//				        beforeSend: function(){
+//				            uploading = true;
+//				        },
+//				        success : function(data) {
+//				        	console.log(data)
+//				            uploading = false;
+//				        }
+//				    });
 					
 				}
 			}
 		});
-		var uploadCount = 0;
-		weui.uploader('#uploader', {
-					   url: 'http://47.92.7.119:8080/sys/oss/upload',
-					   auto: true,
-					   type: 'file',
-					   fileVal: 'file',
-					   compress: {
-					       width: 1600,
-					       height: 1600,
-					       quality: .8
-					   },
-					   onBeforeQueued: function(files) {
-					       // `this` 是轮询到的文件, `files` 是所有文件
-					
-					       if(["image/jpg", "image/jpeg", "image/png", "image/gif"].indexOf(this.type) < 0){
-					           weui.alert('请上传图片');
-					           return false; // 阻止文件添加
-					       }
-					       if(this.size > 10 * 1024 * 1024){
-					           weui.alert('请上传不超过10M的图片');
-					           return false;
-					       }
-					       if (files.length > 5) { // 防止一下子选择过多文件
-					           weui.alert('最多只能上传5张图片，请重新选择');
-					           return false;
-					       }
-					       if (uploadCount + 1 > 5) {
-					           weui.alert('最多只能上传5张图片');
-					           return false;
-					       }
-					
-					       ++uploadCount;
-					
-					       // return true; // 阻止默认行为，不插入预览图的框架
-					   },
-					   onQueued: function(){
-					       console.log(this);
-					
-					       // console.log(this.status); // 文件的状态：'ready', 'progress', 'success', 'fail'
-					       // console.log(this.base64); // 如果是base64上传，file.base64可以获得文件的base64
-					
-					       // this.upload(); // 如果是手动上传，这里可以通过调用upload来实现；也可以用它来实现重传。
-					       // this.stop(); // 中断上传
-					
-					       // return true; // 阻止默认行为，不显示预览图的图像
-					   },
-					   onBeforeSend: function(data, headers){
-					       console.log(this, data, headers);
-					       // $.extend(data, { test: 1 }); // 可以扩展此对象来控制上传参数
-					       // $.extend(headers, { Origin: 'http://127.0.0.1' }); // 可以扩展此对象来控制上传头部
-					
-					       // return false; // 阻止文件上传
-					   },
-					   onProgress: function(procent){
-					       console.log(this, procent);
-					       // return true; // 阻止默认行为，不使用默认的进度显示
-					   },
-					   onSuccess: function (ret) {
-					       console.log(this, ret);
-					       // return true; // 阻止默认行为，不使用默认的成功态
-					   },
-					   onError: function(err){
-					       console.log(this, err);
-					       // return true; // 阻止默认行为，不使用默认的失败态
-					   }
-					});
+		function  uploadImg2() {
+			var files = $("#fileid").val();
+			console.log(files);
+			$.ajax({
+		        url: "http://47.92.7.119:8080/sys/oss/upload",
+		        type: 'POST',
+		        cache: false,
+		        data: files,
+		        processData: false,
+		        contentType: false,
+		        dataType:"json",
+		        beforeSend: function(){
+		            uploading = true;
+		        },
+		        success : function(data) {
+		            if (data.code == 1) {
+		                $("#logo").attr("src", data.msg);
+		            } else {
+		                showError(data.msg);
+		            }
+		            uploading = false;
+		        }
+		    });
+		}
 	</script>
 
 </html>

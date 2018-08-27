@@ -1,82 +1,123 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
-    <title>检查情况-正常</title>
-</head>
-<link rel="stylesheet" href="../css/base.css">
-<link rel="stylesheet" href="../css/bootstrap.css">
-<link rel="stylesheet" href="../css/task_css/wpjc.css">
-<body>
-<div class="title">
-    <p>
-        识别码：25698745635
-        <span onclick="fn()">
-            历史检查
-            <img src="../imgs/task_img/right.png" alt="">
-        </span>
-    </p>
-</div>
-<div class="mhq clearfix">
-    <div class="box">
-        <img src="../imgs/task_img/mhq.png" alt="">
-    </div>
-    <div class="box_1">
-        <p>
-            灭火器
-            <span>
-                检查规范
-            </span>
-        </p>
-        <p>位置：一区12幢1楼楼道 </p>
-        <p>生产日期：2018.01.01</p>
-        <p>过期日期：2018.01.01</p>
-    </div>
-</div>
-<div class="jcqk">
-    <ul>
-        <li>
-            <p>灭火器是否达到送修条件和维修期限？</p>
-            <span class="checked">正常</span>
-            <span>异常</span>
-        </li>
-        <li>
-            <p>灭火器是否达到报废条件和报废期限？</p>
-            <span class="checked">正常</span>
-            <span>异常</span>
-        </li>
-        <li>
-            <p>灭火器的铅封、销闩等保险装置是否损坏或遗失？</p>
-            <span class="checked">正常</span>
-            <span>异常</span>
-        </li>
-    </ul>
-</div>
-<!--情况描述-->
-<div class="miaosu">
-    <p>
-        情况描述
-    </p>
-    <textarea name="备注" id="" cols="10" rows="5" placeholder="请输入检查情况描述..."></textarea>
-</div>
-<!--添加照片-->
-<div class="pic">
-    <p>
-        现场照片/视频
-    </p>
-    <div class="tianjia">
-        <img src="../imgs/index_img/jiah.png" alt="">
-    </div>
-</div>
-<button onclick="fun()">提交</button>
-</body>
-<script>
-    function fn() {
-        window.location.href="jcjl.html"
-    }
-    function fun() {
-        window.location.href="../index/index.html"
-    }
-</script>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no" name="viewport">
+		<title>检查情况-正常</title>
+	</head>
+	<link rel="stylesheet" href="../css/base.css">
+	<link rel="stylesheet" href="../css/bootstrap.css">
+	<link rel="stylesheet" href="../css/task_css/wpjc.css">
+	<link rel="stylesheet" href="../css/weui.min.css">
+
+	<body>
+		<div id="app">
+			<div class="title">
+				<p>
+					识别码：{{deviceDetails.qrCode}}
+					<span onclick="fn()">
+						历史检查<img src="../imgs/task_img/right.png" alt="">
+                    </span>
+				</p>
+			</div>
+			<div class="mhq clearfix">
+				<div class="box">
+					<img src="../imgs/task_img/mhq.png" alt="">
+				</div>
+				<div class="box_1">
+					<p>
+						{{deviceDetails.materialName}}
+						<span>检查规范</span>
+					</p>
+					<p>位置：{{deviceDetails.location}} </p>
+					<p>生产日期：{{deviceDetails.producedDate}}</p>
+					<p>过期日期：{{deviceDetails.expireDate}}</p>
+				</div>
+			</div>
+			<div class="jcqk">
+				<ul>
+					<li v-for="item in checkSpecificItmes.itemList">
+						<p v-text="item.name"></p>
+						<span @click="checkBtns(0,item.id)" v-if="" class="checked">正常</span>
+						<span @click="checkBtns(1,item.id)" >异常</span>
+					</li>
+				</ul>
+			</div>
+			<!--情况描述-->
+			<div class="miaosu">
+				<p>
+					情况描述
+				</p>
+				<textarea name="备注" id="" cols="10" rows="5" placeholder="请输入检查情况描述..."></textarea>
+			</div>
+			<!--添加照片-->
+			<div class="pic">
+				<p>
+					现场照片/视频
+				</p>
+				<div class="tianjia">
+					<img src="../imgs/index_img/jiah.png" alt="">
+				</div>
+			</div>
+			<button onclick="fun()">提交</button>
+		</div>
+	</body>
+	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="../js/vue.min.js"></script>
+	<script type="text/javascript" src="../js/axios.min.js"></script>
+	<script type="text/javascript" src="../js/fetchData.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+	<script type="text/javascript" src="../js/weui.min.js"></script>
+	<script>
+		let data = {
+			data: {},
+			url: '/app/user/info'
+		}
+
+		var myvue = new Vue({
+			el: '#app',
+			data: {
+				deviceDetails: JSON.parse(decodeURIComponent(decodeURI(getQueryString("deviceDetails")))),
+			    checkSpecificItmes: {}
+			},
+			created() {
+				let that = this;
+				that.getCheckSpecificItmes();
+			},
+			methods: {
+				getCheckSpecificItmes: function() {
+					let that = this;
+					let data = {
+						data: {
+							id: "",
+						},
+						url: '/app/check/specific/query?materialTypeId=1' , //+ that.deviceDetails.checkSpecificId
+						method: 'get'
+					}
+
+					fetchData(data).then(res => {
+						if(res.data.code == 200) {
+							that.checkSpecificItmes = res.data.list;
+						}
+						console.log(res);
+					});
+				},
+				checkBtns: function(status,id) {
+					var that = this
+					that.current
+				}
+			}
+		});
+	</script>
+	<script>
+		function fn() {
+			window.location.href = "jcjl.html"
+		}
+
+		function fun() {
+			window.location.href = "../index/index.html"
+		}
+	</script>
+
 </html>

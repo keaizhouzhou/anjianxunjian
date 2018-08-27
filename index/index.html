@@ -32,8 +32,8 @@
                     <p>扫码绑定</p>
                 </a>
             </li>
-            <li>
-                <a href="">
+            <li @click="scanChecked()">
+                <a href="#">
                     <!--../task/wpjc_zenc.html-->
                     <img src="../imgs/index_img/pic_2.png" alt="">
                     <p>扫码检查</p>
@@ -128,8 +128,8 @@
         },
         methods: {
         	scanBinding: function() {
-//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
-        		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
+        		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+//      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
         		let that = this;
         		
@@ -158,6 +158,30 @@
 		            } else {
 		            	localStorage.removeItem("bindDeviceInfo");
 		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
+		            }
+		        }); 
+        	},
+        	scanChecked: function() {
+        		var url = "http://i.0t.com.cn/nb/s/20"; // 设备
+        		
+        		let that = this;
+        		
+        		let qrCode = getUrlLastParams(url);
+			        
+        		let data = {
+			        data:{
+			        	id: qrCode,
+			        },
+			        url:'/app/material/details?id='+ qrCode,
+			        method: 'get'
+			    }
+			    
+		        fetchData (data).then(res => {
+		            console.log(res);
+		            if(res.data.code == 200) {
+		            	location.href = "../task/wpjc_zenc.html?deviceDetails=" + encodeURIComponent(encodeURI(JSON.stringify(res.data.list)));
+		            } else {
+		            	weui.toast(res.data.msg, 1500); 
 		            }
 		        }); 
         	},
