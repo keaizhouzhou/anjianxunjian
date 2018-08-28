@@ -341,66 +341,28 @@
 					});
 				},
 				tirggerFile:function(event) {
-					var file = event.target.files;
-					console.log(event)
-					var that = this
-					$.ajaxFileUpload({
-			            url: "http://47.92.7.119:8080/sys/oss/upload",
-			            fileElementId: "fileid2", //文件上传域的ID，这里是input的ID，而不是img的
-			            dataType: 'json', //返回值类型 一般设置为json
-			            contentType: "application/x-www-form-urlencoded; charset=utf-8",
-			            success: function (data) {
-			                alert(data.code+" "+ data.msg);
-			            },
-						  error: function(data, status, e){
-							console.log(data,status,e)
-						  }
-			        });
-			        
-//					$.ajax({
-//				        url: "http://47.92.7.119:8080/sys/oss/upload",
-//				        type: 'POST',
-//				        cache: false,
-//				        data: file,
-//				        processData: false,
-//				        contentType: false,
-//				        dataType:"json",
-//				        beforeSend: function(){
-//				            uploading = true;
-//				        },
-//				        success : function(data) {
-//				        	console.log(data)
-//				            uploading = false;
-//				        }
-//				    });
-					
+					var fileObj = event.target.files;
+					var formFile = new FormData();
+	                formFile.append("file", fileObj); 
+	                formFile.append("platformCode", "inspect"); 
+	                formFile.append("dirFolderName", "materials"); 
+	                
+	                console.log(fileObj)
+	                $.ajax({
+	                   url: "http://47.92.7.119:8080/app/upload",
+	                   data: formFile,
+	                   type: "post",
+	                   dataType: "json",
+	                   cache: false,//上传文件无需缓存
+	                   processData: false,//用于对data参数进行序列化处理 这里必须false
+	                   contentType: false, //必须
+	                   success: function (result) {
+	                   	console.log(result)
+	                   },
+	                })
 				}
 			}
 		});
-		function  uploadImg2() {
-			var files = $("#fileid").val();
-			console.log(files);
-			$.ajax({
-		        url: "http://47.92.7.119:8080/sys/oss/upload",
-		        type: 'POST',
-		        cache: false,
-		        data: files,
-		        processData: false,
-		        contentType: false,
-		        dataType:"json",
-		        beforeSend: function(){
-		            uploading = true;
-		        },
-		        success : function(data) {
-		            if (data.code == 1) {
-		                $("#logo").attr("src", data.msg);
-		            } else {
-		                showError(data.msg);
-		            }
-		            uploading = false;
-		        }
-		    });
-		}
 	</script>
 
 </html>
