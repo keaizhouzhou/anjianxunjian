@@ -9,7 +9,11 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/index_css/index.css">
 <link rel="stylesheet" href="../css/weui.min.css">
-
+<style type="text/css"> 
+	input[node-type=jsbridge]{
+	    display:none;
+	}
+</style>
 <body>
 <div id="app">
 <div class="head">
@@ -31,6 +35,11 @@
                     <img src="../imgs/index_img/pic_1.png" alt="">
                     <p>扫码绑定</p>
                 </a>
+                <!--<div>
+			        <div class="qr-btn" node-type="qr-btn">扫描二维码1
+					    <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+					</div>
+			    </div>-->
             </li>
             <li @click="scanChecked()">
                 <a href="#">
@@ -100,6 +109,9 @@
 <script type="text/javascript" src="../js/fetchData.js"></script>
 <script type="text/javascript" src="../js/common.js"></script>
 <script type="text/javascript" src="../js/weui.min.js"></script>
+<script type="text/javascript" src="../js/qrcode.js"></script>
+<script type="text/javascript" src="../js/qrcode.lib.min.js"></script>
+<script type="text/javascript" src="../js/zepto.js"></script>
 <script>
     let data = {
         data:{},
@@ -128,6 +140,7 @@
         },
         methods: {
         	scanBinding: function() {
+//      		Qrcode.init($('[node-type=qr-btn]'));
         		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
 //      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
@@ -162,7 +175,7 @@
 		        }); 
         	},
         	scanChecked: function() {
-        		var url = "http://i.0t.com.cn/nb/s/20"; // 设备
+        		var url = "http://i.0t.com.cn/nb/s/15236852"; // 设备
         		
         		let that = this;
         		
@@ -170,9 +183,9 @@
 			        
         		let data = {
 			        data:{
-			        	id: qrCode,
+			        	qrCode: qrCode,
 			        },
-			        url:'/app/material/details?id='+ qrCode,
+			        url:'/app/material/info?qrCode='+ qrCode,
 			        method: 'get'
 			    }
 			    

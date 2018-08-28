@@ -51,3 +51,42 @@ div.foot ul li a p.first{
     color: #FFD457;
 }
 
+
+.flex {
+	display: flex;
+	display: -webkit-flex;
+}
+
+.flex_1 {
+	flex: 1;
+}
+
+.flex_center {
+	align-items: center;
+}
+
+.flex_just {
+	justify-content: center;
+}
+
+.flex_bettwen {
+	justify-content: space-between;
+}
+
+.flex_around {
+	justify-content: space-around;
+}
+
+.flex_column {
+	flex-direction: column;
+}
+.flex_wrap_box {
+	justify-content:flex-start;
+	flex-wrap: wrap;
+}
+.flex_wrap_box img.upload_img {
+	width: 100px;
+	height: 100px;
+	margin-right: 20px;
+	margin-bottom: 20px;
+}

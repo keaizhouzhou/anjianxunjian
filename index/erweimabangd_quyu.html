@@ -80,12 +80,13 @@
 					现场照片
 					<span>（最多9张）</span>
 				</p>
-				<div class="tianjia" id="uploader"> 
-					<div style="position: relative">
-						<!--@click="uploadImg"-->
-						<!--<img v-bind:src="" v-for="item in imgList" />-->
-						<img  src="../imgs/index_img/jiah.png" alt="">
-					    <input @change="tirggerFile($event)" id="fileid2" class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+				<div class="flex flex_around flex_wrap_box">
+				<img  class="upload_img" v-for="item in imgList" v-bind:src="item" />
+				<div class="tianjia"> 
+						<div style="position: relative">
+							<img  src="../imgs/index_img/jiah.png" alt="">
+						    <input @change="tirggerFile" id="fileid2"  class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+						</div>
 					</div>
 				</div>
 			</div>
@@ -128,7 +129,7 @@
 				enterpriseId: "",
 				enterpriseValue: "",
 				location :"",
-				materialUrl: "",
+				materialUrl: "https://www.resource.yuntuodev.cn/resource/images/weixin/inspect/materials/8acb780c7cea4dcabc5c0e2472384dca.jpg",
 				remark: "",
 				isCacheData: false,
 				imgList: [],
@@ -170,7 +171,7 @@
 							regionId: that.regionId,
 							enterpriseId: that.enterpriseId,
 							location :that.location,
-							materialUrl: that.materialUrl,
+							materialUrl: "https://www.resource.yuntuodev.cn/resource/images/weixin/inspect/materials/8acb780c7cea4dcabc5c0e2472384dca.jpg",
 							remark: that.remark
 						},
 						url: '/app/material/bind'
@@ -340,14 +341,24 @@
 						});
 					});
 				},
-				tirggerFile:function(event) {
-					var fileObj = event.target.files;
+				tirggerFile:function(e) {
+					var fileObj = e.target.files[0];
 					var formFile = new FormData();
+					
 	                formFile.append("file", fileObj); 
 	                formFile.append("platformCode", "inspect"); 
 	                formFile.append("dirFolderName", "materials"); 
 	                
-	                console.log(fileObj)
+					console.log(formFile.get('file'))
+//					axios.post('http://47.92.7.119:8080/app/upload', formFile, {
+//							headers: {
+//								'Content-Type': 'multipart/form-data'
+//							}
+//						})
+//				        .then(response => {
+//				          console.log(response.data)
+//				        }) 
+
 	                $.ajax({
 	                   url: "http://47.92.7.119:8080/app/upload",
 	                   data: formFile,

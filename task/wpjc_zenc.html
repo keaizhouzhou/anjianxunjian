@@ -37,19 +37,27 @@
 			</div>
 			<div class="jcqk">
 				<ul>
-					<li v-for="item in checkSpecificItmes.itemList">
+					<li v-for="(item,index) in deviceDetails.checkSpecificItems">
 						<p v-text="item.name"></p>
-						<span @click="checkBtns(0,item.id)" v-if="" class="checked">正常</span>
-						<span @click="checkBtns(1,item.id)" >异常</span>
+						<span @click="checkBtns(0,index)" v-bind:class="!inspectStatusArr[index]?'checked':''">正常</span>
+						<span @click="checkBtns(1,index)" v-bind:class="inspectStatusArr[index]==1?'checked':''">异常</span>
 					</li>
 				</ul>
 			</div>
+			<p v-if="inspectStatus" class="shangbao" @click="selectCheifs" >
+			    <img src="../imgs/task_img/sanj.png" alt="">
+			    上报上级
+			    <span>
+			         <label v-text="cheifsName"></label>
+			         <img src="../imgs/task_img/right.png" alt="">
+			    </span>
+			</p>
 			<!--情况描述-->
 			<div class="miaosu">
 				<p>
 					情况描述
 				</p>
-				<textarea name="备注" id="" cols="10" rows="5" placeholder="请输入检查情况描述..."></textarea>
+				<textarea v-model="descr" name="备注" id="" cols="10" rows="5" placeholder="请输入检查情况描述..."></textarea>
 			</div>
 			<!--添加照片-->
 			<div class="pic">
@@ -60,7 +68,7 @@
 					<img src="../imgs/index_img/jiah.png" alt="">
 				</div>
 			</div>
-			<button onclick="fun()">提交</button>
+			<button @click="submitInfo">提交</button>
 		</div>
 	</body>
 	<script type="text/javascript" src="../js/jquery-1.11.1.min.js"></script>
@@ -79,11 +87,17 @@
 			el: '#app',
 			data: {
 				deviceDetails: JSON.parse(decodeURIComponent(decodeURI(getQueryString("deviceDetails")))),
-			    checkSpecificItmes: {}
+			    checkSpecificItmes: {},
+			    inspectStatusArr: [],
+			    inspectStatus: false,
+			    descr: "",
+			    photos: [],
+			    cheifsName: "请选择",
+			    cheifsId: "",
 			},
 			created() {
 				let that = this;
-				that.getCheckSpecificItmes();
+//				that.getCheckSpecificItmes();
 			},
 			methods: {
 				getCheckSpecificItmes: function() {
@@ -105,18 +119,59 @@
 				},
 				checkBtns: function(status,id) {
 					var that = this
-					that.current
+					Vue.set(that.inspectStatusArr, id, status);
+					if(that.inspectStatusArr.indexOf(1)>=0) {
+						that.inspectStatus = true;
+					} else {
+						that.inspectStatus = false;
+					}
+				},
+				submitInfo: function() {
+					let that = this;
+					let data = {
+						data: {
+							materialId:that.deviceDetails.id,
+							regionId: that.deviceDetails.regionId,
+							status: '0',
+							inspectStatus: that.inspectStatusArr.indexOf(1)>=0?1:0,
+							chiefIds: that.cheifsId,
+							photos: ['33','333'],
+							descr: that.descr,
+						},
+						url: '/app/material/check', 
+						method: 'POST'
+					}
+
+					fetchData(data).then(res => {
+						if(res.data.code == 200) {
+							console.log(res);
+//							window.location.href = "../index/index.html"
+						}
+						console.log(res);
+					});
+				},
+				selectCheifs:function() {
+					var that = this
+					var weData = that.deviceDetails.cheifs.map(o=>{return{value:o.id, label:o.name}});
+					weui.picker(
+					   weData,{
+						   className: 'custom-classname',
+						   container: 'body',
+						   onChange: function (result) {
+					   },
+					   onConfirm: function (result) {
+					   	   that.cheifsName = result[0].label;
+					   	   that.cheifsId = result[0].value;
+					   },
+					   id: 'cheifs'
+					});
 				}
 			}
 		});
 	</script>
 	<script>
 		function fn() {
-			window.location.href = "jcjl.html"
-		}
-
-		function fun() {
-			window.location.href = "../index/index.html"
+			window.location.href = "jcjl.html?materialId=" + myvue.deviceDetails.id
 		}
 	</script>
 
