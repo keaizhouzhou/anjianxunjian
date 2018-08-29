@@ -9,41 +9,37 @@
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/index_css/grzx.css">
 <body>
-<ul>
-    <li>
-        <p>
-            姓名
-            <span>
-                小芒果Vicky
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-            电话
-            <span>
-                18888888888
-            </span>
-        </p>
-    </li>
-    <li>
-        <p>
-          地址
-            <span>
-                西湖区骆家庄社区
-            </span>
-        </p>
-    </li>
-</ul>
-<p class="add" onclick="fn()">
-    知识收藏夹
-    <span>
-        <img src="../imgs/index_img/right.png" alt="">
-    </span>
-</p>
-<button type="submit" onclick="btn()">
-    退出登陆
-</button>
+<div id="app">
+    <ul>
+        <li>
+            <p>
+                姓名
+                <span>{{allUserinfo.realname}}</span>
+            </p>
+        </li>
+        <li>
+            <p>
+                电话
+                <span>{{allUserinfo.mobile}}</span>
+            </p>
+        </li>
+        <li>
+            <p>
+              地址
+                <span>{{allUserinfo.regionName}}</span>
+            </p>
+        </li>
+    </ul>
+    <p class="add" onclick="fn()">
+        知识收藏夹
+        <span>
+            <img src="../imgs/index_img/right.png" alt="">
+        </span>
+    </p>
+    <button type="submit" onclick="btn()">
+        退出登陆
+    </button>
+</div>
 </body>
 <script>
     function fn() {
@@ -52,5 +48,19 @@
     function btn() {
         window.location.href="login.html";
     }
+</script>
+
+<script type="text/javascript" src="../js/vue.min.js"></script>
+<script>
+var myvue = new Vue({
+    el: '#app',
+    data: {
+        allUserinfo: '',
+    },
+    created(){
+        let allUserinfo = sessionStorage.getItem("allUserinfo");
+        this.allUserinfo = JSON.parse(allUserinfo);
+    }
+});
 </script>
 </html>

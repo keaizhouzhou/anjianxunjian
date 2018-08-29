@@ -120,6 +120,7 @@
                 that.res = res.data.data;
                 sessionStorage.setItem('userId',res.data.data.createUserId);
                 sessionStorage.setItem('regionId',res.data.data.regionId);
+                sessionStorage.setItem("allUserinfo", JSON.stringify(res.data.data));
             } else {
 
             }
