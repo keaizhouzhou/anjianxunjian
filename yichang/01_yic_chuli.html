@@ -9,19 +9,30 @@
 <link rel="stylesheet" href="../css/base.css">
 <link rel="stylesheet" href="../css/bootstrap.css">
 <link rel="stylesheet" href="../css/yichang/yic_chuli.css">
+<link rel="stylesheet" href="../css/weui.min.css">
+
 <body>
 <div id="app">
     <p>情况描述</p>
     <textarea rows="3" cols="25" placeholder="请输入检查情况描述..." v-model="descr"></textarea>
-    <p>现场照片/视频）</p>
-    <div class="box">
-        <img src="../imgs/yichang/jia.png" alt="">
-        <input type="file" name="" id="inputfile" accept="image/*" @change='selectPhoto'>
-    </div>
+    <div class="pic">
+		<p>
+			现场照片/视频
+		</p>
+		<div class="flex flex_around flex_wrap_box">
+			<img @click="deleteImg(index)" class="upload_img" v-for="(item,index) in imgList" v-bind:src="item" />
+			<div class="tianjia"> 
+				<div style="position: relative;background: none;padding: 0;">
+					<img src="../imgs/index_img/jiah.png" />
+				    <input @change="upload" id="imgFile"  class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+				</div>
+			</div>
+		</div>
+	</div>
 
-    <div style="background-color: #eee;margin-top: 20px;" v-if='isviewPhoto'>
+    <!--<div style="background-color: #eee;margin-top: 20px;" v-if='isviewPhoto'>
         <img :src="photoUrl" style="max-width: 100%;">
-    </div>
+    </div>-->
 
     <button type="submit" @click="submit">提交</button>
 
@@ -36,6 +47,7 @@
 <script type="text/javascript" src="../js/vue.min.js"></script>
 <script type="text/javascript" src="../js/axios.min.js"></script>
 <script type="text/javascript" src="../js/fetchData.js"></script>
+<script type="text/javascript" src="../js/weui.min.js"></script>
 <script>
     var myvue = new Vue({
         el: '#app',
@@ -46,6 +58,7 @@
             descr: '',
             photoUrl: '',
             isviewPhoto: false,
+            imgList: []
         },
         filters: {
             cutTime(value){
@@ -87,7 +100,7 @@
                             materialId: this.params.materialId,
                             id: this.params.id,
                             descr: this.descr,
-                            photos: this.photoUrl,
+                            photos: this.imgList.toString(),
                         },
                         url:'/app/anomaly/process'
                     };
@@ -101,7 +114,58 @@
                     }
                   }); 
 
-            }
+            },
+            upload() {
+					var that = this
+					var loading = weui.loading('loading', {
+					    className: 'custom-classname'
+					});
+					if(that.imgList.length>=9) {
+						weui.toast('最多选择9张图片', 1500);  
+					}
+					
+                    var imgFile = document.getElementById("imgFile");
+                    var fileObj = imgFile.files[0];
+                    var imgObj = new FormData();
+
+                    imgObj.append("file", fileObj);
+
+	                $.ajax({
+	                   url: "http://47.92.7.119:8080/app/upload",
+	                   data: imgObj,
+	                   type: "post",
+	                   dataType: "json",
+	                   cache: false,//上传文件无需缓存
+	                   processData: false,//用于对data参数进行序列化处理 这里必须false
+	                   contentType: false, //必须
+	                   success: function (res) {
+	                   		console.log(res)
+	                   		loading.hide(function() {});
+		                   	if(res.code == 200) {
+		                   		that.imgList.push(res.url);
+		                   	}
+	                   },
+	                })
+				},
+				deleteImg(id) {
+					var that = this
+					weui.dialog({
+					    title: '温馨提示',
+					    content: '您确定删除当前图片吗？',
+					    className: 'custom-classname',
+					    buttons: [{
+					        label: '取消',
+					        type: 'default',
+					        onClick: function () {}
+					    }, {
+					        label: '确定',
+					        type: 'primary',
+					        onClick: function () {
+								that.imgList.splice(id,1);
+							}
+					    }]
+					});
+				},
         }
     });
 </script>
