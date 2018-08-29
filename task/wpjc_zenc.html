@@ -16,7 +16,7 @@
 			<div class="title">
 				<p>
 					识别码：{{deviceDetails.qrCode}}
-					<span onclick="fn()">
+					<span @click="jumpHistory">
 						历史检查<img src="../imgs/task_img/right.png" alt="">
                     </span>
 				</p>
@@ -64,8 +64,14 @@
 				<p>
 					现场照片/视频
 				</p>
-				<div class="tianjia">
-					<img src="../imgs/index_img/jiah.png" alt="">
+				<div class="flex flex_around flex_wrap_box">
+					<img @click="deleteImg(index)" class="upload_img" v-for="(item,index) in imgList" v-bind:src="item" />
+					<div class="tianjia"> 
+						<div style="position: relative">
+							<img src="../imgs/index_img/jiah.png" />
+						    <input @change="upload" id="imgFile"  class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
+						</div>
+					</div>
 				</div>
 			</div>
 			<button @click="submitInfo">提交</button>
@@ -91,7 +97,7 @@
 			    inspectStatusArr: [],
 			    inspectStatus: false,
 			    descr: "",
-			    photos: [],
+			    imgList: [],
 			    cheifsName: "请选择",
 			    cheifsId: "",
 			},
@@ -128,14 +134,14 @@
 				},
 				submitInfo: function() {
 					let that = this;
+					
 					let data = {
 						data: {
 							materialId:that.deviceDetails.id,
 							regionId: that.deviceDetails.regionId,
-							status: '0',
 							inspectStatus: that.inspectStatusArr.indexOf(1)>=0?1:0,
 							chiefIds: that.cheifsId,
-							photos: ['33','333'],
+							photos: that.imgList.toString(),
 							descr: that.descr,
 						},
 						url: '/app/material/check', 
@@ -145,7 +151,7 @@
 					fetchData(data).then(res => {
 						if(res.data.code == 200) {
 							console.log(res);
-//							window.location.href = "../index/index.html"
+							window.location.href = "../index/index.html"
 						}
 						console.log(res);
 					});
@@ -165,14 +171,63 @@
 					   },
 					   id: 'cheifs'
 					});
+				},
+				upload:function() {
+					var that = this
+					var loading = weui.loading('loading', {
+					    className: 'custom-classname'
+					});
+					if(that.imgList.length>=9) {
+						weui.toast('最多选择9张图片', 1500);  
+					}
+					
+                    var imgFile = document.getElementById("imgFile");
+                    var fileObj = imgFile.files[0];
+                    var imgObj = new FormData();
+
+                    imgObj.append("file", fileObj);
+
+	                $.ajax({
+	                   url: "http://47.92.7.119:8080/app/upload",
+	                   data: imgObj,
+	                   type: "post",
+	                   dataType: "json",
+	                   cache: false,//上传文件无需缓存
+	                   processData: false,//用于对data参数进行序列化处理 这里必须false
+	                   contentType: false, //必须
+	                   success: function (res) {
+	                   		console.log(res)
+	                   		loading.hide(function() {});
+		                   	if(res.code == 200) {
+		                   		that.imgList.push(res.url);
+		                   	}
+	                   },
+	                })
+				},
+				deleteImg:function(id) {
+					var that = this
+					weui.dialog({
+					    title: '温馨提示',
+					    content: '您确定删除当前图片吗？',
+					    className: 'custom-classname',
+					    buttons: [{
+					        label: '取消',
+					        type: 'default',
+					        onClick: function () {}
+					    }, {
+					        label: '确定',
+					        type: 'primary',
+					        onClick: function () {
+								that.imgList.splice(id,1);
+							}
+					    }]
+					});
+				},
+				jumpHistory: function() {
+					window.location.href = "jcjl.html?materialId=" + this.deviceDetails.qrCode;
 				}
 			}
 		});
-	</script>
-	<script>
-		function fn() {
-			window.location.href = "jcjl.html?materialId=" + myvue.deviceDetails.id
-		}
 	</script>
 
 </html>

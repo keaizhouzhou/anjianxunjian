@@ -81,9 +81,10 @@
 					<span>（最多9张）</span>
 				</p>
 				<div class="flex flex_around flex_wrap_box">
-				<img  class="upload_img" v-for="item in imgList" v-bind:src="item" />
-				<div class="tianjia"> 
+					<img @click="deleteImg(index)" class="upload_img" v-for="(item,index) in imgList" v-bind:src="item" />
+					<div class="tianjia"> 
 						<div style="position: relative">
+							<img src="../imgs/index_img/jiah.png" />
 						    <input @change="upload" id="imgFile"  class="weui-uploader__input" type="file" accept="image/*" capture="camera" multiple="" />
 						</div>
 					</div>
@@ -128,7 +129,6 @@
 				enterpriseId: "",
 				enterpriseValue: "",
 				location :"",
-				materialUrl: "https://www.resource.yuntuodev.cn/resource/images/weixin/inspect/materials/8acb780c7cea4dcabc5c0e2472384dca.jpg",
 				remark: "",
 				isCacheData: false,
 				imgList: [],
@@ -159,6 +159,48 @@
 			methods: {
 				bindDevice: function() {
 					let that = this
+					
+					if(!that.materialName) {
+						weui.toast('请输入物品名称', 1500);    
+						return false;
+					}
+					if(!that.materialTypeId) {
+						weui.toast('请输入物品类型', 1500);    
+						return false;
+					}
+					if(!that.materialTypeValue) {
+						weui.toast('请选择物品类型', 1500);    
+						return false;
+					}
+					if(!that.producedDate) {
+						weui.toast('请输入生产日期  ', 1500);    
+						return false;
+					}
+					if(!that.expireDate) {
+						weui.toast('请输入过期日期  ', 1500);    
+						return false;
+					}
+					if(!that.checkSpecificId) {
+						weui.toast('请选择检查规范  ', 1500);    
+						return false;
+					}
+					if(!that.regionId) {
+						weui.toast('请选择所属区域  ', 1500);    
+						return false;
+					}
+					if(!that.enterpriseId) {
+						weui.toast('请选择所属企业  ', 1500);    
+						return false;
+					}
+					if(!that.location) {
+						weui.toast('请输入所在位置', 1500);    
+						return false;
+					}
+					if(that.imgList.length==0) {
+						weui.toast('请选择现场照片', 1500);    
+						return false;
+					}
+					
 					let data = {
 						data: {
 							qrCode: getQueryString("params"),
@@ -170,13 +212,21 @@
 							regionId: that.regionId,
 							enterpriseId: that.enterpriseId,
 							location :that.location,
-							materialUrl: "https://www.resource.yuntuodev.cn/resource/images/weixin/inspect/materials/8acb780c7cea4dcabc5c0e2472384dca.jpg",
+							materialUrl:  that.imgList.toString(),
 							remark: that.remark
 						},
 						url: '/app/material/bind'
 					}
 
 					fetchData(data).then(res => {
+						if(res.data.code == 200) {
+							weui.toast('绑定成功', 1500); 
+							setTimeout(function() {
+								location.href = "./index.html";
+							},1500)
+						} else {
+							weui.toast('绑定失败', 1500);
+						}
 						console.log(res);
 					});
 				},
@@ -214,7 +264,7 @@
 				selectStartData:function() {
 					var that = this
 					weui.datePicker({
-					     start: new Date(), // 从今天开始
+					     start: 1970, // 从今天开始
 					     end: 2030,
 					     onChange: function(result){
 					     	
@@ -229,7 +279,7 @@
 				selectEndData:function() {
 					var that = this
 					weui.datePicker({
-					     start: new Date(), // 从今天开始
+					     start: 1970, // 从今天开始
 					     end: 2030,
 					     onChange: function(result){
 					     	
@@ -247,6 +297,7 @@
 						weui.toast('请先选择物品类型', 1500);    
 						return false;
 					}
+					
 					var bindDeviceInfo = {
 						qrCode: getQueryString("params"),
 						materialName: that.materialName,
@@ -261,7 +312,7 @@
 						enterpriseId: that.enterpriseId,
 						enterpriseValue: that.enterpriseValue,
 						location:that.location,
-						materialUrl: that.materialUrl,
+						materialUrl: that.imgList,
 						remark: that.remark
 					}
 					
@@ -341,6 +392,14 @@
 					});
 				},
 				upload:function() {
+					var that = this
+					var loading = weui.loading('loading', {
+					    className: 'custom-classname'
+					});
+					if(that.imgList.length>=9) {
+						weui.toast('最多选择9张图片', 1500);  
+					}
+					
                     var imgFile = document.getElementById("imgFile");
                     var fileObj = imgFile.files[0];
                     var imgObj = new FormData();
@@ -355,10 +414,32 @@
 	                   cache: false,//上传文件无需缓存
 	                   processData: false,//用于对data参数进行序列化处理 这里必须false
 	                   contentType: false, //必须
-	                   success: function (result) {
-	                   	console.log(result)
+	                   success: function (res) {
+	                   	    loading.hide(function() {});
+		                   	if(res.code == 200) {
+		                   		that.imgList.push(res.url);
+		                   	}
 	                   },
 	                })
+				},
+				deleteImg:function(id) {
+					var that = this
+					weui.dialog({
+					    title: '温馨提示',
+					    content: '您确定删除当前图片吗？',
+					    className: 'custom-classname',
+					    buttons: [{
+					        label: '取消',
+					        type: 'default',
+					        onClick: function () {}
+					    }, {
+					        label: '确定',
+					        type: 'primary',
+					        onClick: function () {
+								that.imgList.splice(id,1);
+							}
+					    }]
+					});
 				}
 			}
 		});

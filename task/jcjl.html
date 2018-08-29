@@ -73,7 +73,8 @@
                 data:{
                     id: materialId
                 },
-                url:'/app/material/history'
+                url:'/app/material/history?id=' + materialId,
+                method: 'get'
             };
              fetchData (params).then(res => {
                 console.log(res);

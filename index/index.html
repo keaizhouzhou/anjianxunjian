@@ -180,23 +180,43 @@
         		let that = this;
         		
         		let qrCode = getUrlLastParams(url);
-			        
-        		let data = {
+			     
+			     // 判断是否绑定
+			    let data = {
 			        data:{
 			        	qrCode: qrCode,
 			        },
-			        url:'/app/material/info?qrCode='+ qrCode,
-			        method: 'get'
+			        url:'/app//material/exists'
 			    }
 			    
 		        fetchData (data).then(res => {
 		            console.log(res);
-		            if(res.data.code == 200) {
-		            	location.href = "../task/wpjc_zenc.html?deviceDetails=" + encodeURIComponent(encodeURI(JSON.stringify(res.data.list)));
+		            if(res.data.exists) {
+		            	jumpMaterialInfo();
 		            } else {
-		            	weui.toast(res.data.msg, 1500); 
+		            	localStorage.removeItem("bindDeviceInfo");
+		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
 		            }
 		        }); 
+		        
+		        function jumpMaterialInfo () {
+		        	let data = {
+				        data:{
+				        	qrCode: qrCode,
+				        },
+				        url:'/app/material/info?qrCode='+ qrCode,
+				        method: 'get'
+				    }
+				    
+			        fetchData (data).then(res => {
+			            console.log(res);
+			            if(res.data.code == 200) {
+			            	location.href = "../task/wpjc_zenc.html?deviceDetails=" + encodeURIComponent(encodeURI(JSON.stringify(res.data.list)));
+			            } else {
+			            	weui.toast(res.data.msg, 1500); 
+			            }
+			        });
+		        }
         	},
         	getAuthorizeData: function() { // 获取授权信息
         		let that = this;
