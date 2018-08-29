@@ -13,6 +13,13 @@
 	input[node-type=jsbridge]{
 	    display:none;
 	}
+	.qr-btn input {
+		height: 90px;
+	    width: 100%;
+	    position: absolute;
+	    left: 0;
+	    top: 0;
+	}
 </style>
 <body>
 <div id="app">
@@ -30,22 +37,23 @@
             <li>
                 <h5 class="last">安全监管 &nbsp;&nbsp;智慧巡检</h5>
             </li>
-            <li @click="scanBinding()">
+            <li>
                 <a href="#">
                     <img src="../imgs/index_img/pic_1.png" alt="">
-                    <p>扫码绑定</p>
-                </a>
-                <!--<div>
-			        <div class="qr-btn" node-type="qr-btn">扫描二维码1
-					    <input node-type="jsbridge" type="file" name="myPhoto" value="扫描二维码1" />
+                     <div class="qr-btn" node-type="qr-btn">
+                     	<p>扫码绑定</p>
+					    <input node-type="jsbridge" data-scan='scan1' type="file" name="myPhoto" value="扫描二维码1" />
 					</div>
-			    </div>-->
+                </a>
             </li>
-            <li @click="scanChecked()">
+            <li>
                 <a href="#">
-                    <!--../task/wpjc_zenc.html-->
+                    <!--../task/wpjc_zenc.html @click="scanChecked()"-->
                     <img src="../imgs/index_img/pic_2.png" alt="">
-                    <p>扫码检查</p>
+                    <div class="qr-btn" node-type="qr-btn">
+                     	<p>扫码检查</p> 
+					    <input node-type="jsbridge" data-scan='scan2' type="file" name="myPhoto" value="扫描二维码1" />
+					</div>
                 </a>
 
             </li>
@@ -111,8 +119,9 @@
 <script type="text/javascript" src="../js/weui.min.js"></script>
 <script type="text/javascript" src="../js/qrcode.js"></script>
 <script type="text/javascript" src="../js/qrcode.lib.min.js"></script>
-<script type="text/javascript" src="../js/zepto.js"></script>
+<script type="text/javascript" src="../js/vconsole.min.js" ></script>
 <script>
+	let vConsole = new VConsole()
     let data = {
         data:{},
         url:'/app/user/info'
@@ -140,16 +149,16 @@
           }); 
         },
         methods: {
-        	scanBinding: function() {
-//      		Qrcode.init($('[node-type=qr-btn]'));
-        		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
+        	scanBinding: function(url) {
+        		console.log(url)
+//      		var url = "http://i.0t.com.cn/nb/s/888292100559"; // 设备
 //      		var url = "http://i.0t.com.cn/m/1/OTUxNjc3MzUzMDUx"; // 客户
         		
         		let that = this;
         		
         		var isDevice = true,
 			        qrCode = getUrlLastParams(url);
-			        
+			       
 			    if(isNaN(qrCode)) {
 			    	isDevice = false;
 			    }
@@ -162,14 +171,16 @@
 			        data:{
 			        	qrCode: qrCode,
 			        },
-			        url:'/app//material/exists'
+			        url:'/app/material/exists'
 			    }
 			    
 		        fetchData (data).then(res => {
 		            console.log(res);
 		            if(res.data.exists) {
-		               weui.toast('您已经绑定过了', 1500);               
+		               weui.toast('您已经绑定过了', 1500);     
+		                alert(2) 
 		            } else {
+		            	 alert(qrCode) 
 		            	localStorage.removeItem("bindDeviceInfo");
 		            	location.href = 'erweimabangd_quyu.html?params='+ getUrlLastParams(url);
 		            }
@@ -246,6 +257,6 @@
         	},
         }
     });
-
+    Qrcode.init($('[node-type=qr-btn]'));
 </script>
 </html>

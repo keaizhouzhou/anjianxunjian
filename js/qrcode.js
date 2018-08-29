@@ -34,10 +34,11 @@
         weiBoBridge: function() {
             window.WeiboJSBridge.invoke('scanQRCode', null, function(params) {
                 //得到扫码的结果
-                $('.result-qrcode').append(params.result + '<br/>');
+                return $('.result-qrcode').append(params.result + '<br/>');
             });
         },
         getImgFile: function() {
+        	weui.toast('识别中', 1500);
             var _this_ = this;
             var inputDom = $(this).find('input[node-type=jsbridge]');
             var imgFile = inputDom[0].files;
@@ -59,7 +60,11 @@
                 qrcode.decode(oFREvent.target.result);
                 qrcode.callback = function(data) {
                     //得到扫码的结果
-                    $('.result-qrcode').append(data + '<br/>');
+                    if(inputDom.data("scan")=="scan1") {
+                    	 myvue.scanBinding(data);
+                    } else {
+                    	myvue.scanChecked(data);
+                    }
                 };
             };
 
